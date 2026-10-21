@@ -17,6 +17,7 @@ module emu (
 
 	input       [2:0] tape_speed,
 	input             mark5,
+	input             symbolic,
 	input       [7:0] dipsw,
 
 	// HPS file transfer: index 0 = boot0.rom, 1 = tape (.l3)
@@ -95,7 +96,7 @@ wire         break_key;
 wire         beep;
 
 keyboard keyboard (
-	.clk(clk_sys), .reset(reset), .ps2_key(ps2_key),
+	.clk(clk_sys), .reset(reset), .symbolic(symbolic), .ps2_key(ps2_key),
 	.keys(keys), .break_key(break_key)
 );
 

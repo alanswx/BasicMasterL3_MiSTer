@@ -8,9 +8,22 @@
 //   F7/CapsLock = CAPS, Tab = KANA, F8 = GRAPH, F9 = BREAK, End = "num ?",
 //   Backspace = INS/DEL, Delete = keypad INS/DEL, Home = HOME/CLS,
 //   '=' = ^, '`' = @, ''' = :, '\' = yen, F1-F5 = PF1-PF5.
+//
+// With `symbolic` set, punctuation follows the US legends instead: a US key
+// combination that means a symbol presses the Level 3 key that makes that
+// symbol, forcing SHIFT on or off for as long as it is held. The ROM only
+// learns SHIFT's state when the scanner passes code $07, so the key itself is
+// held back 20 ms (more than one 16.25 ms scan) after a forced SHIFT. Forcing
+// SHIFT off needs 55 ms: the ROM only sees a release through the scanner's $FF
+// report, up to three scans later. Once down the key stays down >= 55 ms: the
+// ROM wants to see a key on more than one scan. (US Shift+2 = @,
+// Shift+8 = *, ' = ', Shift+' = ", = = =, Shift+= = +, and so on). Letters
+// and digits stay positional, so as on the real machine unshifted letters
+// are capitals.
 module keyboard (
   input             clk,
   input             reset,
+  input             symbolic,
   input      [10:0] ps2_key,
   output reg [127:0] keys,
   output reg        break_key
@@ -122,15 +135,108 @@ always @(*) begin
   end
 end
 
+// US symbol translation: {valid, force shift on, force shift off, code}
+reg        shift_l, shift_r;
+wire       host_shift = shift_l | shift_r;
+reg  [9:0] sym_u, sym_s;     // unshifted / shifted translation of this key
+always @(*) begin
+  sym_u = 10'd0;
+  sym_s = 10'd0;
+  if (~ext) begin
+    case (sc)
+      8'h55: sym_u = {3'b110, 7'h16};   // =  -> SHIFT+-
+      8'h52: sym_u = {3'b110, 7'h10};   // '  -> SHIFT+7
+      8'h0E: sym_u = {3'b101, 7'h26};   // `  -> @
+      default: ;
+    endcase
+    case (sc)
+      8'h1E: sym_s = {3'b101, 7'h26};   // @  -> @
+      8'h36: sym_s = {3'b101, 7'h15};   // ^  -> ^
+      8'h3D: sym_s = {3'b110, 7'h12};   // &  -> SHIFT+6
+      8'h3E: sym_s = {3'b110, 7'h36};   // *  -> SHIFT+:
+      8'h46: sym_s = {3'b110, 7'h13};   // (  -> SHIFT+8
+      8'h45: sym_s = {3'b110, 7'h1C};   // )  -> SHIFT+9
+      8'h4E: sym_s = {3'b101, 7'h46};   // _  -> _
+      8'h55: sym_s = {3'b110, 7'h34};   // +  -> SHIFT+;
+      8'h4C: sym_s = {3'b101, 7'h36};   // :  -> :
+      8'h52: sym_s = {3'b110, 7'h1B};   // "  -> SHIFT+2
+      8'h0E: sym_s = {3'b110, 7'h15};   // ~  -> SHIFT+^
+      default: ;
+    endcase
+  end
+end
+wire [9:0] sym = host_shift ? sym_s : sym_u;
+
+reg [127:0] mkeys;           // keys as pressed (positional)
+reg [127:0] skeys;           // keys pressed through a translation
+reg [127:0] force_on, force_off;
+reg   [6:0] pend_code;           // translated key waiting for SHIFT to settle
+reg  [20:0] pend_timer;          // 0 = nothing pending
+reg   [6:0] rel_code;            // translated key waiting out its minimum hold
+reg  [20:0] rel_timer;
+localparam [20:0] T20MS = 21'd645120;
+localparam [20:0] T55MS = 21'd1774080;
+
 always @(posedge clk) begin
   old_toggle <= ps2_key[10];
   if (reset) begin
-    keys <= 128'd0;
+    mkeys <= 128'd0; skeys <= 128'd0; force_on <= 128'd0; force_off <= 128'd0;
+    shift_l <= 1'b0; shift_r <= 1'b0;
     break_key <= 1'b0;
-  end else if (old_toggle != ps2_key[10]) begin
-    if (code == 8'h80)       break_key <= pressed;
-    else if (~code[7])       keys[code[6:0]] <= pressed;
+    pend_timer <= 21'd0; rel_timer <= 21'd0;
+  end else begin
+    if (pend_timer == 21'd1) skeys[pend_code] <= 1'b1;
+    if (pend_timer != 21'd0) pend_timer <= pend_timer - 21'd1;
+    if (rel_timer == 21'd1) begin
+      skeys[rel_code] <= 1'b0; force_on[rel_code] <= 1'b0; force_off[rel_code] <= 1'b0;
+    end
+    if (rel_timer != 21'd0) rel_timer <= rel_timer - 21'd1;
+  if (old_toggle != ps2_key[10]) begin
+    if (~ext && sc == 8'h12) shift_l <= pressed;
+    if (~ext && sc == 8'h59) shift_r <= pressed;
+    if (pressed) begin
+      if (symbolic && sym[9]) begin
+        if (pend_timer != 21'd0) skeys[pend_code] <= 1'b1;   // flush the previous one
+        if (rel_timer != 21'd0) begin                        // and finish its release
+          skeys[rel_code] <= 1'b0; force_on[rel_code] <= 1'b0; force_off[rel_code] <= 1'b0;
+          rel_timer <= 21'd0;
+        end
+        pend_code <= sym[6:0];
+        pend_timer <= (sym[7] && host_shift) ? T55MS : T20MS;
+        force_on[sym[6:0]] <= sym[8];
+        force_off[sym[6:0]] <= sym[7];
+      end else if (code == 8'h80) break_key <= 1'b1;
+      else if (~code[7] && code != 8'h07) mkeys[code[6:0]] <= 1'b1;
+    end else begin
+      // A translated key is released after its minimum hold; whatever else
+      // this key may have pressed (shifted or not) is released now.
+      if ((sym_u[9] && sym_u[6:0] == pend_code) || (sym_s[9] && sym_s[6:0] == pend_code)) begin
+        if (pend_timer != 21'd0) begin
+          skeys[pend_code] <= 1'b1;
+          pend_timer <= 21'd0;
+        end
+        rel_code <= pend_code;
+        rel_timer <= T55MS;
+      end else begin
+        if (sym_u[9]) begin
+          skeys[sym_u[6:0]] <= 1'b0; force_on[sym_u[6:0]] <= 1'b0; force_off[sym_u[6:0]] <= 1'b0;
+        end
+        if (sym_s[9]) begin
+          skeys[sym_s[6:0]] <= 1'b0; force_on[sym_s[6:0]] <= 1'b0; force_off[sym_s[6:0]] <= 1'b0;
+        end
+      end
+      if (code == 8'h80) break_key <= 1'b0;
+      else if (~code[7] && code != 8'h07) mkeys[code[6:0]] <= 1'b0;
+    end
   end
+  end
+end
+
+wire shift_out = (host_shift & ~|force_off) | |force_on;
+
+always @(*) begin
+  keys = mkeys | skeys;
+  keys[7] = shift_out;
 end
 
 endmodule

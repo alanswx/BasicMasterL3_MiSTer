@@ -73,6 +73,7 @@ bool trace_key  = false;
 unsigned int key_hold_cycles = SIM_CLK_HZ * 50 / 1000;   // 50 ms
 int  tape_speed = 0;
 bool mark5 = true;
+bool symbolic = true;
 unsigned int dipsw = 0x03;
 int  stop_at_frame = -1;
 std::vector<int> screenshot_frames;
@@ -146,37 +147,60 @@ static Ps2Map ascii_to_ps2(char c)
 	if (c >= '0' && c <= '9') { m.code = digits[c - '0']; return m; }
 
 	switch (c) {
-		case ' ':  m.code = 0x29; break;
-		case '\n': case '\r': m.code = 0x5a; break;
-		case '\b': m.code = 0x66; break;
-		case ',':  m.code = 0x41; break;
-		case '.':  m.code = 0x49; break;
-		case '/':  m.code = 0x4a; break;
-		case ';':  m.code = 0x4c; break;
-		case ':':  m.code = 0x52; break;
-		case '-':  m.code = 0x4e; break;
-		case '^':  m.code = 0x55; break;
-		case '@':  m.code = 0x0e; break;
-		case '[':  m.code = 0x54; break;
-		case ']':  m.code = 0x5b; break;
-		case '\\': m.code = 0x5d; break;
-		case '_':  m.code = 0x51; break;
-		case '+':  m.code = 0x4c; m.shift = true; break;
-		case '*':  m.code = 0x52; m.shift = true; break;
-		case '=':  m.code = 0x4e; m.shift = true; break;
-		case '!':  m.code = 0x16; m.shift = true; break;
-		case '"':  m.code = 0x1e; m.shift = true; break;
-		case '#':  m.code = 0x26; m.shift = true; break;
-		case '$':  m.code = 0x25; m.shift = true; break;
-		case '%':  m.code = 0x2e; m.shift = true; break;
-		case '&':  m.code = 0x36; m.shift = true; break;
-		case '\'': m.code = 0x3d; m.shift = true; break;
-		case '(':  m.code = 0x3e; m.shift = true; break;
-		case ')':  m.code = 0x46; m.shift = true; break;
-		case '<':  m.code = 0x41; m.shift = true; break;
-		case '>':  m.code = 0x49; m.shift = true; break;
-		case '?':  m.code = 0x4a; m.shift = true; break;
+		case ' ':  m.code = 0x29; return m;
+		case '\n': case '\r': m.code = 0x5a; return m;
+		case '\b': m.code = 0x66; return m;
+		case ',':  m.code = 0x41; return m;
+		case '.':  m.code = 0x49; return m;
+		case '/':  m.code = 0x4a; return m;
+		case ';':  m.code = 0x4c; return m;
+		case '-':  m.code = 0x4e; return m;
+		case '[':  m.code = 0x54; return m;
+		case ']':  m.code = 0x5b; return m;
+		case '\\': m.code = 0x5d; return m;
+		case '!':  m.code = 0x16; m.shift = true; return m;
+		case '#':  m.code = 0x26; m.shift = true; return m;
+		case '$':  m.code = 0x25; m.shift = true; return m;
+		case '%':  m.code = 0x2e; m.shift = true; return m;
+		case '<':  m.code = 0x41; m.shift = true; return m;
+		case '>':  m.code = 0x49; m.shift = true; return m;
+		case '?':  m.code = 0x4a; m.shift = true; return m;
 		default: break;
+	}
+	if (symbolic) {
+		// US legends; rtl/keyboard.v translates them to Level 3 keys
+		switch (c) {
+			case ':':  m.code = 0x4c; m.shift = true; break;
+			case '@':  m.code = 0x1e; m.shift = true; break;
+			case '^':  m.code = 0x36; m.shift = true; break;
+			case '&':  m.code = 0x3d; m.shift = true; break;
+			case '*':  m.code = 0x3e; m.shift = true; break;
+			case '(':  m.code = 0x46; m.shift = true; break;
+			case ')':  m.code = 0x45; m.shift = true; break;
+			case '_':  m.code = 0x4e; m.shift = true; break;
+			case '=':  m.code = 0x55; break;
+			case '+':  m.code = 0x55; m.shift = true; break;
+			case '\'': m.code = 0x52; break;
+			case '"':  m.code = 0x52; m.shift = true; break;
+			default: break;
+		}
+	} else {
+		// positional: Level 3 (JIS) legends on the mapped keys
+		switch (c) {
+			case ':':  m.code = 0x52; break;
+			case '^':  m.code = 0x55; break;
+			case '@':  m.code = 0x0e; break;
+			case '_':  m.code = 0x51; break;
+			case '+':  m.code = 0x4c; m.shift = true; break;
+			case '*':  m.code = 0x52; m.shift = true; break;
+			case '=':  m.code = 0x4e; m.shift = true; break;
+			case '"':  m.code = 0x1e; m.shift = true; break;
+			case '&':  m.code = 0x36; m.shift = true; break;
+			case '\'': m.code = 0x3d; m.shift = true; break;
+			case '(':  m.code = 0x3e; m.shift = true; break;
+			case ')':  m.code = 0x46; m.shift = true; break;
+			default: break;
+		}
 	}
 	return m;
 }
@@ -414,6 +438,7 @@ static void usage(const char* argv0)
 	"  --tape <file>              load an .l3 tape image over ioctl (index 1)\n"
 	"  --tape-speed N             fast tape: byte rate x 2^N while the motor runs (default 0)\n"
 	"  --model l3|mk5             Mark 5 extras ($FFE8 banking, IG) on or off (default mk5)\n"
+	"  --keyboard us|jis         symbol translation (us, default) or positional\n"
 	"  --dipsw HEX                $FFC9 DIP switches (default 03)\n"
 	"  --screenshot N[,N,...]     write screenshot_frame_NNNN.png at these frames\n"
 	"  --screenshot-name <path>   override the output path for a single screenshot\n"
@@ -469,6 +494,7 @@ int main(int argc, char** argv, char** env)
 		else if (a == "--rom")               rom_image = next("--rom");
 		else if (a == "--tape")              tape_image = next("--tape");
 		else if (a == "--dipsw")             dipsw = strtoul(next("--dipsw").c_str(), nullptr, 16);
+		else if (a == "--keyboard")          symbolic = next("--keyboard") != "jis";
 		else if (a == "--model") {
 			std::string v = next("--model");
 			if      (v == "l3")  mark5 = false;
@@ -552,6 +578,7 @@ int main(int argc, char** argv, char** env)
 	input.keyEventWait = key_hold_cycles;
 	top->tape_speed = tape_speed;
 	top->mark5 = mark5;
+	top->symbolic = symbolic;
 	top->dipsw = dipsw;
 
 	{

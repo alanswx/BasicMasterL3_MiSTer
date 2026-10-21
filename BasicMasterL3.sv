@@ -213,6 +213,7 @@ localparam CONF_STR = {
 	"O[3:1],Fast tape,Off,2x,4x,8x,16x;",
 	"-;",
 	"O[4],Model,Mark 5,Level 3;",
+	"O[5],Keyboard,US symbols,Positional (JIS);",
 	"O[117:115],Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	"-;",
@@ -314,7 +315,7 @@ wire         hs, vs, hb, vb, ce_pix;
 wire   [7:0] red, green, blue;
 
 keyboard keyboard (
-	.clk(clk_sys), .reset(reset), .ps2_key(ps2_key),
+	.clk(clk_sys), .reset(reset), .symbolic(~status[5]), .ps2_key(ps2_key),
 	.keys(keys), .break_key(break_key)
 );
 
