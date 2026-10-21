@@ -11,18 +11,18 @@
 //
 // With `symbolic` set, punctuation follows the US legends instead: a US key
 // combination that means a symbol presses the Level 3 key that makes that
-// symbol, forcing SHIFT on or off for as long as it is held. The ROM only
-// learns SHIFT's state when the scanner passes code $07, so the key itself is
-// held back 20 ms (more than one 16.25 ms scan) after a forced SHIFT. Forcing
-// SHIFT off needs 55 ms: the ROM only sees a release through the scanner's $FF
-// report, up to three scans later. Once down the key stays down >= 55 ms: the
-// ROM wants to see a key on more than one scan.
+// symbol, with SHIFT forced on or off for as long as it is held (US Shift+2
+// = @, Shift+8 = *, ' = ', Shift+' = ", = = =, Shift+= = +, ...). Letters
+// and digits stay positional, so as on the real machine unshifted letters are
+// capitals.
 //
-// The same lead applies to any key pressed right after the real SHIFT goes
-// down or up, so a fast typist (or a typing tool) gets the case it meant. (US Shift+2 = @,
-// Shift+8 = *, ' = ', Shift+' = ", = = =, Shift+= = +, and so on). Letters
-// and digits stay positional, so as on the real machine unshifted letters
-// are capitals.
+// The ROM only notices a key through the 16.25 ms hardware scan plus its own
+// polling, and only notices a release through the scanner's $FF report up to
+// three scans later. So host events (including forced SHIFT changes) go
+// through a small queue and are applied one at a time, each given time to be
+// seen: 35 ms after SHIFT goes down, 45 ms after a key goes down, 50 ms after
+// a key goes up and 70 ms after SHIFT goes up. An event arriving with the
+// queue idle applies at once; the queue holds about 40 typed characters.
 module keyboard (
   input             clk,
   input             reset,
@@ -170,105 +170,100 @@ always @(*) begin
 end
 wire [9:0] sym = host_shift ? sym_s : sym_u;
 
-reg [127:0] k;                   // Level 3 keys down (SHIFT is computed below)
-reg [127:0] force_on, force_off; // per translated key: SHIFT it needs
-reg   [6:0] pend_code;           // last key that had to wait for SHIFT
-reg  [20:0] pend_timer;          // 0 = landed (or nothing pending)
-reg         pend_delayed;        // pend_code is a delayed key not yet released
-reg   [6:0] rel_code;            // delayed key waiting out its minimum hold
-reg  [20:0] rel_timer;
-reg  [20:0] settle;              // time until the ROM has seen the last SHIFT change
-localparam [20:0] T20MS = 21'd645120;
-localparam [20:0] T55MS = 21'd1774080;
+localparam [21:0] T_SDN = 22'd1128960;    // 35 ms
+localparam [21:0] T_KDN = 22'd1451520;    // 45 ms
+localparam [21:0] T_KUP = 22'd1612800;    // 50 ms
+localparam [21:0] T_SUP = 22'd2257920;    // 70 ms
+
+// queue entry: {is_shift, level, code[6:0]}
+reg  [8:0] q[0:127];
+reg  [6:0] q_wr, q_rd;
+wire [7:0] q_used = {1'b0, q_wr} - {1'b0, q_rd};
+reg [21:0] wait_t;
+
+reg [127:0] k;               // Level 3 keys as applied
+reg         vshift;          // SHIFT as applied
+reg         want_shift;      // SHIFT as it will be once the queue drains
+reg         sym_held;        // a translated key is down
+reg   [6:0] sym_code;
 
 wire       is_shift = ~ext && (sc == 8'h12 || sc == 8'h59);
 wire       use_sym  = symbolic && sym[9];
-wire [6:0] pcode    = use_sym ? sym[6:0] : code[6:0];
-wire       pvalid   = use_sym || (~code[7] && code != 8'h07);
-wire [20:0] sym_lead = ~use_sym              ? 21'd0 :
-                       (sym[7] &&  host_shift) ? T55MS :
-                       (sym[8] && ~host_shift) ? T20MS : 21'd0;
-// a key also waits for a delayed key's minimum hold to finish, plus time for
-// the ROM to see it released if it is the same key again
-wire [20:0] rel_wait = rel_timer == 21'd0 ? 21'd0 :
-                       rel_timer + (rel_code == pcode ? T55MS : 21'd0);
-wire [20:0] lead0 = settle > sym_lead ? settle : sym_lead;
-wire [20:0] lead  = rel_wait > lead0 ? rel_wait : lead0;
-wire mine = pend_delayed && ((code[6:0] == pend_code && ~code[7]) ||
-                             (sym_u[9] && sym_u[6:0] == pend_code) ||
-                             (sym_s[9] && sym_s[6:0] == pend_code));
+wire       sym_need = sym[8];                    // SHIFT the translation needs
 
-always @(posedge clk) begin
+always @(posedge clk) begin : kb
+  reg [6:0] w;
+  reg       ws;
   old_toggle <= ps2_key[10];
   if (reset) begin
-    k <= 128'd0; force_on <= 128'd0; force_off <= 128'd0;
+    k <= 128'd0; vshift <= 1'b0; want_shift <= 1'b0;
     shift_l <= 1'b0; shift_r <= 1'b0;
     break_key <= 1'b0;
-    pend_timer <= 21'd0; pend_delayed <= 1'b0; rel_timer <= 21'd0; settle <= 21'd0;
+    q_wr <= 7'd0; q_rd <= 7'd0; wait_t <= 22'd0;
+    sym_held <= 1'b0;
   end else begin
-    if (settle != 21'd0) settle <= settle - 21'd1;
-    if (pend_timer == 21'd1) k[pend_code] <= 1'b1;
-    if (pend_timer != 21'd0) pend_timer <= pend_timer - 21'd1;
-    if (rel_timer == 21'd1) begin
-      k[rel_code] <= 1'b0; force_on[rel_code] <= 1'b0; force_off[rel_code] <= 1'b0;
+    // ---- apply queued events, one per wait period
+    if (wait_t != 22'd0) wait_t <= wait_t - 22'd1;
+    else if (q_used != 8'd0) begin
+      q_rd <= q_rd + 7'd1;
+      if (q[q_rd][8]) begin
+        if (vshift != q[q_rd][7]) begin
+          vshift <= q[q_rd][7];
+          wait_t <= q[q_rd][7] ? T_SDN : T_SUP;
+        end
+      end else if (k[q[q_rd][6:0]] != q[q_rd][7]) begin
+        k[q[q_rd][6:0]] <= q[q_rd][7];
+        wait_t <= q[q_rd][7] ? T_KDN : T_KUP;
+      end
     end
-    if (rel_timer != 21'd0) rel_timer <= rel_timer - 21'd1;
 
-    if (old_toggle != ps2_key[10]) begin
+    // ---- turn host events into queue entries (up to three per event)
+    if (old_toggle != ps2_key[10] && q_used < 8'd125) begin
+      w = q_wr;
+      ws = want_shift;
       if (is_shift) begin
         if (sc == 8'h12) shift_l <= pressed;
         else             shift_r <= pressed;
-        settle <= pressed ? T20MS : T55MS;
+        if (~sym_held && ws != (pressed | (sc == 8'h12 ? shift_r : shift_l))) begin
+          ws = pressed | (sc == 8'h12 ? shift_r : shift_l);
+          q[w] <= {1'b1, ws, 7'd0}; w = w + 7'd1;
+        end
       end else if (code == 8'h80 && ~use_sym) begin
         break_key <= pressed;
       end else if (pressed) begin
-        if (pvalid) begin
-          // a still-pending key lands now (its release will follow)
-          if (pend_timer != 21'd0) k[pend_code] <= 1'b1;
-          if (use_sym) begin
-            force_on[pcode] <= sym[8];
-            force_off[pcode] <= sym[7];
+        if (use_sym) begin
+          if (ws != sym_need) begin
+            ws = sym_need;
+            q[w] <= {1'b1, ws, 7'd0}; w = w + 7'd1;
           end
-          if (lead == 21'd0) begin
-            k[pcode] <= 1'b1;
-            pend_timer <= 21'd0;
-            pend_delayed <= 1'b0;
-          end else begin
-            pend_code <= pcode;
-            pend_timer <= lead;
-            pend_delayed <= 1'b1;
-          end
+          q[w] <= {2'b01, sym[6:0]}; w = w + 7'd1;
+          sym_held <= 1'b1;
+          sym_code <= sym[6:0];
+        end else if (~code[7] && code != 8'h07) begin
+          q[w] <= {2'b01, code[6:0]}; w = w + 7'd1;
         end
       end else begin
-        if (mine) begin
-          // a delayed key stays down >= 55 ms: the ROM wants more than one scan
-          if (pend_timer != 21'd0) k[pend_code] <= 1'b1;
-          pend_timer <= 21'd0;
-          pend_delayed <= 1'b0;
-          if (rel_timer != 21'd0 && rel_code != pend_code) begin
-            k[rel_code] <= 1'b0; force_on[rel_code] <= 1'b0; force_off[rel_code] <= 1'b0;
+        if (sym_held && ((sym_u[9] && sym_u[6:0] == sym_code) ||
+                         (sym_s[9] && sym_s[6:0] == sym_code))) begin
+          q[w] <= {2'b00, sym_code}; w = w + 7'd1;
+          sym_held <= 1'b0;
+          if (ws != host_shift) begin
+            ws = host_shift;
+            q[w] <= {1'b1, ws, 7'd0}; w = w + 7'd1;
           end
-          rel_code <= pend_code;
-          rel_timer <= T55MS;
-        end else begin
-          if (~code[7] && code != 8'h07) k[code[6:0]] <= 1'b0;
-          if (sym_u[9]) begin
-            k[sym_u[6:0]] <= 1'b0; force_on[sym_u[6:0]] <= 1'b0; force_off[sym_u[6:0]] <= 1'b0;
-          end
-          if (sym_s[9]) begin
-            k[sym_s[6:0]] <= 1'b0; force_on[sym_s[6:0]] <= 1'b0; force_off[sym_s[6:0]] <= 1'b0;
-          end
+        end else if (~code[7] && code != 8'h07) begin
+          q[w] <= {2'b00, code[6:0]}; w = w + 7'd1;
         end
       end
+      q_wr <= w;
+      want_shift <= ws;
     end
   end
 end
 
-wire shift_out = (host_shift & ~|force_off) | |force_on;
-
 always @(*) begin
   keys = k;
-  keys[7] = shift_out;
+  keys[7] = vshift;
 end
 
 endmodule
