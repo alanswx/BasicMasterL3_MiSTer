@@ -165,13 +165,25 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 `s1dic.rom` dictionary is not dumped). The user has authorised downloading ROM dumps
 (2026-10-21); they go in `roms/` (see `roms/README.md`), never in the RBF.
 
+## Status (2026-10-21)
+
+- Research step 0 is done: `ref/SOURCES-*.md`, `ref/notes/`, `roms/README.md`,
+  `software/README.md`. EmuB-6892 is the reference and builds on macOS.
+- Level 3 core boots BASIC to `Ready` in vsim **and on a MiSTer** (Mister 192),
+  keyboard works, `.l3` tapes load byte-exact (inufuto Mazy runs). Mark 5 IG is wired
+  but not yet verified. See CLAUDE.md for how to run things.
+- Open items, roughly in order: verify IG (Mazy Mk5, BM Tetris, igdemo); cassette SAVE;
+  `$FFD1` trace NMI; odd interlace field; floppy (MP-1802 first, then MP-1805's MC6843);
+  a strict MB-6890 memory option (no RAM at `$8000-$9FFF`, `$FFD7` = BANK SEL);
+  border/overscan; PSG cards; then the MB-S1.
+
 ---
 
 ## TODO
 
 ### 0. Gather everything (do this first, in a subagent)
 
-- [ ] **Launch a subagent to download all documentation, software and emulator
+- [x] **Launch a subagent to download all documentation, software and emulator
   source** into `ref/` and `software/`, with a `ref/SOURCES.md` index giving the URL,
   date, licence/redistribution note and a sha256 for each item. Give it this list as
   a starting point and tell it to follow links outward:
@@ -205,7 +217,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
     - Put each download in its own directory and don't execute anything.
     - Report what was **not** found.
     - System ROMs are authorised: put them in `roms/` and verify them against MAME's CRCs.
-- [ ] Extract `software/incoming/*`. Write `software/README.md` with a table for each
+- [x] Extract `software/incoming/*`. Write `software/README.md` with a table for each
   title: machine, format, load command and expected entry point.
 
 ### 1. Pick the reference emulator and make it scriptable
@@ -231,31 +243,31 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   routine, tape load routine), once the user has supplied ROMs.
 
 ### 3. Repo and simulation scaffolding
-- [ ] Start from the FM-7 core layout (or MiSTer Template), with
+- [x] Start from the FM-7 core layout (or MiSTer Template), with
   `BasicMasterL3.sv`, `rtl/core.v` and `files.qip`. Use a CONF_STR with Load Tape
   (`.l3`), Load Disk (`.d88`) and Model (L3 / Mark II / Mark 5, later S1). System
   ROMs come from `boot.rom` / `boot1.rom` and so on, loaded by HPS; never compile
   them into the RBF.
-- [ ] Copy the Jr project's Verilator harness (`vsim/`: `--headless`,
+- [x] Copy the Jr project's Verilator harness (`vsim/`: `--headless`,
   `--screenshot`, `--send-keys`, `--key-hold`, `--watch-pc`, `--dump-mem`, `--poke`,
   `--trace-*`), its `regression.sh` with golden images, and its CSP comparison
   scripts.
-- [ ] Write a `CLAUDE.md` in the style of the Jr project's.
+- [x] Write a `CLAUDE.md` in the style of the Jr project's.
 
 ### 4. Level 3 bring-up (target: the BASIC prompt)
-- [ ] 6809 (`mc6809i.v`) at 1 MHz from a clock enable, plus the memory map and ROM/RAM
+- [x] 6809 (`mc6809is.v`, the synchronous version) at 1 MHz from a clock enable, plus the memory map and ROM/RAM
   views.
 - [ ] Hook up the CRTC and render 40-column text with attributes; then 80 columns,
   graphics mode, the colour/background register (`$FFD8`) and interlace. Compare
   screenshots against the reference emulator.
-- [ ] PS/2 → keyboard matrix through `$FFE0`, using the hsync-driven scan timer and
+- [x] PS/2 → keyboard matrix through `$FFE0`, using the hsync-driven scan timer and
   BREAK NMI. Expect "eats inputs if typed fast", as on the Jr; give the sim a key-hold
   option from day one.
-- [ ] Timer/FIRQ (MAME raises FIRQ on vblank; check this against EmuB).
-- [ ] Beeper via `$FFD3`.
+- [x] Timer/FIRQ (MAME raises FIRQ on vblank; check this against EmuB).
+- [x] Beeper via `$FFD3`.
 
 ### 5. Tape
-- [ ] An `.l3` loader: the byte stream goes through the ACIA receive path at 600 or
+- [x] An `.l3` loader: the byte stream goes through the ACIA receive path at 600 or
   1200 baud (`$FFD7`), with the motor on `$FFD2`. Reuse the Jr's on-chip tape buffer
   and fast-tape idea, but check how the L3 ROM times bits (ACIA, not software delay
   loops, so fast tape may be easier than on the Jr).
@@ -285,7 +297,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   correct behaviour.
 
 ### 9. Hardware and testers
-- [ ] Build RBFs on `misterubuntu` (`ssh misterubuntu`, Quartus at
+- [x] Build RBFs on `misterubuntu` (`ssh misterubuntu`, Quartus at
   `~/intelFPGA_lite/quartus/bin/quartus_sh --flow compile <proj>`). Copy the
   committed tree there with `git archive`.
 - [ ] Make a tester zip like `~/dev2/BasicMasterJr_tester_20261021`: the RBF, the

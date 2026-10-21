@@ -188,7 +188,12 @@ wire       pvalid   = use_sym || (~code[7] && code != 8'h07);
 wire [20:0] sym_lead = ~use_sym              ? 21'd0 :
                        (sym[7] &&  host_shift) ? T55MS :
                        (sym[8] && ~host_shift) ? T20MS : 21'd0;
-wire [20:0] lead = settle > sym_lead ? settle : sym_lead;
+// a key also waits for a delayed key's minimum hold to finish, plus time for
+// the ROM to see it released if it is the same key again
+wire [20:0] rel_wait = rel_timer == 21'd0 ? 21'd0 :
+                       rel_timer + (rel_code == pcode ? T55MS : 21'd0);
+wire [20:0] lead0 = settle > sym_lead ? settle : sym_lead;
+wire [20:0] lead  = rel_wait > lead0 ? rel_wait : lead0;
 wire mine = pend_delayed && ((code[6:0] == pend_code && ~code[7]) ||
                              (sym_u[9] && sym_u[6:0] == pend_code) ||
                              (sym_s[9] && sym_s[6:0] == pend_code));
@@ -218,12 +223,8 @@ always @(posedge clk) begin
         break_key <= pressed;
       end else if (pressed) begin
         if (pvalid) begin
-          // finish whatever the previous delayed key was doing
+          // a still-pending key lands now (its release will follow)
           if (pend_timer != 21'd0) k[pend_code] <= 1'b1;
-          if (rel_timer != 21'd0) begin
-            k[rel_code] <= 1'b0; force_on[rel_code] <= 1'b0; force_off[rel_code] <= 1'b0;
-            rel_timer <= 21'd0;
-          end
           if (use_sym) begin
             force_on[pcode] <= sym[8];
             force_off[pcode] <= sym[7];
@@ -244,6 +245,9 @@ always @(posedge clk) begin
           if (pend_timer != 21'd0) k[pend_code] <= 1'b1;
           pend_timer <= 21'd0;
           pend_delayed <= 1'b0;
+          if (rel_timer != 21'd0 && rel_code != pend_code) begin
+            k[rel_code] <= 1'b0; force_on[rel_code] <= 1'b0; force_off[rel_code] <= 1'b0;
+          end
           rel_code <= pend_code;
           rel_timer <= T55MS;
         end else begin
