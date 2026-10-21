@@ -170,9 +170,9 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 - Research step 0 is done: `ref/SOURCES-*.md`, `ref/notes/`, `roms/README.md`,
   `software/README.md`. EmuB-6892 is the reference and builds on macOS.
 - Level 3 core boots BASIC to `Ready` in vsim **and on a MiSTer** (Mister 192),
-  keyboard works, `.l3` tapes load byte-exact (inufuto Mazy runs). Mark 5 IG is wired
-  but not yet verified. See CLAUDE.md for how to run things.
-- Open items, roughly in order: verify IG (Mazy Mk5, BM Tetris, igdemo); cassette SAVE;
+  keyboard works, `.l3` tapes load byte-exact: inufuto Mazy loads at real 600 baud
+  and runs on the MiSTer too. Mark 5 IG works in vsim (Mazy Mark 5 build). See CLAUDE.md for how to run things.
+- Open items, roughly in order: more IG tests (BM Tetris, igdemo); cassette SAVE;
   `$FFD1` trace NMI; odd interlace field; floppy (MP-1802 first, then MP-1805's MC6843);
   a strict MB-6890 memory option (no RAM at `$8000-$9FFF`, `$FFD7` = BANK SEL);
   border/overscan; PSG cards; then the MB-S1.
