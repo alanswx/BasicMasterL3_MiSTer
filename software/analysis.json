@@ -1,0 +1,5282 @@
+[
+ {
+  "path": "extracted/Cannon-Ball_Hitachi-Basic-Master-Level-3_JA/Cannonball.l3",
+  "bytes": 34932,
+  "sha256": "9e712eeb80701236b5a33fc53d06b2683f506b5f8d9f5ce73a36fb56c57dd76e",
+  "nblocks": 132,
+  "files": [
+   {
+    "name": "CAN",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 183,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4F21",
+    "lines": 5,
+    "line_range": "10-50",
+    "io_refs": [
+     "FFD1",
+     "FFD7"
+    ]
+   },
+   {
+    "name": "CANNON",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 15474,
+    "blocks": 61,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0B00-$4767"
+    ],
+    "exec": "$FFFF"
+   },
+   {
+    "name": "CAN",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 183,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4F21",
+    "lines": 5,
+    "line_range": "10-50",
+    "io_refs": [
+     "FFD1",
+     "FFD7"
+    ]
+   },
+   {
+    "name": "CANNON",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 15474,
+    "blocks": 61,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0B00-$4767"
+    ],
+    "exec": "$FFFF"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Dezeni-Land_Hitachi-S1_JA/Dezeni Land (Hitachi S1) [CT 1].l3c",
+  "bytes": 4096230,
+  "sha256": "7e9b0a45ded541941d954fcdd3c27700cd3fa945389ca14421d8b2d3329bc7f8",
+  "format": "l3c",
+  "samples": 4005074,
+  "line_len": 80,
+  "other_chars": {
+   "G": 12,
+   "L": 14
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 8,
+  "decode": {
+   "8": {
+    "framing_errors": 57977,
+    "bytes": 37492,
+    "blocks": 8,
+    "good_files": 2
+   },
+   "4": {
+    "framing_errors": 138358,
+    "bytes": 67795,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 1736391,
+   "2": 1134331,
+   "4": 3,
+   "6": 1,
+   "3": 1
+  }
+ },
+ {
+  "path": "extracted/Dezeni-Land_Hitachi-S1_JA/Dezeni Land (Hitachi S1) [CT 2].l3c",
+  "bytes": 5987529,
+  "sha256": "0a3b148248b0f73fca8bb5ce68e730da199ff073338c8a67ae99831d56a3075d",
+  "format": "l3c",
+  "samples": 5854161,
+  "line_len": 80,
+  "other_chars": {
+   "G": 32,
+   "L": 38
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 16,
+  "decode": {
+   "8": {
+    "framing_errors": 82245,
+    "bytes": 54964,
+    "blocks": 16,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 206680,
+    "bytes": 96823,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 2599347,
+   "2": 1627387,
+   "4": 7,
+   "3": 2,
+   "6": 1
+  }
+ },
+ {
+  "path": "extracted/Dezeni-Land_Hitachi-S1_JA/Dezeni Land (Hitachi S1) [CT 3].l3c",
+  "bytes": 5635767,
+  "sha256": "436830a6b1d048d573d9e82cba142965b63a02ced9f382b9ea65d66faf506efe",
+  "format": "l3c",
+  "samples": 5510229,
+  "line_len": 80,
+  "other_chars": {
+   "G": 34,
+   "L": 34
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 16,
+  "decode": {
+   "8": {
+    "framing_errors": 78644,
+    "bytes": 51772,
+    "blocks": 16,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 196391,
+    "bytes": 90904,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 2434826,
+   "2": 1537682,
+   "4": 6,
+   "6": 2,
+   "3": 1
+  }
+ },
+ {
+  "path": "extracted/Eric-and-the-Floaters_Hitachi-Basic-Master-Level-3_JA/Bomber Man.l3",
+  "bytes": 35028,
+  "sha256": "cdc1abfb14abbb6dc389a859ea83ccdc1561b67c86c6d810f99facba0bb9bd53",
+  "nblocks": 132,
+  "files": [
+   {
+    "name": "BOM",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 183,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4BEF",
+    "lines": 5,
+    "line_range": "10-50",
+    "io_refs": [
+     "FFD1",
+     "FFD7"
+    ]
+   },
+   {
+    "name": "BOMB",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 15474,
+    "blocks": 61,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0B00-$4767"
+    ],
+    "exec": "$FFFF"
+   },
+   {
+    "name": "BOM",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 183,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4BEF",
+    "lines": 5,
+    "line_range": "10-50",
+    "io_refs": [
+     "FFD1",
+     "FFD7"
+    ]
+   },
+   {
+    "name": "BOMB",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 15474,
+    "blocks": 61,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0B00-$4767"
+    ],
+    "exec": "$FFFF"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Hitachi - Basic Master Level 3 [!]│MSS│/HI-Writer 1.5/{MESS} HI-Writer 1.5 (19--)(Hisoft Pty. Ltd.)/hiwriter.d88",
+  "bytes": 346800,
+  "sha256": "44ff56a765dc9e7cc008498ab7b470c6ded08cbaae933ce264a1401979ca4459",
+  "format": "d88",
+  "name": "Hi-Writer 1.5",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "UTILITY.BAS t=00/00",
+   "FILECOPY.UTL t=00/00",
+   "DISKCOPY.UTL t=00/00",
+   "VOL-COPY.UTL t=02/00",
+   "DISKDUMP.UTL t=00/00",
+   "LPTFILES.UTL t=00/00",
+   "CONFIG.UTL t=00/00",
+   "FORMAT.UTL t=00/00",
+   "SKIP5.UTL t=02/00",
+   "SYSCOPY.UTL t=00/00",
+   ".BAS t=00/00",
+   "HIWRITER.BAS t=00/00",
+   "HI-EDIT.BAS t=00/00",
+   "HI-PRINT.BAS t=00/00",
+   "HI-SET.BAS t=00/00",
+   "HISYSTEM.BAS t=00/00",
+   "ARCHIVE.BAS t=00/00",
+   "FILER.BAS t=00/00",
+   "LABELLER.BAS t=00/00",
+   "PFSET.BAS t=00/00",
+   "DOSCOPY.BAS t=00/00",
+   "HI-DCOPY.BAS t=00/00",
+   "FILECOPY.BAS t=00/00",
+   "CURSCODE.BIN t=02/00",
+   "EDITCODE.BIN t=02/00",
+   "RECVCODE.BIN t=02/00",
+   "MAILCODE.BIN t=02/00",
+   "2CP3000.BIN t=02/00",
+   "PRINTER.DAT t=01/FF",
+   "LABEL.DAT t=01/FF",
+   "SN.DAT t=01/FF",
+   ",P.BAS t=00/00",
+   "LPT0.DAT t=01/FF",
+   "GENLED3.DAT t=01/FF",
+   ".DAT t=01/FF"
+  ]
+ },
+ {
+  "path": "extracted/Hitachi - Basic Master Level 3 [!]│MSS│/HI-Writer Data/{MESS} HI-Writer Data (19--)(-unknown-)/hidata.d88",
+  "bytes": 185008,
+  "sha256": "19703ee22e4a98478ad0b46885ed9f0fd69f31042c8bb8eb9b6d0643c48ad2ae",
+  "format": "d88",
+  "name": "",
+  "media": "2D",
+  "write_protect": false,
+  "size_hdr": 185008,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 128D",
+   "trk0 1 trk: 16 sec x 128D"
+  ],
+  "dir_layout": "L3-1S (cyl20 sec7-16)",
+  "directory": []
+ },
+ {
+  "path": "extracted/Hitachi - Basic Master Level 3 [!]│MSS│/Tetris/{MESS} Tetris (1991)(-homebrew-)/tetris.d88",
+  "bytes": 346800,
+  "sha256": "aa6ec4fd845efdeef5f79c73cafb3942b5a62c7c86c96c638a2b1e2658b8540b",
+  "format": "d88",
+  "name": "jedwidz-tetris",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "LEV 13.TRS t=02/00",
+   "LEV 15.TRS t=02/00",
+   "LEV 14.TRS t=02/00",
+   "SOUNDFX.BIN t=02/00",
+   "EDIT.BAS t=00/00",
+   "LEV 1.TRS t=02/00",
+   "LEV 2.TRS t=02/00",
+   "LEV 3.TRS t=02/00",
+   "LEV 4.TRS t=02/00",
+   "LEV 5.TRS t=02/00",
+   "LEV 6.TRS t=02/00",
+   "LEV 7.TRS t=02/00",
+   "TETRIS2.BAS t=00/00",
+   "TETRISP1.PIC t=02/00",
+   ".BAS t=00/00",
+   "ROUTINES.BIN t=02/00",
+   "TETRIS.BAS t=00/00",
+   "LEV 8.TRS t=02/00",
+   "LEV 9.TRS t=02/00",
+   "SCRS.TRS t=01/FF",
+   "LEV 10.TRS t=02/00",
+   "LEV 11.TRS t=02/00",
+   "LEV 12.TRS t=02/00"
+  ]
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [L3] (TOSEC-v2022-06-08)/Ascend (2022-04-21)(Inufuto)(JP)/Ascend (2022-04-21)(Inufuto)(JP).l3",
+  "bytes": 8917,
+  "sha256": "981e2200a03e7f01fc81fa9d2448fca8c94f50b205fe6f16aa3f7543c9ec3d32",
+  "nblocks": 33,
+  "files": [
+   {
+    "name": "ASCEND",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7800,
+    "blocks": 31,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4E6D"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [L3] (TOSEC-v2022-06-08)/Mazy (2020-08-29)(Inufuto)(Mark-5)(JP)/Mazy (2020-08-29)(Inufuto)(Mark-5)(JP).l3",
+  "bytes": 9371,
+  "sha256": "3e6e19d6353752dc397ce74c2891d95e84c97069341623b86f406bbef6f243b5",
+  "nblocks": 35,
+  "files": [
+   {
+    "name": "MAZY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8196,
+    "blocks": 33,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4FF9"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [L3] (TOSEC-v2022-06-08)/Mazy (2021-06-04)(Inufuto)(JP)/Mazy (2021-06-04)(Inufuto)(JP).l3",
+  "bytes": 7215,
+  "sha256": "a56a99ee79a51d67666baf9cd8be9021519f252521af41df50ccbc6ff39597c8",
+  "nblocks": 27,
+  "files": [
+   {
+    "name": "MAZY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 6272,
+    "blocks": 25,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4875"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [L3] (TOSEC-v2022-06-08)/Ruptus (2020-12-26)(Inufuto)(JP)/Ruptus (2020-12-26)(Inufuto)(JP).l3",
+  "bytes": 13220,
+  "sha256": "7f10a536f666226c483f9a2e1a23af228ed65b01fcaebb5a5473c71bf009649b",
+  "nblocks": 48,
+  "files": [
+   {
+    "name": "RUPTUS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 11668,
+    "blocks": 46,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$5D89"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [WAV] (TOSEC-v2022-06-08)/Ascend (2022-04-21)(Inufuto)(JP)/Ascend (2022-04-21)(Inufuto)(JP).wav",
+  "bytes": 7871004,
+  "sha256": "3bc724ae1f6c1327e9f7ce583741478fec8414e1f90e044136726e4bf61a452b",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [WAV] (TOSEC-v2022-06-08)/Mazy (2020-08-29)(Inufuto)(Mark-5)(JP)/Mazy (2020-08-29)(Inufuto)(Mark-5)(JP).wav",
+  "bytes": 30396100,
+  "sha256": "02082615782b577a1c79836c7b2b9c77d7be4cbd83e4b3692605a1878f6adbed",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [WAV] (TOSEC-v2022-06-08)/Mazy (2021-06-04)(Inufuto)(JP)/Mazy (2021-06-04)(Inufuto)(JP).wav",
+  "bytes": 6373244,
+  "sha256": "a362b431d9daf8af6d702cb24f68b056a1773d2c077a1846a7042577915da2cc",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Hitachi Basic Master Jr. Level 3 - Games - [WAV] (TOSEC-v2022-06-08)/Ruptus (2020-12-26)(Inufuto)(JP)/Ruptus (2020-12-26)(Inufuto)(JP).wav",
+  "bytes": 11657644,
+  "sha256": "a316ff38f23d285d249781a98bfbf9b3a81191aff65f312535352f3be9b03d41",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Jelda_Hitachi-S1_JA/Jelda (Hitachi S1) [CT].l3b",
+  "bytes": 352996,
+  "sha256": "21a27fcea917ee6b161848059b57ffe9ff3fdd7dcaafded941f559e63d97f8f1",
+  "nblocks": 119,
+  "files": [
+   {
+    "name": "A",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1101,
+    "blocks": 5,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "feffffbf",
+    "basic_start": "$94F2",
+    "lines": 3,
+    "line_range": "11747-16834"
+   },
+   {
+    "name": "JELDA",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 27664,
+    "blocks": 109,
+    "bad_ck": 1,
+    "end_block": true,
+    "segments": [
+     "$5678-$C27D"
+    ],
+    "exec": "$ABCD"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 17,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 10,
+  "format": "l3b",
+  "bits": 346698,
+  "line_len": 116,
+  "framing_errors": 4769,
+  "other_chars": {},
+  "decoded_bytes": 31067
+ },
+ {
+  "path": "extracted/Jelda_Hitachi-S1_JA/Jelda (Hitachi S1) [CT].wav",
+  "bytes": 24957484,
+  "sha256": "314a01434438ae8399eac6f24036de41bb31f5f2838935fb75e62595eaba1628",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Data).l3b",
+  "bytes": 265415,
+  "sha256": "8569fea126ea24b18fcee65a03f6fb6f020e0d319f80397645564d3e48cb8cb7",
+  "nblocks": 80,
+  "files": [
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 1,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null
+   },
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null
+   }
+  ],
+  "leader_ff": 520,
+  "format": "l3b",
+  "bits": 260679,
+  "line_len": 110,
+  "framing_errors": 4,
+  "other_chars": {},
+  "decoded_bytes": 22609
+ },
+ {
+  "path": "extracted/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Data).l3c",
+  "bytes": 1079207,
+  "sha256": "e6030c983123daa5d426793336f68ca4a0e9be3e217eee38625ecc224cf6c671",
+  "format": "l3c",
+  "samples": 1055091,
+  "line_len": 80,
+  "other_chars": {
+   "L": 4
+  },
+  "files": [
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 1,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null,
+    "spb": 4
+   },
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null,
+    "spb": 4
+   }
+  ],
+  "nblocks": 80,
+  "decode": {
+   "8": {
+    "framing_errors": 11023,
+    "bytes": 6496,
+    "blocks": 0,
+    "good_files": 0
+   },
+   "4": {
+    "framing_errors": 0,
+    "bytes": 22610,
+    "blocks": 80,
+    "good_files": 1
+   }
+  },
+  "halfcycle_hist": {
+   "1": 452247,
+   "2": 301422
+  }
+ },
+ {
+  "path": "extracted/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Data).wav",
+  "bytes": 9778732,
+  "sha256": "626a48201279377d745f1ee0a2e0d435f58d40152b167387bd69a37a5c9f94c1",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Program).l3b",
+  "bytes": 386876,
+  "sha256": "ec50bc783f1c96bb3db2ec7c90c7bd08d3ac35d08861489aad6635161b5d53e9",
+  "nblocks": 124,
+  "files": [
+   {
+    "name": "LODE1",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 131,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LODE2",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 195,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LODE3",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 4106,
+    "blocks": 17,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$7FFF"
+    ],
+    "exec": "$7000"
+   },
+   {
+    "name": "LODE4",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 24586,
+    "blocks": 97,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$BFFF"
+    ],
+    "exec": "$7000"
+   }
+  ],
+  "leader_ff": 0,
+  "format": "l3b",
+  "bits": 379974,
+  "line_len": 110,
+  "framing_errors": 19108,
+  "other_chars": {},
+  "decoded_bytes": 32688
+ },
+ {
+  "path": "extracted/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Program).l3c",
+  "bytes": 1587428,
+  "sha256": "3e651aabb03bf727103fc4f8f803d0c4458dca72049ca66800a00b4fe02ee04e",
+  "format": "l3c",
+  "samples": 1552060,
+  "line_len": 80,
+  "other_chars": {
+   "G": 4
+  },
+  "files": [
+   {
+    "name": "LODE1",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 131,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LODE2",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 195,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 4
+   },
+   {
+    "name": "LODE3",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 4106,
+    "blocks": 17,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$7FFF"
+    ],
+    "exec": "$7000",
+    "spb": 4
+   },
+   {
+    "name": "LODE4",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 24586,
+    "blocks": 97,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$BFFF"
+    ],
+    "exec": "$7000",
+    "spb": 4
+   }
+  ],
+  "nblocks": 124,
+  "decode": {
+   "8": {
+    "framing_errors": 20490,
+    "bytes": 11276,
+    "blocks": 3,
+    "good_files": 1
+   },
+   "4": {
+    "framing_errors": 23585,
+    "bytes": 32770,
+    "blocks": 121,
+    "good_files": 3
+   }
+  },
+  "halfcycle_hist": {
+   "1": 645008,
+   "2": 453526
+  }
+ },
+ {
+  "path": "extracted/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Program).wav",
+  "bytes": 14241318,
+  "sha256": "741888a0d98c264b098b2753d1c0550ff47213457d6c3d82335ee8e0782ebf1f",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/mame_bml3_cass_bmtetris/tetris_all.flac",
+  "bytes": 5106615,
+  "sha256": "e2a7da39f8b20a1597a3bc422d673cf98bbdf9f77f15ff3f0bb297cccc9f1814",
+  "format": "flac"
+ },
+ {
+  "path": "extracted/mame_bml3_cass_igdemo/igdemo.flac",
+  "bytes": 4251463,
+  "sha256": "bf76321d854f2ba812bd0711fc8772bd255d6c142425c57c3ca5d90f046fa43a",
+  "format": "flac"
+ },
+ {
+  "path": "extracted/mame_bml3_flop_dbu/dbu.d88",
+  "bytes": 346800,
+  "sha256": "6c9a11385fb08c5274208f065f884bb58132de13f5750bf216216f8589bd7b43",
+  "format": "d88",
+  "name": "bm3 converted",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "UTILITY.BAS t=00/00",
+   "FILECOPY.UTL t=00/00",
+   "DISKCOPY.UTL t=00/00",
+   "VOL-COPY.UTL t=02/00",
+   "DISKDUMP.UTL t=00/FF",
+   "LPTFILES.UTL t=00/FF",
+   "CONFIG.UTL t=00/FF",
+   "FORMAT.UTL t=00/00",
+   "SKIP5.UTL t=02/00",
+   ".BAS t=00/00"
+  ]
+ },
+ {
+  "path": "extracted/mame_bml3_flop_fcg6890/fcg6890.d88",
+  "bytes": 346800,
+  "sha256": "51b893732b0897f6ecdd355e3f646604ab6de180b531021b63f6cfb00e5ff1cf",
+  "format": "d88",
+  "name": "disk_basic",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "FCG6890.BIN t=02/00",
+   ".BAS t=00/00"
+  ]
+ },
+ {
+  "path": "extracted/mame_bml3_flop_hiwriter/hidata.d88",
+  "bytes": 185008,
+  "sha256": "19703ee22e4a98478ad0b46885ed9f0fd69f31042c8bb8eb9b6d0643c48ad2ae",
+  "format": "d88",
+  "name": "",
+  "media": "2D",
+  "write_protect": false,
+  "size_hdr": 185008,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 128D",
+   "trk0 1 trk: 16 sec x 128D"
+  ],
+  "dir_layout": "L3-1S (cyl20 sec7-16)",
+  "directory": []
+ },
+ {
+  "path": "extracted/mame_bml3_flop_hiwriter/hiwriter.d88",
+  "bytes": 346800,
+  "sha256": "44ff56a765dc9e7cc008498ab7b470c6ded08cbaae933ce264a1401979ca4459",
+  "format": "d88",
+  "name": "Hi-Writer 1.5",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "UTILITY.BAS t=00/00",
+   "FILECOPY.UTL t=00/00",
+   "DISKCOPY.UTL t=00/00",
+   "VOL-COPY.UTL t=02/00",
+   "DISKDUMP.UTL t=00/00",
+   "LPTFILES.UTL t=00/00",
+   "CONFIG.UTL t=00/00",
+   "FORMAT.UTL t=00/00",
+   "SKIP5.UTL t=02/00",
+   "SYSCOPY.UTL t=00/00",
+   ".BAS t=00/00",
+   "HIWRITER.BAS t=00/00",
+   "HI-EDIT.BAS t=00/00",
+   "HI-PRINT.BAS t=00/00",
+   "HI-SET.BAS t=00/00",
+   "HISYSTEM.BAS t=00/00",
+   "ARCHIVE.BAS t=00/00",
+   "FILER.BAS t=00/00",
+   "LABELLER.BAS t=00/00",
+   "PFSET.BAS t=00/00",
+   "DOSCOPY.BAS t=00/00",
+   "HI-DCOPY.BAS t=00/00",
+   "FILECOPY.BAS t=00/00",
+   "CURSCODE.BIN t=02/00",
+   "EDITCODE.BIN t=02/00",
+   "RECVCODE.BIN t=02/00",
+   "MAILCODE.BIN t=02/00",
+   "2CP3000.BIN t=02/00",
+   "PRINTER.DAT t=01/FF",
+   "LABEL.DAT t=01/FF",
+   "SN.DAT t=01/FF",
+   ",P.BAS t=00/00",
+   "LPT0.DAT t=01/FF",
+   "GENLED3.DAT t=01/FF",
+   ".DAT t=01/FF"
+  ]
+ },
+ {
+  "path": "extracted/mame_bml3_flop_insecth/insecth.d88",
+  "bytes": 346800,
+  "sha256": "9fb749f5142d811bf2a2110b2af13119620c1a048878bc0c1491918adac7739c",
+  "format": "d88",
+  "name": "disk_basic",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "INSECT.BIN t=02/00",
+   ".BAS t=00/00"
+  ]
+ },
+ {
+  "path": "extracted/mame_bml3_flop_jwp/jwp.d88",
+  "bytes": 346800,
+  "sha256": "fc0f45b74771fa214de6098c93708a38ca4fd2daa9d84d507a5523303da9d8f5",
+  "format": "d88",
+  "name": "disk_basic",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   ".BAS t=00/00",
+   "WP.BIN t=02/00",
+   "INTRO.BIN t=02/00"
+  ]
+ },
+ {
+  "path": "extracted/mame_bml3_flop_ma5370/ma5370.d88",
+  "bytes": 185008,
+  "sha256": "12b81c9b402f08471491f775f3a954aa35dcdc8a5b3ce03c0aa9b3470546d6f2",
+  "format": "d88",
+  "name": "MA-5370",
+  "media": "2D",
+  "write_protect": true,
+  "size_hdr": 185008,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 128S",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3-1S (cyl20 sec7-16)",
+  "directory": [
+   "UTILITY.\u0000\u0000\u0000 t=00/00",
+   "DSKCOPY1.\u0000\u0000\u0000 t=00/00",
+   "DSKCOPY2.\u0000\u0000\u0000 t=00/00",
+   "DISKIO32.\u0000\u0000\u0000 t=02/00",
+   "DISKIO40.\u0000\u0000\u0000 t=02/00",
+   "SYSCOPY.\u0000\u0000\u0000 t=00/00",
+   "SYSIO32.\u0000\u0000\u0000 t=02/00",
+   "SYSIO40.\u0000\u0000\u0000 t=02/00",
+   "CONFIG.\u0000\u0000\u0000 t=00/00",
+   "FORMAT.\u0000\u0000\u0000 t=00/00",
+   "SKIP2.\u0000\u0000\u0000 t=02/00",
+   "AUTO.\u0000\u0000\u0000 t=00/00",
+   "REAUTO.\u0000\u0000\u0000 t=00/00"
+  ]
+ },
+ {
+  "path": "extracted/mame_bml3_flop_subtreas/subtreas.d88",
+  "bytes": 346800,
+  "sha256": "fe24d3000f6ab2a302882182e9e53beaae398abb85d13d382aca776e29f0c5b9",
+  "format": "d88",
+  "name": "disk_basic",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "STPU.BAS t=00/00",
+   "PATCHED.BAS t=00/00",
+   ".BAS t=00/00"
+  ]
+ },
+ {
+  "path": "extracted/mame_bml3_flop_tetris/tetris.d88",
+  "bytes": 346800,
+  "sha256": "aa6ec4fd845efdeef5f79c73cafb3942b5a62c7c86c96c638a2b1e2658b8540b",
+  "format": "d88",
+  "name": "jedwidz-tetris",
+  "media": "2DD",
+  "write_protect": false,
+  "size_hdr": 346800,
+  "tracks_present": 80,
+  "track_table": 164,
+  "geometry": [
+   "79 trk: 16 sec x 256D",
+   "trk0 1 trk: 16 sec x 128S"
+  ],
+  "dir_layout": "L3S1-2D (cyl20 sec5-23)",
+  "directory": [
+   "LEV 13.TRS t=02/00",
+   "LEV 15.TRS t=02/00",
+   "LEV 14.TRS t=02/00",
+   "SOUNDFX.BIN t=02/00",
+   "EDIT.BAS t=00/00",
+   "LEV 1.TRS t=02/00",
+   "LEV 2.TRS t=02/00",
+   "LEV 3.TRS t=02/00",
+   "LEV 4.TRS t=02/00",
+   "LEV 5.TRS t=02/00",
+   "LEV 6.TRS t=02/00",
+   "LEV 7.TRS t=02/00",
+   "TETRIS2.BAS t=00/00",
+   "TETRISP1.PIC t=02/00",
+   ".BAS t=00/00",
+   "ROUTINES.BIN t=02/00",
+   "TETRIS.BAS t=00/00",
+   "LEV 8.TRS t=02/00",
+   "LEV 9.TRS t=02/00",
+   "SCRS.TRS t=01/FF",
+   "LEV 10.TRS t=02/00",
+   "LEV 11.TRS t=02/00",
+   "LEV 12.TRS t=02/00"
+  ]
+ },
+ {
+  "path": "extracted/MELHEN_Hitachi-Basic-Master-Level-3_JA/MELHEN (Maison Ikkoku).l3",
+  "bytes": 1801,
+  "sha256": "246fb2323beede9db736ce2f0642b228239e2dba0c17752a2550a7dbe30b947c",
+  "nblocks": 8,
+  "files": [
+   {
+    "name": "MELHEN",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1469,
+    "blocks": 6,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4768",
+    "lines": 55,
+    "line_range": "10-550",
+    "io_refs": [
+     "FFE0"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/MELHEN_Hitachi-Basic-Master-Level-3_JA/MELHEN (Maison Ikkoku).wav",
+  "bytes": 1583004,
+  "sha256": "aa6629145140b88c13ad73952d19fe9d7c07db1eed7a62e4dc547ce621e074e9",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Skating_Hitachi-Basic-Master-Level-3_JA/SKATING1.l3",
+  "bytes": 1204,
+  "sha256": "d0a00f30b0e6caad4df9b74c943f422b80f6c0af0574dd0352b9f9df941ca0d2",
+  "nblocks": 6,
+  "files": [
+   {
+    "name": "SKATING1",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 910,
+    "blocks": 4,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$2768",
+    "lines": 25,
+    "line_range": "10-250",
+    "io_refs": [
+     "FFE9",
+     "FFEA"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Skating_Hitachi-Basic-Master-Level-3_JA/SKATING1.wav",
+  "bytes": 1057644,
+  "sha256": "0421bdb61ca7040aabab2b1528798e1d5f7f3369b3f4209f23224c3ec9f6ccfb",
+  "format": "wav"
+ },
+ {
+  "path": "extracted/Skating_Hitachi-Basic-Master-Level-3_JA/SKATING2.l3",
+  "bytes": 2028,
+  "sha256": "ab84d83cb83df1d948343f16b8336671d367164200be83400abbc6c36ba4dc90",
+  "nblocks": 9,
+  "files": [
+   {
+    "name": "SKATING2",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1677,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4768",
+    "lines": 46,
+    "line_range": "10-460"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "extracted/Skating_Hitachi-Basic-Master-Level-3_JA/SKATING2.wav",
+  "bytes": 1782924,
+  "sha256": "ae3b93d4b17a62c84911bb218855d5cfd54dd95f89f9c5667435281442220948",
+  "format": "wav"
+ },
+ {
+  "path": "found/archive.org/mariobrosspecialhitachis1/Mario Bros. Special (Hitachi S1) - ROM File_x/Mario Bros. Special (Hitachi S1) [CT].l3b",
+  "bytes": 612213,
+  "sha256": "f0e12e6b1c7f44d1a8dfc5c97b7bf0e00005a751d834b393501d435142205041",
+  "nblocks": 9,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 43,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000"
+   }
+  ],
+  "leader_ff": 0,
+  "format": "l3b",
+  "bits": 601283,
+  "line_len": 113,
+  "framing_errors": 58757,
+  "other_chars": {},
+  "decoded_bytes": 46993
+ },
+ {
+  "path": "found/archive.org/nutsandmilkhitachis1/Nuts & Milk (Hitachi S1) - ROM File_x/Nuts & Milk (Hitachi S1) [CT].l3b",
+  "bytes": 360455,
+  "sha256": "50902d51b540b60e00df389b249d36db10c068a9502b9054f9b88a597b63816e",
+  "nblocks": 8,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000"
+   }
+  ],
+  "leader_ff": 0,
+  "format": "l3b",
+  "bits": 354021,
+  "line_len": 115,
+  "framing_errors": 31805,
+  "other_chars": {},
+  "decoded_bytes": 27463
+ },
+ {
+  "path": "found/archive.org/princesstomatointhesaladkingdomhitachis1/Princess Tomato in the Salad Kingdom (Hitachi S1) - ROM Files_x/Princess Tomato in the Salad Kingdom (Hitachi S1) [CT 1].l3c",
+  "bytes": 2268593,
+  "sha256": "22851261b9d5276d33716e997639d42f6a7c05e6844aa29c21eec56b9e6eac4e",
+  "format": "l3c",
+  "samples": 2211277,
+  "line_len": 91,
+  "other_chars": {
+   "L": 5088,
+   "H": 1870
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 9,
+  "decode": {
+   "8": {
+    "framing_errors": 36005,
+    "bytes": 12494,
+    "blocks": 9,
+    "good_files": 2
+   },
+   "4": {
+    "framing_errors": 76860,
+    "bytes": 38469,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 940076,
+   "2": 614698,
+   "3": 2117,
+   "4": 1333,
+   "5": 898,
+   "6": 580
+  }
+ },
+ {
+  "path": "found/archive.org/princesstomatointhesaladkingdomhitachis1/Princess Tomato in the Salad Kingdom (Hitachi S1) - ROM Files_x/Princess Tomato in the Salad Kingdom (Hitachi S1) [CT 2].l3c",
+  "bytes": 4371542,
+  "sha256": "bdee72e3c9d6f6bd51d86679a05c459855e815e9943a23de4e331ba28ee9b016",
+  "format": "l3c",
+  "samples": 4260362,
+  "line_len": 89,
+  "other_chars": {
+   "L": 10034,
+   "H": 4096
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 18,
+  "decode": {
+   "8": {
+    "framing_errors": 70822,
+    "bytes": 24136,
+    "blocks": 18,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 156200,
+    "bytes": 73346,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 1786635,
+   "2": 1199048,
+   "3": 4475,
+   "4": 2787,
+   "5": 1668,
+   "6": 1207
+  }
+ },
+ {
+  "path": "found/archive.org/princesstomatointhesaladkingdomhitachis1/Princess Tomato in the Salad Kingdom (Hitachi S1) - ROM Files_x/Princess Tomato in the Salad Kingdom (Hitachi S1) [CT 3].l3c",
+  "bytes": 3605467,
+  "sha256": "adec5421a7dc5afd7a1800f0cd332f4b9d67179df6a10728d6e0ee52debb3462",
+  "format": "l3c",
+  "samples": 3511465,
+  "line_len": 89,
+  "other_chars": {
+   "L": 10034,
+   "H": 3938
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 17,
+  "decode": {
+   "8": {
+    "framing_errors": 61931,
+    "bytes": 19444,
+    "blocks": 17,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 137040,
+    "bytes": 58848,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 1477423,
+   "2": 980039,
+   "3": 4321,
+   "4": 2866,
+   "5": 1794,
+   "6": 1307
+  }
+ },
+ {
+  "path": "found/gamingalexandria/hitachi5_bml3mk5_GAMES/BM Block.l3",
+  "bytes": 7671,
+  "sha256": "c10400ec67423e3885a61b761b59a426d6028b072a5896de077b8f15f5a933bc",
+  "nblocks": 37,
+  "files": [
+   {
+    "name": "IGSYS4",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 653,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 26,
+    "line_range": "10-260",
+    "io_refs": [
+     "FFE9"
+    ]
+   },
+   {
+    "name": "BLOCK_IG",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1785,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$76EE"
+    ],
+    "exec": "$7000"
+   },
+   {
+    "name": "BLOCK_LD",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 42,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ff",
+    "basic_start": "$FFFA",
+    "lines": 2,
+    "line_range": "18-8243"
+   },
+   {
+    "name": "BLOCK_M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2306,
+    "blocks": 10,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$68F7"
+    ],
+    "exec": "$6000"
+   },
+   {
+    "name": "BLOCK_B",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1282,
+    "blocks": 6,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 56,
+    "line_range": "10-2180",
+    "io_refs": [
+     "FFD4",
+     "FFE0"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/gamingalexandria/hitachi5_bml3mk5_GAMES/BM Tetris.l3",
+  "bytes": 9680,
+  "sha256": "c7b79e9746f3bf4675d19c15a0a7b0a93026349f263132b0ad7f5095c6e916a4",
+  "nblocks": 44,
+  "files": [
+   {
+    "name": "IGSYS4",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 654,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4768",
+    "lines": 26,
+    "line_range": "10-260",
+    "io_refs": [
+     "FFE9"
+    ]
+   },
+   {
+    "name": "TETRIGM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2442,
+    "blocks": 10,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$797F"
+    ],
+    "exec": "$7000"
+   },
+   {
+    "name": "TETRIS",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 30,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ff",
+    "basic_start": "$FFFA",
+    "lines": 2,
+    "line_range": "18305-19746"
+   },
+   {
+    "name": "TETR.M8",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 3082,
+    "blocks": 13,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$6BFF"
+    ],
+    "exec": "$6300"
+   },
+   {
+    "name": "TETR.B2",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1750,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$2768",
+    "lines": 76,
+    "line_range": "10-760",
+    "io_refs": [
+     "FFE0"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/aerial/l3/aerial_x/aerial.wav",
+  "bytes": 9932844,
+  "sha256": "efeeff7b2454b3b26d30aa6b78c711a6905c24fcf0dcb469af5c8b5e96498309",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/aerial/l3/aerial.l3",
+  "bytes": 11260,
+  "sha256": "9d67a6ab696c843c1893fa3e3aafaa2df8d3b1d24c1bfd18f1da47e9e39fba90",
+  "nblocks": 41,
+  "files": [
+   {
+    "name": "AERIAL",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9911,
+    "blocks": 39,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$56AC"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/aerial/s1/aerial_l3_x/aerial.l3",
+  "bytes": 13763,
+  "sha256": "f9d3456667597f2e918d7b2ca0747ff7d1b008211908cc332ff88013d5749518",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/aerial/s1/aerial_wav_x/aerial.wav",
+  "bytes": 12135484,
+  "sha256": "ca174a8d334bdd2da736309cc1a488f97a993c9a5d3f94f2d68eeb8c3c4ac4d4",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/antiair/l3/antiair_l3_x/antiair.l3",
+  "bytes": 6941,
+  "sha256": "85f32138a4c688a72b1c2e593cb683eb75c22087526f0a5a659604927f426667",
+  "nblocks": 26,
+  "files": [
+   {
+    "name": "ANTIAIR",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 6027,
+    "blocks": 24,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4780"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/antiair/l3/antiair_wav_x/antiair.wav",
+  "bytes": 6132124,
+  "sha256": "d41723060bf1f966e928ff3a0de1cb0a87b662715d063efc28dc82f69f85e7ce",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/antiair/s1/antiair_l3_x/antiair.l3",
+  "bytes": 9834,
+  "sha256": "860a34061e7253b069a923fe9cdcc5208cc0c4f003355d94e0f02a7ba4a2afaa",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/antiair/s1/antiair_wav_x/antiair.wav",
+  "bytes": 8677964,
+  "sha256": "f355ef72bed0fac284e3a8ab1bf98c6ad205b455c7937a146ff78b69c3910970",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/ascend/l3/ascend_x/ascend.wav",
+  "bytes": 7871004,
+  "sha256": "3bc724ae1f6c1327e9f7ce583741478fec8414e1f90e044136726e4bf61a452b",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/ascend/l3/ascend.l3",
+  "bytes": 8917,
+  "sha256": "981e2200a03e7f01fc81fa9d2448fca8c94f50b205fe6f16aa3f7543c9ec3d32",
+  "nblocks": 33,
+  "files": [
+   {
+    "name": "ASCEND",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7800,
+    "blocks": 31,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4E6D"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/ascend/s1/ascend_l3_x/ascend.l3",
+  "bytes": 12189,
+  "sha256": "bc436c6f3a416c544a59636703cc2c31c2ab59bdf8159596974c4c3c6b3c7569",
+  "nblocks": 4,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 0,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/ascend/s1/ascend_wav_x/ascend.wav",
+  "bytes": 10750364,
+  "sha256": "6d64c126fd5e21acfc17f444aeaaeea769d01500057ff991fcde8ba6a8d26185",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/awass/l3/awass_l3_x/awass.l3",
+  "bytes": 10621,
+  "sha256": "5ef98e41cd63c843c4870692e0129621837d91d50f720cb3b45d5c84883733ee",
+  "nblocks": 39,
+  "files": [
+   {
+    "name": "AWASS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9330,
+    "blocks": 37,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$5467"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/awass/l3/awass_wav_x/awass.wav",
+  "bytes": 9370524,
+  "sha256": "3929348b70720d8a1a62a1bf644dde36df2abc937f01c306370c97c25b1a10bf",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/awass/s1/awass_l3_x/awass.l3",
+  "bytes": 12177,
+  "sha256": "da38cf09babe7a9d81b95bf12b61f7d12575ded10c0d438201f544ecf5e23f98",
+  "nblocks": 4,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 126,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/awass/s1/awass_wav_x/awass.wav",
+  "bytes": 10739804,
+  "sha256": "ee7eab2b2171d6b579c0a4f3a79ff81f5e867f061dc7a0d5d6ec6b8097331310",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/battlot/l3/battlot_x/battlot.wav",
+  "bytes": 9607244,
+  "sha256": "8d7980ba973790a49cf0f6fd90b2d28fca2e6d6d32d8030ec4a30e1e50e47834",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/battlot/l3/battlot.l3",
+  "bytes": 10890,
+  "sha256": "30ace07d628e42af5838b871b1e53b6e42ac3dcee5ee173177e89b9b715e3afe",
+  "nblocks": 40,
+  "files": [
+   {
+    "name": "BATTLOT",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9570,
+    "blocks": 38,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$5557"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/battlot/s1/battlot_l3_x/battlot.l3",
+  "bytes": 12374,
+  "sha256": "0bf3b50aa1c77a10bc0db05b12f1e880ef225b9fe6e5fdf56b51d401d7021b88",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/battlot/s1/battlot_wav_x/battlot.wav",
+  "bytes": 10913164,
+  "sha256": "002fa0cb042757c8cb9d67deb04a585663d7d7aea4e1f96db8739885365db7f5",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/bootskell/l3/bootskell_x/bootskell.wav",
+  "bytes": 9501644,
+  "sha256": "ea5f64917eb55d24764b5c7e73e0d13c8831da7192d228ba459ab41e903907e2",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/bootskell/l3/bootskell.l3",
+  "bytes": 10770,
+  "sha256": "bfd09503c44a6e98f3670c3f8d8e426cd7372aed51c442a64144c505dfa4fb7c",
+  "nblocks": 40,
+  "files": [
+   {
+    "name": "BOOTSKEL",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9450,
+    "blocks": 38,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$54DF"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/bootskell/s1/bootskell_l3_x/bootskell.l3",
+  "bytes": 12487,
+  "sha256": "fd7239205b3fe6bd43bba74ac863a89e0942632684547e156c5dcce8df3c997d",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/bootskell/s1/bootskell_wav_x/bootskell.wav",
+  "bytes": 11012604,
+  "sha256": "87b81a6116c3eb9f61ff136729b299e3953f878aca1efe759ca6e9c6dfd72c67",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/cacorm/l3/cacorm_wav_x/cacorm.wav",
+  "bytes": 8030284,
+  "sha256": "f2def8e4bb3a108c49cc37140861e3e6795f17f06f47bbd51112182ee080c343",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/cacorm/l3/cacorm.l3",
+  "bytes": 9098,
+  "sha256": "532f5f59b03b602b1a2ea349c6c2856da13bd6d726a12b7e5d07ce9cedaac00e",
+  "nblocks": 34,
+  "files": [
+   {
+    "name": "CACORM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7952,
+    "blocks": 32,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4F05"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/cacorm/s1/cacorm_l3_x/cacorm.l3",
+  "bytes": 10789,
+  "sha256": "7bc6b1614e7a20dd397d07ae0afa38751a9a042bb5e4f7d62afeec92026fbc88",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/cacorm/s1/cacorm_wav_x/cacorm.wav",
+  "bytes": 9518364,
+  "sha256": "d20ea6b3517bf6188b5796d3ce60ab280f590890f0f19e156c0379bf80da70fa",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/cavit/l3/cavit_x/cavit.wav",
+  "bytes": 10142284,
+  "sha256": "6461ca8728528ff4614f8eac76764f12f277d7b856d1b6feb7d89a020fb85de9",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/cavit/l3/cavit.l3",
+  "bytes": 11498,
+  "sha256": "19ff94249db8fd08e3f39899552f87930482bfb99184ce0c2db86f8dd1a08dfd",
+  "nblocks": 42,
+  "files": [
+   {
+    "name": "CAVIT",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 10120,
+    "blocks": 40,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$577D"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/cavit/s1/cavit_l3_x/cavit.l3",
+  "bytes": 13491,
+  "sha256": "05de70dc7216456a8045e3fa69119342b35d5590c97e5ad229fa3edba71bb61e",
+  "nblocks": 9,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 126,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   },
+   {
+    "name": "",
+    "ftype": "?",
+    "ascii": false,
+    "hdr_rest": "",
+    "size": 126,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   },
+   {
+    "name": "",
+    "ftype": "?",
+    "ascii": false,
+    "hdr_rest": "",
+    "size": 102,
+    "blocks": 1,
+    "bad_ck": 2,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/cavit/s1/cavit_wav_x/cavit.wav",
+  "bytes": 11896124,
+  "sha256": "8a70a8e44badb8e2c10ff8f8855ff391af4f0fc2203514ffd90b9625fb7a765b",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/cracky/l3/cracky_l3_x/cracky.l3",
+  "bytes": 8163,
+  "sha256": "ac4aa83e10f78686b87366e596242ec05dfc9e8f0499172e272a60887967559a",
+  "nblocks": 30,
+  "files": [
+   {
+    "name": "CRACKY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7133,
+    "blocks": 28,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4BD2"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/cracky/l3/cracky_wav_x/cracky.wav",
+  "bytes": 7207484,
+  "sha256": "280bb056af2bd0cc2c89ac8c1d71a60c70198ccdfd96506b88f835c230f5d4a5",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/cracky/s1/cracky_l3_x/cracky.l3",
+  "bytes": 9444,
+  "sha256": "a17bdee42ae5550460555eb20f34c8c269f12bc5adb203bdde67852f83e2b7bb",
+  "nblocks": 4,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 0,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/cracky/s1/cracky_wav_x/cracky.wav",
+  "bytes": 8334764,
+  "sha256": "ccc4a2a8c9db216a0d197cd56d137102efe6b80ca5a32ac5bdff99d453c1a70c",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/guntus/l3/guntus_wav_x/guntus.wav",
+  "bytes": 10658844,
+  "sha256": "4a1714af6ee5ac633c128cb5e95e722008fbc4cb13196b1bd1e0aff677e0dd22",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/guntus/l3/guntus.l3",
+  "bytes": 12085,
+  "sha256": "94bc5d9435b766d725ef675321a1c11feec9c23849452a4c2b627fc9b5be2781",
+  "nblocks": 44,
+  "files": [
+   {
+    "name": "GUNTUS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 10649,
+    "blocks": 42,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$598E"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/guntus/s1/guntus_l3_x/guntus.l3",
+  "bytes": 14852,
+  "sha256": "8924d749e19efa20d43d838a4f283da9bf7027a70ea7ec98f79f6aef3476132d",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/guntus/s1/guntus_wav_x/guntus.wav",
+  "bytes": 13093804,
+  "sha256": "b1e0b95d13ef5d2eae52989e0a53949093a947e10d373d70210b7b58c89b28c2",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/hopman/l3/hopman_l3_x/hopman.l3",
+  "bytes": 8903,
+  "sha256": "734302c33bd1ee012e7fd107948b1ebac21177911376001230284d7665910183",
+  "nblocks": 33,
+  "files": [
+   {
+    "name": "HOPMAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7786,
+    "blocks": 31,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4E5F"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/hopman/l3/hopman_wav_x/hopman.wav",
+  "bytes": 7858684,
+  "sha256": "e22795553f9d4a511b1e6a5462d489c8b5f8356d770cf2e3acbc8701bfc86722",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/hopman/s1/hopman_l3_x/hopman.l3",
+  "bytes": 11544,
+  "sha256": "e1836b5b129c814b52b411a5466076710a43a1c06cec8b442dbbeec172d0445c",
+  "nblocks": 5,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 0,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/hopman/s1/hopman_wav_x/hopman.wav",
+  "bytes": 10182764,
+  "sha256": "36d6084f701f02fb896e217d8ad5a774ad7572fab7366eac4514545f60b89813",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/impetus/l3/impetus_x/impetus.wav",
+  "bytes": 14431404,
+  "sha256": "bb53bd2ccdcc8eef3fc3fe0c9d44f36b709ae4a6848c4a927728cbd5a3980435",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/impetus/l3/impetus.l3",
+  "bytes": 16372,
+  "sha256": "b98fda0bd5fe32f8457a9524d070d4603d0dbfa000b979af8e7cb7166b885e58",
+  "nblocks": 59,
+  "files": [
+   {
+    "name": "IMPETUS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 14501,
+    "blocks": 57,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$689A"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/impetus/s1/impetus_l3_x/impetus.l3",
+  "bytes": 19542,
+  "sha256": "55f97174b18ab801905bf0389bfda5f2160939836ed8c0f74df19a1af13d7404",
+  "nblocks": 4,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/impetus/s1/impetus_wav_x/impetus.wav",
+  "bytes": 17221004,
+  "sha256": "fc40f946da62a15da12a7e5a8397b33a0347d694107a0b4d9a3504519f8aec49",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/lift/l3/lift_x/lift.wav",
+  "bytes": 7370284,
+  "sha256": "48124d87ebfe96f660ada7141b603f66604466a5278762328da1ac503dd574f1",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/lift/l3/lift.l3",
+  "bytes": 8348,
+  "sha256": "e55fb8dc13a60f83bc66d2ff6857e23626d44647a77f6e4e65d1fa65495f7e5a",
+  "nblocks": 31,
+  "files": [
+   {
+    "name": "LIFT",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7289,
+    "blocks": 29,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4C6E"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/lift/s1/lift_l3_x/lift.l3",
+  "bytes": 10425,
+  "sha256": "2730a20535820a14eb3d8013dac0c817efacb94631cbe099e48df6be4d50c436",
+  "nblocks": 4,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 0,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/lift/s1/lift_wav_x/lift.wav",
+  "bytes": 9198044,
+  "sha256": "ae434b0b4122d540829e8a0847a83a0b3b3cc606d7da30bf439fbb183e9a7ebe",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/mazy/l3/mazy_x/mazy.wav",
+  "bytes": 6373244,
+  "sha256": "a362b431d9daf8af6d702cb24f68b056a1773d2c077a1846a7042577915da2cc",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/mazy/l3/mazy.l3",
+  "bytes": 7215,
+  "sha256": "a56a99ee79a51d67666baf9cd8be9021519f252521af41df50ccbc6ff39597c8",
+  "nblocks": 27,
+  "files": [
+   {
+    "name": "MAZY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 6272,
+    "blocks": 25,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4875"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/mazy/l3mk5/mazy_x/mazy.wav",
+  "bytes": 30396100,
+  "sha256": "02082615782b577a1c79836c7b2b9c77d7be4cbd83e4b3692605a1878f6adbed",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/mazy/l3mk5/mazy.l3",
+  "bytes": 9371,
+  "sha256": "3e6e19d6353752dc397ce74c2891d95e84c97069341623b86f406bbef6f243b5",
+  "nblocks": 35,
+  "files": [
+   {
+    "name": "MAZY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8196,
+    "blocks": 33,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4FF9"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/mazy/s1/mazy_l3_x/mazy.l3",
+  "bytes": 10155,
+  "sha256": "51c118a9cc59d429ff0e39cadaade24ee733ff501017d3c110e4bb0149ee0b25",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/mazy/s1/mazy_wav_x/mazy.wav",
+  "bytes": 8960444,
+  "sha256": "48d6a38c50a089c0615b1aa0019b32cf4dfab63d36707f75c608269e3a311631",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/mazy2/l3/mazy2_l3_x/mazy2.l3",
+  "bytes": 10055,
+  "sha256": "60d809af78d081ccfa204f3450655e9b3cf874b4868bef867407f9d73d7b45b4",
+  "nblocks": 37,
+  "files": [
+   {
+    "name": "MAZY2",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8822,
+    "blocks": 35,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$526B"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/mazy2/l3/mazy2_wav_x/mazy2.wav",
+  "bytes": 8872444,
+  "sha256": "a1e2394231848caed8057a55480293d92e428e511fde322772c56081cce4a5d4",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/mazy2/s1/mazy2_l3_x/mazy2.l3",
+  "bytes": 12110,
+  "sha256": "83e2f0c6ba39b6b459a7daa6f965c9dcf8ca483d83284ef678b9951e607a9837",
+  "nblocks": 6,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 0,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   },
+   {
+    "name": "\u0000~\u0000f\u0000~\u0000<",
+    "ftype": "BASIC",
+    "ascii": false,
+    "size": 0,
+    "blocks": 1,
+    "bad_ck": 2,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/mazy2/s1/mazy2_wav_x/mazy2.wav",
+  "bytes": 10680844,
+  "sha256": "7145a87f9ac2fd38761ba2d8a71ee98811b6a882362ee821799f40457179942d",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/mieyen/l3/mieyen_l3_x/mieyen.l3",
+  "bytes": 8626,
+  "sha256": "c9c37411e32ed7d2cdbe6accf6f1fac0f7299ecea016a3e3deeb13af4dd94164",
+  "nblocks": 32,
+  "files": [
+   {
+    "name": "MIEYEN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7538,
+    "blocks": 30,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4D67"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/mieyen/l3/mieyen_wav_x/mieyen.wav",
+  "bytes": 7614924,
+  "sha256": "6005d7523e522f2604d0724a6ecda0da92ab502f535734393730c67c46945d0e",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/mieyen/s1/mieyen_l3_x/mieyen.l3",
+  "bytes": 10551,
+  "sha256": "7ddb177b33a0fc008ea1c0085b33838afb8f35c5a5f64edec401d61876ff5bee",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/mieyen/s1/mieyen_wav_x/mieyen.wav",
+  "bytes": 9308924,
+  "sha256": "f7fc5c1de1aaabc4805bd5aa08ef209a924ed11a5e5a5ad537c1a0ca54a8913c",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/neuras/l3/neuras_x/neuras.wav",
+  "bytes": 8543324,
+  "sha256": "91741005425a1a1dea33568ffc52a616478b49314e694bd97d0253b9dce7d692",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/neuras/l3/Neuras.l3",
+  "bytes": 9681,
+  "sha256": "44fcc7f9e42d90560ef0186d36cd929968e41044a04b5b57c353887f2de15624",
+  "nblocks": 36,
+  "files": [
+   {
+    "name": "NEURAS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8477,
+    "blocks": 34,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$5112"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/neuras/l3mk5/neuras_x/neuras.wav",
+  "bytes": 40854024,
+  "sha256": "af4f36862abb36ae381b9797355f5618c4fe1d152ee16796ded78d3130585edb",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/neuras/l3mk5/Neuras.l3",
+  "bytes": 12603,
+  "sha256": "5d45bf838523992fed26f2c8970d1b633067dbab1c0a5e4f0c4bac22f7c81202",
+  "nblocks": 46,
+  "files": [
+   {
+    "name": "NEURAS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 11109,
+    "blocks": 44,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$5B5A"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/neuras/s1/neuras_l3_x/neuras.l3",
+  "bytes": 10587,
+  "sha256": "ce17b353a507763bfbd9b33337f025dbded9d5e5d12e6423e108fc7256290dc2",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/neuras/s1/neuras_wav_x/neuras.wav",
+  "bytes": 9340604,
+  "sha256": "9673fb6711b5967e64ef58ba5a24a10ecd862b5f8e6099621a9603e32345cbc5",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/osotos/l3/osotos_l3_x/osotos.l3",
+  "bytes": 9653,
+  "sha256": "3bba355992bc2dae6d662fca787a6493ad9e0b805e8e968b39ac4576f51f7455",
+  "nblocks": 36,
+  "files": [
+   {
+    "name": "OSOTOS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8449,
+    "blocks": 34,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$50F6"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/osotos/l3/osotos_wav_x/osotos.wav",
+  "bytes": 8518684,
+  "sha256": "fa3d7dc15599ac286c14216dea867ef2c40c6a44166e51dd80b2e4211ba46513",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/osotos/s1/osotos_l3_x/osotos.l3",
+  "bytes": 12818,
+  "sha256": "091b8c746c065002a74eddcaf4f45f522caf731f67009cb70208642b58056dc2",
+  "nblocks": 4,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 0,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/osotos/s1/osotos_wav_x/osotos.wav",
+  "bytes": 11303884,
+  "sha256": "2de0cbf0086e202c3e9de69e3417b3172c44220547b18558c100d0ea1ed4c4c4",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/ruptus/l3/Ruptus_x/Ruptus.wav",
+  "bytes": 11657644,
+  "sha256": "a316ff38f23d285d249781a98bfbf9b3a81191aff65f312535352f3be9b03d41",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/ruptus/l3/Ruptus.l3",
+  "bytes": 13220,
+  "sha256": "7f10a536f666226c483f9a2e1a23af228ed65b01fcaebb5a5473c71bf009649b",
+  "nblocks": 48,
+  "files": [
+   {
+    "name": "RUPTUS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 11668,
+    "blocks": 46,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$5D89"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/ruptus/s1/ruptus_l3_x/ruptus.l3",
+  "bytes": 14734,
+  "sha256": "24bbd17f684f38805036bf9e401deccd3acef0c9a88cd8fac0c14809cd642526",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/ruptus/s1/ruptus_wav_x/ruptus.wav",
+  "bytes": 12989964,
+  "sha256": "8d4f07fca1cee86786ed75aa2ded729efde5819a7463ede949fa4068d54d3cad",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/svellas/l3/svellas_l3_x/svellas.l3",
+  "bytes": 9453,
+  "sha256": "f80fcaef26e0af8e8113280a2132a7d3bbe2f3d967791f55c4d5c05b1a5fc4e4",
+  "nblocks": 35,
+  "files": [
+   {
+    "name": "SVELLAS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8278,
+    "blocks": 33,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$504B"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/svellas/l3/svellas_wav_x/svellas.wav",
+  "bytes": 8342684,
+  "sha256": "c0d0b3c3507d7309fa77a2abe5797fc4246731beb05c703655ffe6abbc57d889",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/svellas/s1/svellas_l3_x/svellas.l3",
+  "bytes": 11049,
+  "sha256": "90b7a67409dc5a9f375b0c5e4cc5af0c00fc2865b68861631d89c37105c0e38d",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/svellas/s1/svellas_wav_x/svellas.wav",
+  "bytes": 9747164,
+  "sha256": "869ded789e11d274924c21708bbdda9d103b3f6d88cb83060366a82a8ade4dde",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/sword/l3/sword_l3_x/sword.l3",
+  "bytes": 9944,
+  "sha256": "d85c2c8f425bdf12f1e95de664bbe60f5437eeb59e5957f79f391cf290bdb06b",
+  "nblocks": 37,
+  "files": [
+   {
+    "name": "SWORD",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8711,
+    "blocks": 35,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$51FC"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/sword/l3/sword_wav_x/sword.wav",
+  "bytes": 8774764,
+  "sha256": "baf8fe75ae5b9e15c003cc272f7f8cdde789c375a7318acfc2f02164619b21e0",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/sword/s1/sword_l3_x/sword.l3",
+  "bytes": 11100,
+  "sha256": "fd92ee2a5b1004df78702e1956d1827aa9c6783b1610602890cb1ede5b924bbd",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/sword/s1/sword_wav_x/sword.wav",
+  "bytes": 9792044,
+  "sha256": "bae983f141d37291bbc6071ccb94857cd486d758848270b9debb4e22607c10ac",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/uchotos/l3/uchotos_l3_x/uchotos.l3",
+  "bytes": 8822,
+  "sha256": "f44b4316a4ee85ecdca8e59bd3b93a99b568f9ba0ad35fb434731325b884a586",
+  "nblocks": 33,
+  "files": [
+   {
+    "name": "UCHOTOS",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 7705,
+    "blocks": 31,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4E0E"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/uchotos/l3/uchotos_wav_x/uchotos.wav",
+  "bytes": 7787404,
+  "sha256": "234f8e729c58dec3631ce99282d2c4834a325aa627733e346eddbe41f02d6fb4",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/uchotos/s1/uchotos_l3_x/uchotos.l3",
+  "bytes": 9526,
+  "sha256": "02bbc938310da262a173a76b8e45dc5ea2f628b854c0cdeb618ab955252eb32c",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/uchotos/s1/uchotos_wav_x/uchotos.wav",
+  "bytes": 8406924,
+  "sha256": "18c016e18128e71b5a62b85879e643cb3f42aee3b8000edadbbe876c4140ddb1",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/yewdow/l3/yewdow_l3_x/yewdow.l3",
+  "bytes": 9249,
+  "sha256": "cf618ca5d7d914c3e203c8df83096e4dfd57210bbb92fe2ebe6f75f960551241",
+  "nblocks": 34,
+  "files": [
+   {
+    "name": "YEWDOW",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 8103,
+    "blocks": 32,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$3000-$4F9C"
+    ],
+    "exec": "$3000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/yewdow/l3/yewdow_wav_x/yewdow.wav",
+  "bytes": 8163164,
+  "sha256": "468af92d0bfdc727f97abb99a724b818f323dcddf2a84ab7af77816f04838e5e",
+  "format": "wav"
+ },
+ {
+  "path": "found/inufuto/yewdow/s1/yewdow_l3_x/yewdow.l3",
+  "bytes": 12191,
+  "sha256": "56a0dfa2760dbee85ebb3137b62ae5d5a7c4715cfe9bbeb294aa0defd8bc7115",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 103,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$D000-$D05C"
+    ],
+    "exec": "$D000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/inufuto/yewdow/s1/yewdow_wav_x/yewdow.wav",
+  "bytes": 10752124,
+  "sha256": "97da97fae6f802f4f03e67c4f4434d9c0b80e5058a8574349727f6d5d43d32ba",
+  "format": "wav"
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Dezeni Land (Hitachi S1) [CT 1].l3c",
+  "bytes": 4096230,
+  "sha256": "7e9b0a45ded541941d954fcdd3c27700cd3fa945389ca14421d8b2d3329bc7f8",
+  "format": "l3c",
+  "samples": 4005074,
+  "line_len": 80,
+  "other_chars": {
+   "G": 12,
+   "L": 14
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 8,
+  "decode": {
+   "8": {
+    "framing_errors": 57977,
+    "bytes": 37492,
+    "blocks": 8,
+    "good_files": 2
+   },
+   "4": {
+    "framing_errors": 138358,
+    "bytes": 67795,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 1736391,
+   "2": 1134331,
+   "4": 3,
+   "6": 1,
+   "3": 1
+  }
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Dezeni Land (Hitachi S1) [CT 2].l3c",
+  "bytes": 5987529,
+  "sha256": "0a3b148248b0f73fca8bb5ce68e730da199ff073338c8a67ae99831d56a3075d",
+  "format": "l3c",
+  "samples": 5854161,
+  "line_len": 80,
+  "other_chars": {
+   "G": 32,
+   "L": 38
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 16,
+  "decode": {
+   "8": {
+    "framing_errors": 82245,
+    "bytes": 54964,
+    "blocks": 16,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 206680,
+    "bytes": 96823,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 2599347,
+   "2": 1627387,
+   "4": 7,
+   "3": 2,
+   "6": 1
+  }
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Dezeni Land (Hitachi S1) [CT 3].l3c",
+  "bytes": 5635767,
+  "sha256": "436830a6b1d048d573d9e82cba142965b63a02ced9f382b9ea65d66faf506efe",
+  "format": "l3c",
+  "samples": 5510229,
+  "line_len": 80,
+  "other_chars": {
+   "G": 34,
+   "L": 34
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 16,
+  "decode": {
+   "8": {
+    "framing_errors": 78644,
+    "bytes": 51772,
+    "blocks": 16,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 196391,
+    "bytes": 90904,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 2434826,
+   "2": 1537682,
+   "4": 6,
+   "6": 2,
+   "3": 1
+  }
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Jelda (Hitachi S1) [CT].l3b",
+  "bytes": 352996,
+  "sha256": "21a27fcea917ee6b161848059b57ffe9ff3fdd7dcaafded941f559e63d97f8f1",
+  "nblocks": 119,
+  "files": [
+   {
+    "name": "A",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1101,
+    "blocks": 5,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "feffffbf",
+    "basic_start": "$94F2",
+    "lines": 3,
+    "line_range": "11747-16834"
+   },
+   {
+    "name": "JELDA",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 27664,
+    "blocks": 109,
+    "bad_ck": 1,
+    "end_block": true,
+    "segments": [
+     "$5678-$C27D"
+    ],
+    "exec": "$ABCD"
+   },
+   {
+    "name": null,
+    "ftype": "?",
+    "size": 17,
+    "blocks": 1,
+    "bad_ck": 1,
+    "end_block": false
+   }
+  ],
+  "leader_ff": 10,
+  "format": "l3b",
+  "bits": 346698,
+  "line_len": 116,
+  "framing_errors": 4769,
+  "other_chars": {},
+  "decoded_bytes": 31067
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Jelda (Hitachi S1) [CT].wav",
+  "bytes": 24957484,
+  "sha256": "314a01434438ae8399eac6f24036de41bb31f5f2838935fb75e62595eaba1628",
+  "format": "wav"
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Lode Runner Hitachi S1 [CT] (Data).l3b",
+  "bytes": 265415,
+  "sha256": "8569fea126ea24b18fcee65a03f6fb6f020e0d319f80397645564d3e48cb8cb7",
+  "nblocks": 80,
+  "files": [
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 1,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null
+   },
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null
+   }
+  ],
+  "leader_ff": 520,
+  "format": "l3b",
+  "bits": 260679,
+  "line_len": 110,
+  "framing_errors": 4,
+  "other_chars": {},
+  "decoded_bytes": 22609
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Lode Runner Hitachi S1 [CT] (Data).l3c",
+  "bytes": 1079207,
+  "sha256": "e6030c983123daa5d426793336f68ca4a0e9be3e217eee38625ecc224cf6c671",
+  "format": "l3c",
+  "samples": 1055091,
+  "line_len": 80,
+  "other_chars": {
+   "L": 4
+  },
+  "files": [
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 1,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null,
+    "spb": 4
+   },
+   {
+    "name": "KYOCHAN",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 9690,
+    "blocks": 38,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$0000-$2615"
+    ],
+    "exec": null,
+    "spb": 4
+   }
+  ],
+  "nblocks": 80,
+  "decode": {
+   "8": {
+    "framing_errors": 11023,
+    "bytes": 6496,
+    "blocks": 0,
+    "good_files": 0
+   },
+   "4": {
+    "framing_errors": 0,
+    "bytes": 22610,
+    "blocks": 80,
+    "good_files": 1
+   }
+  },
+  "halfcycle_hist": {
+   "1": 452247,
+   "2": 301422
+  }
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Lode Runner Hitachi S1 [CT] (Data).wav",
+  "bytes": 9778732,
+  "sha256": "626a48201279377d745f1ee0a2e0d435f58d40152b167387bd69a37a5c9f94c1",
+  "format": "wav"
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Lode Runner Hitachi S1 [CT] (Program).l3b",
+  "bytes": 386876,
+  "sha256": "ec50bc783f1c96bb3db2ec7c90c7bd08d3ac35d08861489aad6635161b5d53e9",
+  "nblocks": 124,
+  "files": [
+   {
+    "name": "LODE1",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 131,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LODE2",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 195,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LODE3",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 4106,
+    "blocks": 17,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$7FFF"
+    ],
+    "exec": "$7000"
+   },
+   {
+    "name": "LODE4",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 24586,
+    "blocks": 97,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$BFFF"
+    ],
+    "exec": "$7000"
+   }
+  ],
+  "leader_ff": 0,
+  "format": "l3b",
+  "bits": 379974,
+  "line_len": 110,
+  "framing_errors": 19108,
+  "other_chars": {},
+  "decoded_bytes": 32688
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Lode Runner Hitachi S1 [CT] (Program).l3c",
+  "bytes": 1587428,
+  "sha256": "3e651aabb03bf727103fc4f8f803d0c4458dca72049ca66800a00b4fe02ee04e",
+  "format": "l3c",
+  "samples": 1552060,
+  "line_len": 80,
+  "other_chars": {
+   "G": 4
+  },
+  "files": [
+   {
+    "name": "LODE1",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 131,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LODE2",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 195,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 4
+   },
+   {
+    "name": "LODE3",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 4106,
+    "blocks": 17,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$7FFF"
+    ],
+    "exec": "$7000",
+    "spb": 4
+   },
+   {
+    "name": "LODE4",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 24586,
+    "blocks": 97,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$BFFF"
+    ],
+    "exec": "$7000",
+    "spb": 4
+   }
+  ],
+  "nblocks": 124,
+  "decode": {
+   "8": {
+    "framing_errors": 20490,
+    "bytes": 11276,
+    "blocks": 3,
+    "good_files": 1
+   },
+   "4": {
+    "framing_errors": 23585,
+    "bytes": 32770,
+    "blocks": 121,
+    "good_files": 3
+   }
+  },
+  "halfcycle_hist": {
+   "1": 645008,
+   "2": 453526
+  }
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Lode Runner Hitachi S1 [CT] (Program).wav",
+  "bytes": 14241318,
+  "sha256": "741888a0d98c264b098b2753d1c0550ff47213457d6c3d82335ee8e0782ebf1f",
+  "format": "wav"
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Volguard (Hitachi S1) [CT].l3b",
+  "bytes": 1206119,
+  "sha256": "ed3c55359901df4a0bb05c5a47b21d3b486c8b9e474edc34dff3f3917830e15e",
+  "nblocks": 412,
+  "files": [
+   {
+    "name": "VOLGUARD",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 257,
+    "blocks": 2,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 8,
+    "line_range": "10-80",
+    "io_refs": [
+     "FFEA"
+    ]
+   },
+   {
+    "name": "VOLPCG-B",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2058,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$57FF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOLPCG-R",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2058,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$57FF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOLPCG-G",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2058,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$57FF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOL_LOAD",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 266,
+    "blocks": 2,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$DF00-$DFFF"
+    ],
+    "exec": "$DF00"
+   },
+   {
+    "name": "VOL_PUT",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 24586,
+    "blocks": 97,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$AFFF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOL",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 16138,
+    "blocks": 64,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$A000-$DEFF"
+    ],
+    "exec": "$A000"
+   },
+   {
+    "name": "VOLGUARD",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 257,
+    "blocks": 2,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 8,
+    "line_range": "10-80",
+    "io_refs": [
+     "FFEA"
+    ]
+   },
+   {
+    "name": "VOLPCG-B",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2058,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$57FF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOLPCG-R",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2058,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$57FF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOLPCG-G",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2058,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$57FF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOL_LOAD",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 266,
+    "blocks": 2,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$DF00-$DFFF"
+    ],
+    "exec": "$DF00"
+   },
+   {
+    "name": "VOL_PUT",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 24586,
+    "blocks": 97,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$5000-$AFFF"
+    ],
+    "exec": "$5000"
+   },
+   {
+    "name": "VOL",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 16138,
+    "blocks": 64,
+    "bad_ck": 1,
+    "end_block": true,
+    "segments": [
+     "$A000-$DEFF"
+    ],
+    "exec": "$A000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3b",
+  "bits": 1184629,
+  "line_len": 111,
+  "framing_errors": 30685,
+  "other_chars": {},
+  "decoded_bytes": 104747
+ },
+ {
+  "path": "found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1/Volguard (Hitachi S1) [CT].wav",
+  "bytes": 86978092,
+  "sha256": "1af5e7c452842eda51dd0f482c4e545ad91aeb349027532fecade75541dcba3f",
+  "format": "wav"
+ },
+ {
+  "path": "found/s-sasaji/50lines/50lines_x/12lines.l3",
+  "bytes": 475,
+  "sha256": "7146d8e97982835dd54d7d6516b082cc3dfdea9666e1fe5525eda3018a7e72ac",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "12LINES",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 238,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4796",
+    "lines": 11,
+    "line_range": "10-100",
+    "io_refs": [
+     "FFC6",
+     "FFC7"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/50lines/50lines_x/25lines.l3",
+  "bytes": 482,
+  "sha256": "61abb9d6aa69d9c9164f57e80f935fa442afe5685199b69d00bb39473a42bb21",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "25LINES",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 245,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4768",
+    "lines": 10,
+    "line_range": "10-100",
+    "io_refs": [
+     "FFC6",
+     "FFC7"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/50lines/50lines_x/50lines.l3",
+  "bytes": 487,
+  "sha256": "638cce397e72f6cbb0f569351e44e7c4443c8220d30eaf564f042e00ce2f4b7e",
+  "nblocks": 3,
+  "files": [
+   {
+    "name": "50LINES",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 250,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4768",
+    "lines": 10,
+    "line_range": "10-100",
+    "io_refs": [
+     "FFC6",
+     "FFC7"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/bmblock_010/bmblock_010_x/BLOCK_ALL.l3",
+  "bytes": 7671,
+  "sha256": "c10400ec67423e3885a61b761b59a426d6028b072a5896de077b8f15f5a933bc",
+  "nblocks": 37,
+  "files": [
+   {
+    "name": "IGSYS4",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 653,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 26,
+    "line_range": "10-260",
+    "io_refs": [
+     "FFE9"
+    ]
+   },
+   {
+    "name": "BLOCK_IG",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1785,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$76EE"
+    ],
+    "exec": "$7000"
+   },
+   {
+    "name": "BLOCK_LD",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 42,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ff",
+    "basic_start": "$FFFA",
+    "lines": 2,
+    "line_range": "18-8243"
+   },
+   {
+    "name": "BLOCK_M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2306,
+    "blocks": 10,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$68F7"
+    ],
+    "exec": "$6000"
+   },
+   {
+    "name": "BLOCK_B",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1282,
+    "blocks": 6,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 56,
+    "line_range": "10-2180",
+    "io_refs": [
+     "FFD4",
+     "FFE0"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/bmtetris/bmtetris_x/tetris_all.l3",
+  "bytes": 9680,
+  "sha256": "c7b79e9746f3bf4675d19c15a0a7b0a93026349f263132b0ad7f5095c6e916a4",
+  "nblocks": 44,
+  "files": [
+   {
+    "name": "IGSYS4",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 654,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4768",
+    "lines": 26,
+    "line_range": "10-260",
+    "io_refs": [
+     "FFE9"
+    ]
+   },
+   {
+    "name": "TETRIGM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2442,
+    "blocks": 10,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$7000-$797F"
+    ],
+    "exec": "$7000"
+   },
+   {
+    "name": "TETRIS",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 30,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ff",
+    "basic_start": "$FFFA",
+    "lines": 2,
+    "line_range": "18305-19746"
+   },
+   {
+    "name": "TETR.M8",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 3082,
+    "blocks": 13,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$6BFF"
+    ],
+    "exec": "$6300"
+   },
+   {
+    "name": "TETR.B2",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1750,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$2768",
+    "lines": 76,
+    "line_range": "10-760",
+    "io_refs": [
+     "FFE0"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/bmtetris/bmtetris_x/tetris_all.wav",
+  "bytes": 17036844,
+  "sha256": "376c4739a988e1ec12f2202e6226f17b7cf11ffca80ad4316293d283bbbb4a59",
+  "format": "wav"
+ },
+ {
+  "path": "found/s-sasaji/fd_ymodem_send_l3_1s_010/fd_ymodem_send_l3_1s_010_x/L3_1SYS.l3",
+  "bytes": 4519,
+  "sha256": "0aa5546855d655ad7375aab28647188b4e640a9b511fc734e5a22cef9a78f777",
+  "nblocks": 20,
+  "files": [
+   {
+    "name": "L3_1SYSB",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 2154,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 115,
+    "line_range": "10-1140"
+   },
+   {
+    "name": "L3_1SYSM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1625,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$664E"
+    ],
+    "exec": "$6000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/fd_ymodem_send_l3_1s_012/fd_ymodem_send_l3_1s_012_x/L3_1SYS.l3",
+  "bytes": 4792,
+  "sha256": "f18ff1d404dcd9b6c2b993b48183874945b784254bbc8c6cf305c8495ad4730c",
+  "nblocks": 20,
+  "files": [
+   {
+    "name": "L3_1SYSB",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 2267,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0768",
+    "lines": 116,
+    "line_range": "10-1140"
+   },
+   {
+    "name": "L3_1SYSM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1657,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$666E"
+    ],
+    "exec": "$6000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/fd_ymodem_send_l3_2d_010/fd_ymodem_send_l3_2d_010_x/L3_2DYS.l3",
+  "bytes": 4424,
+  "sha256": "13c3aff34d581905ceed1341fdb875cf1af468a96700ebcf546f7625d665ad2d",
+  "nblocks": 19,
+  "files": [
+   {
+    "name": "L3_2DYSB",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1950,
+    "blocks": 8,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 106,
+    "line_range": "10-1060"
+   },
+   {
+    "name": "L3_2DYSM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1753,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$6000-$66CE"
+    ],
+    "exec": "$6000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/fd_ymodem_send_s1_2d_010/fd_ymodem_send_s1_2d_010_x/S1_2DYS.l3",
+  "bytes": 4491,
+  "sha256": "b1d18f6a815c0bd1255c53e234e6cdfba26a51258167f0d0c98bdaed52a55c08",
+  "nblocks": 19,
+  "files": [
+   {
+    "name": "S1_2DYSB",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 2003,
+    "blocks": 8,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 7,
+    "line_range": "10-8257"
+   },
+   {
+    "name": "S1_2DYSM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1767,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C6DC"
+    ],
+    "exec": "$C000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/fd_ymodem_send_s1_2hd_010/fd_ymodem_send_s1_2hd_010_x/S12HDYS.l3",
+  "bytes": 4802,
+  "sha256": "1beed997e18e6b5c2b52484f94af96d1c22b2317a8ecbc587f57d7be445bf89b",
+  "nblocks": 21,
+  "files": [
+   {
+    "name": "S12HDYSB",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 2212,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 7,
+    "line_range": "10-8257"
+   },
+   {
+    "name": "S12HDYSM",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1831,
+    "blocks": 8,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C71C"
+    ],
+    "exec": "$C000"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/fdtool_for_1s/fdtool_for_1s_x/fd2tape_1s.l3",
+  "bytes": 1543,
+  "sha256": "81cc6c56fd23c01b4f172cf666551c722f1e8774fbfefd1ecbffd2af3d6ab1b1",
+  "nblocks": 7,
+  "files": [
+   {
+    "name": "FD2TAPE",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1230,
+    "blocks": 5,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4796",
+    "lines": 47,
+    "line_range": "10-460",
+    "io_refs": [
+     "FFD7"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/fdtool_for_1s/fdtool_for_1s_x/tape2fd_1s.l3",
+  "bytes": 1544,
+  "sha256": "dea0e8f664170fc1129414215294d00b7ce03ad939d0b093efc46da1fca33aee",
+  "nblocks": 7,
+  "files": [
+   {
+    "name": "TAPE2FD",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1231,
+    "blocks": 5,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$4796",
+    "lines": 48,
+    "line_range": "10-480",
+    "io_refs": [
+     "FFD7"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_l3_011/mkkanji_l3_011_x/mkkanji_l3_en.l3",
+  "bytes": 1029,
+  "sha256": "f4e09feef502509106710f5878323b2b677a8ec819e395b3fba1061cbcce6e05",
+  "nblocks": 5,
+  "files": [
+   {
+    "name": "MKKANJI",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 754,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0768",
+    "lines": 28,
+    "line_range": "10-580",
+    "io_refs": [
+     "FFD7",
+     "FFD8"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_l3_011/mkkanji_l3_011_x/mkkanji_l3_ja.l3",
+  "bytes": 1016,
+  "sha256": "b9174f2e6bd572515aacf44728ca9a06e061af4c25249b9974c17f7945c34a1d",
+  "nblocks": 5,
+  "files": [
+   {
+    "name": "MKKANJI",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 741,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0768",
+    "lines": 28,
+    "line_range": "10-580",
+    "io_refs": [
+     "FFD7",
+     "FFD8"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_l3/mkkanji_l3_x/mkkanji_l3.l3",
+  "bytes": 976,
+  "sha256": "71ffa3532e13367b2804b2824b47cb8a4bf1dc05678839befff1bece7a070ce7",
+  "nblocks": 5,
+  "files": [
+   {
+    "name": "MKKANJI",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 701,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 26,
+    "line_range": "5-270",
+    "io_refs": [
+     "FFD7",
+     "FFD8"
+    ]
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_l3/mkkanji_l3_x/mkkanji_l3.wav",
+  "bytes": 858924,
+  "sha256": "a2a918afcb34c2e9dc378d718d4ed8db5e212d76f8e5ba13bd0c0cccec9f82f4",
+  "format": "wav"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_s1_020/mkkanji_s1_020_x/mkkanji_s1_en.l3",
+  "bytes": 1303,
+  "sha256": "a31e289bd101bc303abcde88091ead0899dbf3b2e699cdfa8131c91e4cb711b3",
+  "nblocks": 6,
+  "files": [
+   {
+    "name": "MKKANJI",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 1009,
+    "blocks": 4,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 3,
+    "line_range": "10-30"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_s1_020/mkkanji_s1_020_x/mkkanji_s1_ja.l3",
+  "bytes": 1261,
+  "sha256": "3bf7a4d5210295e093efc0a8d15595f1c03b114df88f0f6455284f849fbc0436",
+  "nblocks": 6,
+  "files": [
+   {
+    "name": "MKKANJI",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 967,
+    "blocks": 4,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 3,
+    "line_range": "10-30"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_s1/mkkanji_s1_x/mkkanji_s1.l3",
+  "bytes": 996,
+  "sha256": "d6c639082f54c1f8cc8aa740e4ef58ac1c450ea5b5b91b76b4a75df849ba63e5",
+  "nblocks": 5,
+  "files": [
+   {
+    "name": "MKKANJI",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 721,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 3,
+    "line_range": "5-20"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/mkkanji_s1/mkkanji_s1_x/mkkanji_s1.wav",
+  "bytes": 876524,
+  "sha256": "6d61324c6eae30eb4597d83a61c6327526a6288b34b62c0e24f204928cd3b690",
+  "format": "wav"
+ },
+ {
+  "path": "found/s-sasaji/opntest_022/opntest_022_x/OPNTEST_ALL_2M.l3",
+  "bytes": 7135,
+  "sha256": "3421a9bba063d1c912566eca460a20c2cf5ebeeb5169d25608feed7ad565151a",
+  "nblocks": 31,
+  "files": [
+   {
+    "name": "OPNTEST",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 2192,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 7,
+    "line_range": "10-16961",
+    "io_refs": [
+     "FF1E",
+     "FF1F"
+    ]
+   },
+   {
+    "name": "OPNPLAY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1638,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$B000-$B65B"
+    ],
+    "exec": "$B000"
+   },
+   {
+    "name": "GRA1",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2176,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$B800-$C075"
+    ],
+    "exec": "$B800"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/opntest_022/opntest_022_x/OPNTEST_ALL_EX.l3",
+  "bytes": 7140,
+  "sha256": "06568679f244e182ceb9d483c4c5ad3a0a18e3001f8b2759fe78787eeb611c52",
+  "nblocks": 31,
+  "files": [
+   {
+    "name": "OPNTEST",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 2197,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 7,
+    "line_range": "10-16961",
+    "io_refs": [
+     "FFE6",
+     "FFE7"
+    ]
+   },
+   {
+    "name": "OPNPLAY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1638,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$B000-$B65B"
+    ],
+    "exec": "$B000"
+   },
+   {
+    "name": "GRA1",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2176,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$B800-$C075"
+    ],
+    "exec": "$B800"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/s-sasaji/opntest_022/opntest_022_x/OPNTEST_ALL.l3",
+  "bytes": 7114,
+  "sha256": "ab06b8bbe2f63cccd21c5bfd85f3804874ab0615d458d442824cc3f28ce124db",
+  "nblocks": 31,
+  "files": [
+   {
+    "name": "OPNTEST",
+    "ftype": "BASIC",
+    "ascii": false,
+    "hdr_rest": "000000000000000000000000",
+    "size": 2171,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "basic_prefix": "ffffff",
+    "basic_start": "$0001",
+    "lines": 7,
+    "line_range": "10-16961",
+    "io_refs": [
+     "FF1E",
+     "FF1F"
+    ]
+   },
+   {
+    "name": "OPNPLAY",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 1638,
+    "blocks": 7,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$B000-$B65B"
+    ],
+    "exec": "$B000"
+   },
+   {
+    "name": "GRA1",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 2176,
+    "blocks": 9,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$B800-$C075"
+    ],
+    "exec": "$B800"
+   }
+  ],
+  "leader_ff": 90,
+  "format": "l3"
+ },
+ {
+  "path": "found/tosec/Hitachi S1 - Games - [L3B]/Hitachi S1 - Games - [L3B]_x/Nuts & Milk (1984)(Hudson Soft)(JP)[MA-3202]/Nuts & Milk (1984)(Hudson Soft)(JP)[MA-3202].l3b",
+  "bytes": 360455,
+  "sha256": "50902d51b540b60e00df389b249d36db10c068a9502b9054f9b88a597b63816e",
+  "nblocks": 8,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 34,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000"
+   }
+  ],
+  "leader_ff": 0,
+  "format": "l3b",
+  "bits": 354021,
+  "line_len": 115,
+  "framing_errors": 31805,
+  "other_chars": {},
+  "decoded_bytes": 27463
+ },
+ {
+  "path": "found/tosec/Hitachi S1 - Games - [L3B]/Hitachi S1 - Games - [L3B]_x/Super Mario Bros. Special (1984)(Hudson Soft)(JP)[MA-1006]/Super Mario Bros. Special (1984)(Hudson Soft)(JP)[MA-1006].l3b",
+  "bytes": 612213,
+  "sha256": "f0e12e6b1c7f44d1a8dfc5c97b7bf0e00005a751d834b393501d435142205041",
+  "nblocks": 9,
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 43,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000"
+   }
+  ],
+  "leader_ff": 0,
+  "format": "l3b",
+  "bits": 601283,
+  "line_len": 113,
+  "framing_errors": 58757,
+  "other_chars": {},
+  "decoded_bytes": 46993
+ },
+ {
+  "path": "found/tosec/Hitachi S1 - Games - [L3C]/Hitachi S1 - Games - [L3C]_x/Princess Tomato in the Salad Kingdom (1984)(Hudson Soft)(JP)(Tape 1 of 3)(ADV-1)[MA-3204-1]/Princess Tomato in the Salad Kingdom (1984)(Hudson Soft)(JP)(Tape 1 of 3)(ADV-1)[MA-3204-1].l3c",
+  "bytes": 2268593,
+  "sha256": "22851261b9d5276d33716e997639d42f6a7c05e6844aa29c21eec56b9e6eac4e",
+  "format": "l3c",
+  "samples": 2211277,
+  "line_len": 91,
+  "other_chars": {
+   "L": 5088,
+   "H": 1870
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 9,
+  "decode": {
+   "8": {
+    "framing_errors": 36005,
+    "bytes": 12494,
+    "blocks": 9,
+    "good_files": 2
+   },
+   "4": {
+    "framing_errors": 76860,
+    "bytes": 38469,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 940076,
+   "2": 614698,
+   "3": 2117,
+   "4": 1333,
+   "5": 898,
+   "6": 580
+  }
+ },
+ {
+  "path": "found/tosec/Hitachi S1 - Games - [L3C]/Hitachi S1 - Games - [L3C]_x/Princess Tomato in the Salad Kingdom (1984)(Hudson Soft)(JP)(Tape 2 of 3)(ADV-2, 3)[MA-3204-2]/Princess Tomato in the Salad Kingdom (1984)(Hudson Soft)(JP)(Tape 2 of 3)(ADV-2, 3)[MA-3204-2].l3c",
+  "bytes": 4371542,
+  "sha256": "bdee72e3c9d6f6bd51d86679a05c459855e815e9943a23de4e331ba28ee9b016",
+  "format": "l3c",
+  "samples": 4260362,
+  "line_len": 89,
+  "other_chars": {
+   "L": 10034,
+   "H": 4096
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 18,
+  "decode": {
+   "8": {
+    "framing_errors": 70822,
+    "bytes": 24136,
+    "blocks": 18,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 156200,
+    "bytes": 73346,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 1786635,
+   "2": 1199048,
+   "3": 4475,
+   "4": 2787,
+   "5": 1668,
+   "6": 1207
+  }
+ },
+ {
+  "path": "found/tosec/Hitachi S1 - Games - [L3C]/Hitachi S1 - Games - [L3C]_x/Princess Tomato in the Salad Kingdom (1984)(Hudson Soft)(JP)(Tape 3 of 3)(ADV-4, 5)[MA-3204-3]/Princess Tomato in the Salad Kingdom (1984)(Hudson Soft)(JP)(Tape 3 of 3)(ADV-4, 5)[MA-3204-3].l3c",
+  "bytes": 3605467,
+  "sha256": "adec5421a7dc5afd7a1800f0cd332f4b9d67179df6a10728d6e0ee52debb3462",
+  "format": "l3c",
+  "samples": 3511465,
+  "line_len": 89,
+  "other_chars": {
+   "L": 10034,
+   "H": 3938
+  },
+  "files": [
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   },
+   {
+    "name": "LOADER",
+    "ftype": "DATA",
+    "ascii": true,
+    "hdr_rest": "01ffff000000000000000000",
+    "size": 50,
+    "blocks": 1,
+    "bad_ck": 0,
+    "end_block": true,
+    "spb": 8
+   },
+   {
+    "name": "LOADER/M",
+    "ftype": "ML",
+    "ascii": false,
+    "hdr_rest": "020000000000000000000000",
+    "size": 522,
+    "blocks": 3,
+    "bad_ck": 0,
+    "end_block": true,
+    "segments": [
+     "$C000-$C1FF"
+    ],
+    "exec": "$C000",
+    "spb": 8
+   }
+  ],
+  "nblocks": 17,
+  "decode": {
+   "8": {
+    "framing_errors": 61931,
+    "bytes": 19444,
+    "blocks": 17,
+    "good_files": 4
+   },
+   "4": {
+    "framing_errors": 137040,
+    "bytes": 58848,
+    "blocks": 0,
+    "good_files": 0
+   }
+  },
+  "halfcycle_hist": {
+   "1": 1477423,
+   "2": 980039,
+   "3": 4321,
+   "4": 2866,
+   "5": 1794,
+   "6": 1307
+  }
+ }
+]

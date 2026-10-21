@@ -1,0 +1,20 @@
+# copyrighted / large / third-party material kept locally only
+roms/
+ref/emulators/
+ref/hardware/
+ref/web/
+ref/docs/
+ref/notes/_work/
+software/incoming/
+software/extracted/
+software/found/
+# build output
+vsim/obj_dir/
+vsim/*.png
+vsim/memdump_*.bin
+output_files/
+db/
+incremental_db/
+*.rbf
+build_id.v
+.DS_Store

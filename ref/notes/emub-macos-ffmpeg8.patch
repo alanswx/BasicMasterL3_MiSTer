@@ -1,0 +1,23 @@
+--- EmuB-6892/src/source/src/video/ffmpeg/ffm_rec_audio.cpp	2026-10-21 14:41:11
++++ EmuB-6892/src/source/src/video/ffmpeg/ffm_rec_audio.cpp	2026-10-21 14:43:45
+@@ -101,10 +101,7 @@
+ 	const int *p;
+ 	int best_samplerate = 0;
+ 
+-	if (!codec->supported_samplerates)
+-		return default_rate;
+-
+-	p = codec->supported_samplerates;
++	p = NULL; (void)best_samplerate; return default_rate; /* ffmpeg8 patch */
+ 	while (*p) {
+ 		best_samplerate = FFMAX(*p, best_samplerate);
+ 		p++;
+@@ -121,7 +118,7 @@
+ 		AV_SAMPLE_FMT_NONE
+ 	};
+ 
+-	const enum AVSampleFormat *p = codec->sample_fmts;
++	const enum AVSampleFormat *p = reqs; /* ffmpeg8 patch */
+ 
+ 	while (*p != AV_SAMPLE_FMT_NONE) {
+ 		logging->out_debugf(_T("CheckSampleFmt: %d"), (int)*p);
