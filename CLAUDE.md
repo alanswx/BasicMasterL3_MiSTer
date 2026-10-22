@@ -10,7 +10,9 @@ MB-6892 Mark 5): MC6809 at 1.008 MHz, HD46505 CRTC, 40/80-column text with a col
 The MB-S1 is the planned second model. **TODO.md** is the plan; `ref/notes/` holds the
 research.
 
-Level 3 BASIC boots to `Ready`, the keyboard works and `.l3` tapes load in simulation.
+Level 3 BASIC boots to `Ready` in vsim and on a MiSTer; the keyboard works, `.l3` tapes
+load byte-exact, the MP-1802 floppy boots D88 disks (vsim), Mark 5 IG works, and there is a
+6-voice PSG card.
 
 Target is real hardware: clock enables, not gated clocks; no unsynthesisable constructs.
 
@@ -23,7 +25,10 @@ rtl/crtc6845.v        HD46505 (EmuB counting, incl. interlace sync & video mode)
 rtl/video.v           VRAM/colour RAM -> font / graphic / IG -> pixels
 rtl/acia6850.v        ACIA, byte level
 rtl/tape.v            .l3 player: one byte per 11 bit times into the ACIA
-rtl/keyboard.v        PS/2 -> Level 3 key codes (EmuB default bindings)
+rtl/keyboard.v        PS/2 -> Level 3 key codes, US-symbol translation, paced event queue
+rtl/mp1802.v          MP-1802 floppy card (MB8866 via wd1793.sv, $FF00-$FF07, boot ROM)
+rtl/wd1793.sv         FDC core from FM-7_MiSTer (D88/D77 sector-table scan); wd_dpram.v
+rtl/psg6.v            6-voice PSG card ($FF30-$FF33 PIA + 2x jt49 in rtl/jt49/)
 rtl/mc6809is.v        synchronous 6809 (Vectrex-development copy, rev 1.1 fixes)
 rtl/dpram.v           behavioural dual-port RAM (Quartus infers M10K)
 vsim/                 Verilator harness (derived from the Basic Master Jr core)
@@ -60,9 +65,14 @@ make
 * `--rom` defaults to `../roms/mister/bml3_boot0.rom` (BASIC at `$0000`, font at `$8000`),
   loaded over ioctl index 0 just like MiSTer's `boot0.rom`.
 * `--text N` prints `$0400` as 40×25 ASCII. In hi-res modes that is raster plane 0.
+* `--disk file.d88` (and `--disk1`) mounts disks and fits the MP-1802; `--fdc` fits it
+  empty. `--ram32k` = stock MB-6890 memory, `--border`, `--interlace`, `--model l3`,
+  `--keyboard jis` (positional) mirror the OSD options.
 * `--trace-io` prints every `$FF00-$FFEF` access with the PC. `--trace-key` prints
   scanner latches.
-* Typing: hold is 50 ms per key by default. The scanner covers 128 codes per 16.25 ms.
+* Typing: keys go through rtl/keyboard.v's queue, paced so the ROM sees each change
+  (about 9 characters/s). Typing while the ROM is busy (e.g. finishing a tape load) can
+  still lose keys, as on the real machine.
 
 ## Hardware reference
 

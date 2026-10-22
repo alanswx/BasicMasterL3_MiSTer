@@ -170,13 +170,17 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 - Research step 0 is done: `ref/SOURCES-*.md`, `ref/notes/`, `roms/README.md`,
   `software/README.md`. EmuB-6892 is the reference and builds on macOS.
 - Level 3 core boots BASIC to `Ready` in vsim **and on a MiSTer** (Mister 192),
-  keyboard works, `.l3` tapes load byte-exact: inufuto Mazy loads at real 600 baud
-  and runs on the MiSTer too. Mark 5 IG works in vsim (Mazy Mark 5 build). See CLAUDE.md for how to run things.
-- Open items, in order: more IG tests (BM Tetris, igdemo); `$FFD1` trace NMI; odd
-  interlace field; floppy (MP-1802 first, then MP-1805's MC6843); a strict MB-6890
-  memory option (no RAM at `$8000-$9FFF`, `$FFD7` = BANK SEL); border/overscan; PSG
-  cards; the MB-S1; and last, cassette SAVE (awkward on MiSTer: needs a writable
-  image or an audio-out path).
+  keyboard works (US-symbol translation, paced event queue), `.l3` tapes load
+  byte-exact: inufuto Mazy loads at real 600 baud and runs on the MiSTer too.
+- Mark 5 IG works in vsim (Mazy Mark 5 build); BM Tetris (IG) loads its IG setter.
+- MP-1802 floppy (two drives, D88 via wd1793.sv): the Tetris (1991) disk boots and
+  plays in vsim. 6-voice PSG card (PIA + 2x jt49) answers register reads/writes.
+- `$FFD1` trace NMI, optional true interlace, optional border, optional
+  expansion RAM (off = stock MB-6890, 22378 bytes free) are in.
+- Open items, in order: hardware-test floppy/PSG/border; BM Tetris end to end;
+  9-voice PSG card (VIA 6522 + 3 PSGs) if software needs it; MP-1805 (MC6843)
+  floppy; the MB-S1; and last, cassette SAVE (awkward on MiSTer: needs a
+  writable image or an audio-out path).
 
 ---
 
@@ -258,7 +262,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 ### 4. Level 3 bring-up (target: the BASIC prompt)
 - [x] 6809 (`mc6809is.v`, the synchronous version) at 1 MHz from a clock enable, plus the memory map and ROM/RAM
   views.
-- [ ] Hook up the CRTC and render 40-column text with attributes; then 80 columns,
+- [x] Hook up the CRTC and render 40-column text with attributes; then 80 columns,
   graphics mode, the colour/background register (`$FFD8`) and interlace. Compare
   screenshots against the reference emulator.
 - [x] PS/2 → keyboard matrix through `$FFE0`, using the hsync-driven scan timer and
@@ -277,7 +281,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 - [ ] Test with inufuto Mazy and Ascend (L3 builds), MELHEN and Skating.
 
 ### 6. Floppy
-- [ ] MP-1802 (5" 2D, MB8866) and MP-1805 (3") with `wd1793.sv`, plus D88 mounting.
+- [~] MP-1802 (5" 2D, MB8866) done; MP-1805 (3") needs an MC6843, not `wd1793.sv`, plus D88 mounting.
   Both place their boot ROM at `$F800`, so only one can be fitted. Test with the MSS
   Tetris and HI-Writer disks and the `bml3_flop` titles.
 
