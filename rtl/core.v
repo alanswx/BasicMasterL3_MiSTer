@@ -14,6 +14,8 @@ module core (
   input             mark5,        // Mark 5: $FFE8 bank register and IG
   input             interlace,    // generate both interlace fields
   input             fdc_en,       // MP-1802 floppy card fitted
+  input             ram_hi,       // RAM at $8000-$FFFF (RAM3/RAM4 cards, Mark 5)
+  input             border,       // show the border in the background colour
 
   // boot ROM download (boot0.rom: BASIC at 0, font at $8000)
   input             rom_wr,
@@ -136,7 +138,7 @@ wire ig_wr = ig_enable && a[15:11] == 5'b10100;      // $A000-$A7FF
 
 dpram #(16, 8) ram (
   .clk(clk),
-  .a_addr(a), .a_din(cpu_dout), .a_we(wr & ~ig_wr), .a_dout(ram_q),
+  .a_addr(a), .a_din(cpu_dout), .a_we(wr & ~ig_wr & (ram_hi | ~a[15])), .a_dout(ram_q),
   .b_addr(vram_addr), .b_din(8'd0), .b_we(1'b0), .b_dout(vram_q)
 );
 
@@ -227,7 +229,7 @@ assign beep     = music;
 video video (
   .clk(clk), .reset(reset), .cnt(cnt),
   .w80(mode_sel[7]), .hireso(~mode_sel[6]), .bg(mode_sel[2:0]),
-  .is(interlace_sel), .ig_dis(ig_mode[0]), .ig_ok(mark5),
+  .is(interlace_sel), .ig_dis(ig_mode[0]), .ig_ok(mark5), .border_en(border),
   .cclk_en(cclk_en),
   .ma(crtc_ma), .ra(crtc_ra), .h_de(crtc_hde), .v_de(crtc_vde),
   .hsync_in(crtc_hs), .vsync_in(crtc_vs), .cursor_in(crtc_cur), .vmode(crtc_vmode),
@@ -440,6 +442,7 @@ end
 always @(*) begin
   if (io)           cpu_din = io_dout;
   else if (rom_sel) cpu_din = fdcrom_sel ? fdcrom_q : rom_q;
+  else if (a[15] & ~ram_hi) cpu_din = 8'hff;   // stock MB-6890: nothing there
   else              cpu_din = ram_q;
 end
 

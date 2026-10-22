@@ -216,8 +216,10 @@ localparam CONF_STR = {
 	"O[7],Floppy card,MP-1802,None;",
 	"-;",
 	"O[4],Model,Mark 5,Level 3;",
+	"O[8],Expansion RAM ($8000+),Yes,No (stock 32K);",
 	"O[5],Keyboard,US symbols,Positional (JIS);",
 	"O[6],Interlace,Even field only,On;",
+	"O[9],Border,On,Off;",
 	"O[117:115],Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	"-;",
@@ -354,7 +356,7 @@ core core (
 	.keys(keys), .break_key(break_key), .dipsw(8'h03),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
 	.beep(beep),
-	.fdc_en(~status[7]),
+	.fdc_en(~status[7]), .ram_hi(~status[8]), .border(~status[9]),
 	.img_mounted(img_mounted), .img_readonly(img_readonly), .img_size(img_size),
 	.sd_lba(sd_lba), .sd_rd(sd_rd), .sd_wr(sd_wr), .sd_ack(sd_ack),
 	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),
@@ -371,7 +373,7 @@ wire scandoubler = forced_scandoubler | (video_fx != 3'd0);
 assign VGA_SL = scanline_fx[1:0];
 
 video_mixer #(
-	.LINE_LENGTH(660),
+	.LINE_LENGTH(800),
 	.HALF_DEPTH(0),
 	.GAMMA(1)
 ) video_mixer (

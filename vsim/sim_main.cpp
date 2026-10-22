@@ -84,6 +84,8 @@ std::string rom_image = "../roms/mister/bml3_boot0.rom";
 std::string tape_image;
 std::string disk_image[2];
 bool fdc_en = false;
+bool ram_hi = true;
+bool border = false;
 std::string screenshot_prefix = "screenshot_frame";
 std::string screenshot_name;
 bool rom_loaded = false;
@@ -445,6 +447,8 @@ static void usage(const char* argv0)
 	"  --tape <file>              load an .l3 tape image over ioctl (index 1)\n"
 	"  --disk <file.d88>         mount a disk in drive 0 (fits the MP-1802 card)\n"
 	"  --disk1 <file.d88>        mount a disk in drive 1\n"
+	"  --border                  show the border (screenshots become 768x232)\n"
+	"  --ram32k                  stock MB-6890: no RAM at $8000-$FFFF\n"
 	"  --fdc                      fit the MP-1802 card without a disk\n"
 	"  --tape-speed N             fast tape: byte rate x 2^N while the motor runs (default 0)\n"
 	"  --model l3|mk5             Mark 5 extras ($FFE8 banking, IG) on or off (default mk5)\n"
@@ -507,6 +511,8 @@ int main(int argc, char** argv, char** env)
 		else if (a == "--disk")              { disk_image[0] = next("--disk"); fdc_en = true; }
 		else if (a == "--disk1")             { disk_image[1] = next("--disk1"); fdc_en = true; }
 		else if (a == "--fdc")               fdc_en = true;
+		else if (a == "--ram32k")            ram_hi = false;
+		else if (a == "--border")            border = true;
 		else if (a == "--dipsw")             dipsw = strtoul(next("--dipsw").c_str(), nullptr, 16);
 		else if (a == "--interlace")         interlace = true;
 		else if (a == "--keyboard")          symbolic = next("--keyboard") != "jis";
@@ -596,6 +602,8 @@ int main(int argc, char** argv, char** env)
 	top->symbolic = symbolic;
 	top->interlace = interlace;
 	top->fdc_en = fdc_en;
+	top->ram_hi = ram_hi;
+	top->border = border;
 
 	blk.sd_lba[0]      = &top->sd_lba[0];
 	blk.sd_lba[1]      = &top->sd_lba[1];
@@ -629,12 +637,14 @@ int main(int argc, char** argv, char** env)
 		bus.QueueDownload(tape_image, 1, 1);
 	}
 
+	output_width  = border ? 768 : VGA_WIDTH;
+	output_height = border ? 232 : VGA_HEIGHT;
+	video.output_width  = output_width;
+	video.output_height = output_height;
 	if (!headless) {
 		input.Initialise();
 		if (video.Initialise("Basic Master Level 3") == 1) return 1;
 	} else if (!output_ptr) {
-		output_width  = VGA_WIDTH;
-		output_height = VGA_HEIGHT;
 		output_ptr = (uint32_t*)calloc((size_t)output_width * output_height, 4);
 		if (!output_ptr) { fprintf(stderr, "framebuffer alloc failed\n"); return 2; }
 	}
