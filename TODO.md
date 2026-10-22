@@ -174,10 +174,10 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   byte-exact: inufuto Mazy loads at real 600 baud and runs on the MiSTer too.
 - Mark 5 IG works in vsim (Mazy Mark 5 build); BM Tetris (IG) loads its IG setter.
 - MP-1802 floppy (two drives, D88 via wd1793.sv): the Tetris (1991) disk boots and
-  plays in vsim. 6-voice PSG card (PIA + 2x jt49) answers register reads/writes.
+  plays in vsim and on the MiSTer (build a30d92b). 6-voice PSG card (PIA + 2x jt49) answers register reads/writes.
 - `$FFD1` trace NMI, optional true interlace, optional border, optional
   expansion RAM (off = stock MB-6890, 22378 bytes free) are in.
-- Open items, in order: hardware-test floppy/PSG/border; BM Tetris end to end;
+- Open items, in order: BM Tetris end to end;
   9-voice PSG card (VIA 6522 + 3 PSGs) if software needs it; MP-1805 (MC6843)
   floppy; the MB-S1; and last, cassette SAVE (awkward on MiSTer: needs a
   writable image or an audio-out path).
