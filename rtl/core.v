@@ -16,6 +16,8 @@ module core (
   input             fdc_en,       // MP-1802 floppy card fitted
   input             ram_hi,       // RAM at $8000-$FFFF (RAM3/RAM4 cards, Mark 5)
   input             border,       // show the border in the background colour
+  input             psg_en,       // 6-voice PSG card fitted
+  input       [7:0] joy,          // joystick on PSG 0 port A, active low
 
   // boot ROM download (boot0.rom: BASIC at 0, font at $8000)
   input             rom_wr,
@@ -33,6 +35,7 @@ module core (
   output            baud1200,
 
   output            beep,
+  output     [10:0] psg_snd,
 
   // MP-1802 disk images (hps_io block devices 0 and 1)
   input       [1:0] img_mounted,
@@ -272,6 +275,17 @@ mp1802 fdc (
 );
 
 // ---------------------------------------------------------------------------
+// 6-voice PSG card at $FF30-$FF33
+wire [7:0] psg_dout;
+wire       psg_cs = psg_en && a[15:2] == 14'b11111111001100;
+
+psg6 psg (
+  .clk(clk), .reset(reset), .ce_psg(cnt == 5'd8),
+  .cs(psg_cs), .a(a[1:0]), .we(wr), .din(cpu_dout), .dout(psg_dout),
+  .joy_a(joy), .sound(psg_snd)
+);
+
+// ---------------------------------------------------------------------------
 // Keyboard scanner: a 7-bit code counter stepped by CRTC HSYNC, two steps per
 // code (EmuB keyboard.cpp update_keyboard). It stops on a pressed key until
 // $FFE0 is read. After the last key is released it reports $FF once.
@@ -420,6 +434,7 @@ reg [7:0] io_dout;
 always @(*) begin
   io_dout = 8'hff;
   if (fdc_cs) io_dout = fdc_dout;
+  if (psg_cs) io_dout = psg_dout;
   if (sysio) case (a[5:0])
     6'h00: io_dout = pia_cra[2] ? pia_pa : pia_ddra;
     6'h01: io_dout = pia_cra;

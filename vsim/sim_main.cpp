@@ -604,6 +604,7 @@ int main(int argc, char** argv, char** env)
 	top->fdc_en = fdc_en;
 	top->ram_hi = ram_hi;
 	top->border = border;
+	top->psg_en = 1;
 
 	blk.sd_lba[0]      = &top->sd_lba[0];
 	blk.sd_lba[1]      = &top->sd_lba[1];

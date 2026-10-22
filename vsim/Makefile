@@ -52,7 +52,11 @@ V_SRC = \
 	$(RTL)/tape.v \
 	$(RTL)/mp1802.v \
 	$(RTL)/wd1793.sv \
-	$(RTL)/wd_dpram.v
+	$(RTL)/wd_dpram.v \
+	$(RTL)/psg6.v \
+	$(RTL)/jt49/jt49_bus.v $(RTL)/jt49/jt49.v $(RTL)/jt49/jt49_cen.v \
+	$(RTL)/jt49/jt49_div.v $(RTL)/jt49/jt49_eg.v $(RTL)/jt49/jt49_exp.v \
+	$(RTL)/jt49/jt49_noise.v
 
 C_SRC = \
 	sim_main.cpp \

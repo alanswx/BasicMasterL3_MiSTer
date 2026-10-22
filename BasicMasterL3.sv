@@ -184,7 +184,8 @@ assign HDMI_FREEZE = 0;
 
 // $FFD3 bit 7 is a 1-bit speaker level.
 assign AUDIO_S = 0;
-assign AUDIO_L = {1'b0, beep, 14'd0};
+wire [10:0] psg_snd;
+assign AUDIO_L = {1'b0, beep, 14'd0} + {2'b00, psg_snd, 3'd0};
 assign AUDIO_R = AUDIO_L;
 assign AUDIO_MIX = 0;
 
@@ -220,11 +221,13 @@ localparam CONF_STR = {
 	"O[5],Keyboard,US symbols,Positional (JIS);",
 	"O[6],Interlace,Even field only,On;",
 	"O[9],Border,On,Off;",
+	"O[10],PSG card (6 voices),On,Off;",
 	"O[117:115],Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	"-;",
 	"T[0],Reset;",
 	"R[0],Reset and close OSD;",
+	"J,Fire 1,Fire 2;",
 	"V,v",`BUILD_DATE
 };
 
@@ -233,6 +236,7 @@ wire [21:0] gamma_bus;
 wire   [1:0] buttons;
 wire [127:0] status;
 wire  [10:0] ps2_key;
+wire  [31:0] joy;
 
 // Floppy block devices, one per drive (byte-wide: WIDE must stay 0, see
 // FM-7_MiSTer.sv).
@@ -266,6 +270,7 @@ hps_io #(.CONF_STR(CONF_STR), .WIDE(0), .VDNUM(2)) hps_io
 	.status_menumask(16'd0),
 
 	.ps2_key(ps2_key),
+	.joystick_0(joy),
 
 	.img_mounted(img_mounted),
 	.img_readonly(img_readonly),
@@ -356,7 +361,8 @@ core core (
 	.keys(keys), .break_key(break_key), .dipsw(8'h03),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
 	.beep(beep),
-	.fdc_en(~status[7]), .ram_hi(~status[8]), .border(~status[9]),
+	.fdc_en(~status[7]), .ram_hi(~status[8]), .border(~status[9]), .psg_en(~status[10]),
+	.joy(~{2'b00, joy[5], joy[4], joy[0], joy[1], joy[2], joy[3]}), .psg_snd(psg_snd),
 	.img_mounted(img_mounted), .img_readonly(img_readonly), .img_size(img_size),
 	.sd_lba(sd_lba), .sd_rd(sd_rd), .sd_wr(sd_wr), .sd_ack(sd_ack),
 	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),

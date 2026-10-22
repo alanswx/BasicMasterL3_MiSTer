@@ -23,7 +23,7 @@
 // seen: 35 ms after SHIFT goes down, 45 ms after a key goes down and 70 ms
 // after anything goes up (the same key again needs the $FF report first).
 // An event arriving with the queue idle applies at once; the queue holds
-// about 40 typed characters.
+// about 170 typed characters.
 module keyboard (
   input             clk,
   input             reset,
@@ -176,11 +176,24 @@ localparam [21:0] T_KDN = 22'd1451520;    // 45 ms
 localparam [21:0] T_KUP = 22'd2257920;    // 70 ms
 localparam [21:0] T_SUP = 22'd2257920;    // 70 ms
 
-// queue entry: {is_shift, level, code[6:0]}
-reg  [8:0] q[0:127];
-reg  [6:0] q_wr, q_rd;
-wire [7:0] q_used = {1'b0, q_wr} - {1'b0, q_rd};
+// queue entry: {is_shift, level, code[6:0]}. 512 entries in block RAM; a
+// host event's (up to three) entries are staged and written one per clock,
+// and the head is read through a register.
+reg  [8:0] q[0:511];
+reg  [8:0] q_wr, q_rd, q_wr_d;
+// the pop side sees the write pointer a clock late, so q_head is never read
+// on the same clock its entry is written (read-during-write gives old data)
+wire [8:0] q_used = q_wr_d - q_rd;          // modulo 512
+reg  [8:0] q_head;
 reg [21:0] wait_t;
+reg  [8:0] st[0:2];
+reg  [1:0] st_n;
+
+always @(posedge clk) begin
+  q_head <= q[q_rd];
+  q_wr_d <= reset ? 9'd0 : q_wr;
+end
+always @(posedge clk) if (st_n != 2'd0) q[q_wr] <= st[0];
 
 reg [127:0] k;               // Level 3 keys as applied
 reg         vshift;          // SHIFT as applied
@@ -193,41 +206,53 @@ wire       use_sym  = symbolic && sym[9];
 wire       sym_need = sym[8];                    // SHIFT the translation needs
 
 always @(posedge clk) begin : kb
-  reg [6:0] w;
+  reg [1:0] n;
   reg       ws;
+  reg [8:0] e0, e1, e2;
   old_toggle <= ps2_key[10];
   if (reset) begin
     k <= 128'd0; vshift <= 1'b0; want_shift <= 1'b0;
     shift_l <= 1'b0; shift_r <= 1'b0;
     break_key <= 1'b0;
-    q_wr <= 7'd0; q_rd <= 7'd0; wait_t <= 22'd0;
+    q_wr <= 9'd0; q_rd <= 9'd0; wait_t <= 22'd0; st_n <= 2'd0;
     sym_held <= 1'b0;
   end else begin
-    // ---- apply queued events, one per wait period
+    // ---- apply queued events, one per wait period. q_head lags q_rd by a
+    // clock, so every pop waits at least two.
     if (wait_t != 22'd0) wait_t <= wait_t - 22'd1;
-    else if (q_used != 8'd0) begin
-      q_rd <= q_rd + 7'd1;
-      if (q[q_rd][8]) begin
-        if (vshift != q[q_rd][7]) begin
-          vshift <= q[q_rd][7];
-          wait_t <= q[q_rd][7] ? T_SDN : T_SUP;
+    else if (q_used != 9'd0) begin
+      q_rd <= q_rd + 9'd1;
+      wait_t <= 22'd2;
+      if (q_head[8]) begin
+        if (vshift != q_head[7]) begin
+          vshift <= q_head[7];
+          wait_t <= q_head[7] ? T_SDN : T_SUP;
         end
-      end else if (k[q[q_rd][6:0]] != q[q_rd][7]) begin
-        k[q[q_rd][6:0]] <= q[q_rd][7];
-        wait_t <= q[q_rd][7] ? T_KDN : T_KUP;
+      end else if (k[q_head[6:0]] != q_head[7]) begin
+        k[q_head[6:0]] <= q_head[7];
+        wait_t <= q_head[7] ? T_KDN : T_KUP;
       end
     end
 
-    // ---- turn host events into queue entries (up to three per event)
-    if (old_toggle != ps2_key[10] && q_used < 8'd125) begin
-      w = q_wr;
+    // ---- drain the staging buffer into the queue
+    if (st_n != 2'd0) begin
+      q_wr <= q_wr + 9'd1;
+      st[0] <= st[1]; st[1] <= st[2];
+      st_n <= st_n - 2'd1;
+    end
+
+    // ---- turn a host event into up to three staged entries (host events
+    // are milliseconds apart, so the stage is always empty by then)
+    if (old_toggle != ps2_key[10] && q_used < 9'd500) begin
+      n = 2'd0;
       ws = want_shift;
+      e0 = 9'd0; e1 = 9'd0; e2 = 9'd0;
       if (is_shift) begin
         if (sc == 8'h12) shift_l <= pressed;
         else             shift_r <= pressed;
         if (~sym_held && ws != (pressed | (sc == 8'h12 ? shift_r : shift_l))) begin
           ws = pressed | (sc == 8'h12 ? shift_r : shift_l);
-          q[w] <= {1'b1, ws, 7'd0}; w = w + 7'd1;
+          e0 = {1'b1, ws, 7'd0}; n = 2'd1;
         end
       end else if (code == 8'h80 && ~use_sym) begin
         break_key <= pressed;
@@ -235,28 +260,33 @@ always @(posedge clk) begin : kb
         if (use_sym) begin
           if (ws != sym_need) begin
             ws = sym_need;
-            q[w] <= {1'b1, ws, 7'd0}; w = w + 7'd1;
+            e0 = {1'b1, ws, 7'd0};
+            e1 = {2'b01, sym[6:0]}; n = 2'd2;
+          end else begin
+            e0 = {2'b01, sym[6:0]}; n = 2'd1;
           end
-          q[w] <= {2'b01, sym[6:0]}; w = w + 7'd1;
           sym_held <= 1'b1;
           sym_code <= sym[6:0];
         end else if (~code[7] && code != 8'h07) begin
-          q[w] <= {2'b01, code[6:0]}; w = w + 7'd1;
+          e0 = {2'b01, code[6:0]}; n = 2'd1;
         end
       end else begin
         if (sym_held && ((sym_u[9] && sym_u[6:0] == sym_code) ||
                          (sym_s[9] && sym_s[6:0] == sym_code))) begin
-          q[w] <= {2'b00, sym_code}; w = w + 7'd1;
+          e0 = {2'b00, sym_code}; n = 2'd1;
           sym_held <= 1'b0;
           if (ws != host_shift) begin
             ws = host_shift;
-            q[w] <= {1'b1, ws, 7'd0}; w = w + 7'd1;
+            e1 = {1'b1, ws, 7'd0}; n = 2'd2;
           end
         end else if (~code[7] && code != 8'h07) begin
-          q[w] <= {2'b00, code[6:0]}; w = w + 7'd1;
+          e0 = {2'b00, code[6:0]}; n = 2'd1;
         end
       end
-      q_wr <= w;
+      if (n != 2'd0) begin
+        st[0] <= e0; st[1] <= e1; st[2] <= e2;
+        st_n <= n;
+      end
       want_shift <= ws;
     end
   end

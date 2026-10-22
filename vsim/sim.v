@@ -33,6 +33,7 @@ module emu (
 	input             fdc_en,
 	input             ram_hi,
 	input             border,
+	input             psg_en,
 	input      [15:0] img_mounted,
 	input             img_readonly,
 	input      [63:0] img_size,
@@ -130,7 +131,7 @@ core core (
 	.keys(keys), .break_key(break_key), .dipsw(dipsw),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
 	.beep(beep),
-	.fdc_en(fdc_en), .ram_hi(ram_hi), .border(border),
+	.fdc_en(fdc_en), .ram_hi(ram_hi), .border(border), .psg_en(psg_en), .joy(8'hff), .psg_snd(psg_snd),
 	.img_mounted(img_mounted[1:0]), .img_readonly(img_readonly), .img_size(img_size),
 	.sd_lba(sd_lba), .sd_rd(sd_rd2), .sd_wr(sd_wr2), .sd_ack(sd_ack[1:0]),
 	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),
@@ -139,7 +140,8 @@ core core (
 	.hs(VGA_HS), .vs(VGA_VS), .hb(VGA_HB), .vb(VGA_VB), .field(), .ce_pix(CE_PIXEL)
 );
 
-assign AUDIO_L = {1'b0, beep, 14'd0};
+wire [10:0] psg_snd;
+assign AUDIO_L = {1'b0, beep, 14'd0} + {2'b00, psg_snd, 3'd0};
 assign AUDIO_R = AUDIO_L;
 
 //////////////////////////////  DEBUG TAPS  //////////////////////////////////
