@@ -185,8 +185,10 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   no bad blocks). Tapes are now streamed from the SD card as block device 2 (OSD "Mount
   Tape"), so size is unlimited and 64 RAM blocks are free again.
 - S1 software in vsim: inufuto Mazy (S1 build) runs; Lode Runner loads across its 600/1200
-  baud switch to the "COMMAND >" screen; Dezeni Land and Jelda start loading (katakana
-  title text renders). Mazy S1's right-hand score digits look clipped:
+  baud switch to the "COMMAND >" screen; Jelda (.l3b) loads at 16x and runs its title and
+  attract ("THE WARS OF JELDA"). Dezeni Land (.l3c) loads its Hudson LOADER/M, which reads
+  the whole raw stream (sync $E6 x499, ACIA /1) but never leaves "Loading": suspect the
+  l3conv.py decode of the raw part of the .l3c -- compare with EmuB-S1 / a WAV decode. Mazy S1's right-hand score digits look clipped:
   compare with EmuB-S1.
 - Open items, in order: BM Tetris end to end;
   9-voice PSG card (VIA 6522 + 3 PSGs) if software needs it; MP-1805 (MC6843)
