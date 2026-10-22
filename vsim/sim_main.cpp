@@ -446,7 +446,7 @@ static void usage(const char* argv0)
 	"\n"
 	"  --headless                 run without a window (still renders for screenshots)\n"
 	"  --rom <file>               boot0.rom image (default ../roms/mister/boot0.rom)\n"
-	"  --tape <file>              load an .l3 tape image over ioctl (index 1)\n"
+	"  --tape <file>              mount an .l3 tape image (block device 2)\n"
 	"  --disk <file.d88>         mount a disk in drive 0 (fits the MP-1802 card)\n"
 	"  --disk1 <file.d88>        mount a disk in drive 1\n"
 	"  --border                  show the border (screenshots become 768x232)\n"
@@ -617,6 +617,8 @@ int main(int argc, char** argv, char** env)
 	blk.sd_lba[1]      = &top->sd_lba[1];
 	blk.sd_buff_din[0] = &top->sd_buff_din[0];
 	blk.sd_buff_din[1] = &top->sd_buff_din[1];
+	blk.sd_lba[2]      = &top->sd_lba[2];
+	blk.sd_buff_din[2] = &top->sd_buff_din[2];
 	blk.sd_rd          = &top->sd_rd;
 	blk.sd_wr          = &top->sd_wr;
 	blk.sd_ack         = &top->sd_ack;
@@ -626,6 +628,10 @@ int main(int argc, char** argv, char** env)
 	blk.img_mounted    = &top->img_mounted;
 	blk.img_readonly   = &top->img_readonly;
 	blk.img_size       = &top->img_size;
+	if (!tape_image.empty()) {
+		printf("Mounting tape image (block device 2): %s\n", tape_image.c_str());
+		blk.MountDisk(tape_image, 2);
+	}
 	for (int d = 0; d < 2; d++)
 		if (!disk_image[d].empty()) {
 			printf("Mounting disk on drive %d: %s\n", d, disk_image[d].c_str());
@@ -640,10 +646,7 @@ int main(int argc, char** argv, char** env)
 	}
 	printf("Loading boot ROM: %s\n", rom_image.c_str());
 	bus.QueueDownload(rom_image, 0, 1);
-	if (!tape_image.empty()) {
-		printf("Loading tape image: %s\n", tape_image.c_str());
-		bus.QueueDownload(tape_image, 1, 1);
-	}
+
 
 	output_width  = border ? 768 : VGA_WIDTH;
 	output_height = border ? 232 : VGA_HEIGHT;

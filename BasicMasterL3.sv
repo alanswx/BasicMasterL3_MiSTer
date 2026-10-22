@@ -209,7 +209,7 @@ assign VIDEO_ARY = (!ar) ? 12'd3 : 12'd0;
 localparam CONF_STR = {
 	"BasicMasterL3;;",
 	"-;",
-	"F1,L3 ,Load Tape;",
+	"S2,L3 ,Mount Tape;",
 	"O[3:1],Fast tape,Off,2x,4x,8x,16x;",
 	"-;",
 	"S0,D88,Mount Disk 0;",
@@ -241,14 +241,15 @@ wire  [31:0] joy;
 
 // Floppy block devices, one per drive (byte-wide: WIDE must stay 0, see
 // FM-7_MiSTer.sv).
-wire  [1:0] img_mounted;
+// block devices 0, 1: MP-1802 drives; 2: the tape, streamed a sector at a time
+wire  [2:0] img_mounted;
 wire        img_readonly;
 wire [63:0] img_size;
-wire [31:0] sd_lba [2];
-wire  [1:0] sd_rd, sd_wr, sd_ack;
+wire [31:0] sd_lba [3];
+wire  [2:0] sd_rd, sd_wr, sd_ack;
 wire  [8:0] sd_buff_addr;
 wire  [7:0] sd_buff_dout;
-wire  [7:0] sd_buff_din [2];
+wire  [7:0] sd_buff_din [3];
 wire        sd_buff_wr;
 
 wire [24:0] ioctl_addr;
@@ -257,7 +258,7 @@ wire  [7:0] ioctl_index;
 wire        ioctl_wr;
 wire        ioctl_download;
 
-hps_io #(.CONF_STR(CONF_STR), .WIDE(0), .VDNUM(2)) hps_io
+hps_io #(.CONF_STR(CONF_STR), .WIDE(0), .VDNUM(3)) hps_io
 (
 	.clk_sys(clk_sys),
 	.HPS_BUS(HPS_BUS),
@@ -277,7 +278,7 @@ hps_io #(.CONF_STR(CONF_STR), .WIDE(0), .VDNUM(2)) hps_io
 	.img_readonly(img_readonly),
 	.img_size(img_size),
 	.sd_lba(sd_lba),
-	.sd_blk_cnt('{6'd0, 6'd0}),
+	.sd_blk_cnt('{6'd0, 6'd0, 6'd0}),
 	.sd_rd(sd_rd),
 	.sd_wr(sd_wr),
 	.sd_ack(sd_ack),
@@ -308,40 +309,32 @@ pll pll
 );
 
 wire rom_download  = ioctl_download && ioctl_index == 8'd0;
-wire tape_download = ioctl_download && ioctl_index == 8'd1;
 wire reset = RESET | status[0] | buttons[1] | rom_download;
-
-//////////////////////////////  TAPE  ///////////////////////////////////////
-
-reg [16:0] tape_size;
-reg        tape_rewind;
-always @(posedge clk_sys) begin
-	reg old_download;
-	old_download <= tape_download;
-	tape_rewind <= 1'b0;
-	if (tape_download & ioctl_wr) tape_size <= ioctl_addr[16:0] + 17'd1;
-	if (old_download & ~tape_download) tape_rewind <= 1'b1;
-end
-
-wire [15:0] tape_addr;
-wire  [7:0] tape_q;
 wire        tape_strobe;
 wire  [7:0] tape_byte;
 wire        tape_active;
 wire        motor, baud1200, rx_full;
-
-dpram #(16, 8) tape_buffer (
-	.clk(clk_sys),
-	.a_addr(ioctl_addr[15:0]), .a_din(ioctl_dout), .a_we(tape_download & ioctl_wr), .a_dout(),
-	.b_addr(tape_addr), .b_din(8'd0), .b_we(1'b0), .b_dout(tape_q)
-);
+wire [31:0] sd_lba_fdc [2];
+wire  [7:0] sd_buff_din_fdc [2];
+wire  [1:0] sd_rd_fdc, sd_wr_fdc;
 
 tape tape (
-	.clk(clk_sys), .reset(RESET), .rewind(tape_rewind), .size(tape_size),
-	.motor(motor), .baud1200(baud1200), .rx_full(rx_full), .speed(status[3:1] > 3'd4 ? 3'd4 : status[3:1]),
-	.buf_addr(tape_addr), .buf_q(tape_q),
-	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active(tape_active)
+	.clk(clk_sys), .reset(RESET),
+	.motor(motor), .baud1200(baud1200), .rx_full(rx_full),
+	.speed(status[3:1] > 3'd4 ? 3'd4 : status[3:1]),
+	.img_mounted(img_mounted[2]), .img_size(img_size),
+	.sd_lba(sd_lba[2]), .sd_rd(sd_rd[2]), .sd_ack(sd_ack[2]),
+	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_wr(sd_buff_wr),
+	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active(tape_active), .position()
 );
+assign sd_wr[2] = 1'b0;
+assign sd_buff_din[2] = 8'd0;
+assign sd_lba[0] = sd_lba_fdc[0];
+assign sd_lba[1] = sd_lba_fdc[1];
+assign sd_buff_din[0] = sd_buff_din_fdc[0];
+assign sd_buff_din[1] = sd_buff_din_fdc[1];
+assign sd_rd[1:0] = sd_rd_fdc;
+assign sd_wr[1:0] = sd_wr_fdc;
 
 //////////////////////////////  CORE  ////////////////////////////////////////
 
@@ -364,9 +357,9 @@ core core (
 	.beep(beep),
 	.fdc_en(~status[7]), .ram_hi(~status[8]), .border(~status[9]), .psg_en(~status[10]),
 	.joy(~{2'b00, joy[5], joy[4], joy[0], joy[1], joy[2], joy[3]}), .psg_snd(psg_snd),
-	.img_mounted(img_mounted), .img_readonly(img_readonly), .img_size(img_size),
-	.sd_lba(sd_lba), .sd_rd(sd_rd), .sd_wr(sd_wr), .sd_ack(sd_ack),
-	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),
+	.img_mounted(img_mounted[1:0]), .img_readonly(img_readonly), .img_size(img_size),
+	.sd_lba(sd_lba_fdc), .sd_rd(sd_rd_fdc), .sd_wr(sd_wr_fdc), .sd_ack(sd_ack[1:0]),
+	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din_fdc),
 	.sd_buff_wr(sd_buff_wr),
 	.red(red), .green(green), .blue(blue),
 	.hs(hs), .vs(vs), .hb(hb), .vb(vb), .field(VGA_F1), .ce_pix(ce_pix)

@@ -182,8 +182,11 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   BASIC. Builds and meets timing (block RAM 85%). Not yet tried on hardware.
 - BM Tetris (Mark 5 IG, 5 chained tape files) runs end to end at real tape speed.
 - `software/tools/l3conv.py` converts `.l3b`/`.l3c` to `.l3` (Lode Runner converts with
-  no bad blocks). Dezeni Land CT2 is 72 KB: the 64 KB on-chip tape buffer is too small
-  (move tapes to SDRAM).
+  no bad blocks). Tapes are now streamed from the SD card as block device 2 (OSD "Mount
+  Tape"), so size is unlimited and 64 RAM blocks are free again.
+- S1 software in vsim: inufuto Mazy (S1 build) runs; Lode Runner loads across its 600/1200
+  baud switch to the "COMMAND >" screen. Mazy S1's right-hand score digits look clipped:
+  compare with EmuB-S1.
 - Open items, in order: BM Tetris end to end;
   9-voice PSG card (VIA 6522 + 3 PSGs) if software needs it; MP-1805 (MC6843)
   floppy; the MB-S1; and last, cassette SAVE (awkward on MiSTer: needs a

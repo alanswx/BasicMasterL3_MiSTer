@@ -24,7 +24,8 @@ rtl/core.v            6809, memory map/banking, system I/O, keyboard scanner, ti
 rtl/crtc6845.v        HD46505 (EmuB counting, incl. interlace sync & video mode)
 rtl/video.v           VRAM/colour RAM -> font / graphic / IG -> pixels
 rtl/acia6850.v        ACIA, byte level
-rtl/tape.v            .l3 player: one byte per 11 bit times into the ACIA
+rtl/tape.v            .l3 player: one byte per 11 bit times into the ACIA, streamed from
+                      block device 2 a sector at a time
 rtl/keyboard.v        PS/2 -> Level 3 key codes, US-symbol translation, paced event queue
 rtl/mp1802.v          MP-1802 floppy card (MB8866 via wd1793.sv, $FF00-$FF07, boot ROM)
 rtl/wd1793.sv         FDC core from FM-7_MiSTer (D88/D77 sector-table scan); wd_dpram.v
@@ -65,6 +66,8 @@ make
 * `--rom` defaults to `../roms/mister/bml3_boot0.rom` (BASIC at `$0000`, font at `$8000`),
   loaded over ioctl index 0 just like MiSTer's `boot0.rom`.
 * `--text N` prints `$0400` as 40×25 ASCII. In hi-res modes that is raster plane 0.
+* `--tape file.l3` mounts block device 2 (`software/tools/l3conv.py` makes .l3 from
+  .l3b/.l3c). `--model s1` (`--s1mode b`) runs the MB-S1.
 * `--disk file.d88` (and `--disk1`) mounts disks and fits the MP-1802; `--fdc` fits it
   empty. `--ram32k` = stock MB-6890 memory, `--border`, `--interlace`, `--model l3`,
   `--keyboard jis` (positional) mirror the OSD options.

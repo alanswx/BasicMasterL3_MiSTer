@@ -23,7 +23,7 @@ module emu (
 	input             interlace,
 	input       [7:0] dipsw,
 
-	// HPS file transfer: index 0 = boot0.rom, 1 = tape (.l3)
+	// HPS file transfer: index 0 = boot0.rom. Tapes are block device 2.
 	input             ioctl_download,
 	input             ioctl_wr,
 	input      [24:0] ioctl_addr,
@@ -39,13 +39,13 @@ module emu (
 	input      [15:0] img_mounted,
 	input             img_readonly,
 	input      [63:0] img_size,
-	output     [31:0] sd_lba [2],
+	output     [31:0] sd_lba [3],
 	output     [15:0] sd_rd,
 	output     [15:0] sd_wr,
 	input      [15:0] sd_ack,
 	input       [8:0] sd_buff_addr,
 	input       [7:0] sd_buff_dout,
-	output      [7:0] sd_buff_din [2],
+	output      [7:0] sd_buff_din [3],
 	input             sd_buff_wr,
 
 	output      [7:0] VGA_R,
@@ -69,7 +69,7 @@ module emu (
 	output            dbg_cpu_ce,      // 1 for one clk_sys tick at the end of each CPU cycle
 	output     [15:0] dbg_cpu_pc,
 	output            dbg_tape_motor,
-	output     [16:0] dbg_tape_pos,
+	output     [31:0] dbg_tape_pos,
 	output            dbg_tape_strobe,
 	output      [7:0] dbg_tape_byte,
 	output      [7:0] dbg_kb_code,
@@ -81,38 +81,24 @@ module emu (
 assign ioctl_wait = 1'b0;
 
 wire rom_download  = ioctl_download && ioctl_index == 8'd0;
-wire tape_download = ioctl_download && ioctl_index == 8'd1;
 wire core_reset = reset | rom_download;
-
-//////////////////////////////  TAPE  /////////////////////////////////////////
-reg [16:0] tape_size;
-reg        tape_rewind;
-always @(posedge clk_sys) begin
-	reg old_download;
-	old_download <= tape_download;
-	tape_rewind <= 1'b0;
-	if (tape_download & ioctl_wr) tape_size <= ioctl_addr[16:0] + 17'd1;
-	if (old_download & ~tape_download) tape_rewind <= 1'b1;
-end
-
-wire [15:0] tape_addr;
-wire  [7:0] tape_q;
+wire       sd_rd_t;
 wire        tape_strobe;
 wire  [7:0] tape_byte;
 wire        motor, baud1200, rx_full;
-
-dpram #(16, 8) tape_buffer (
-	.clk(clk_sys),
-	.a_addr(ioctl_addr[15:0]), .a_din(ioctl_dout), .a_we(tape_download & ioctl_wr), .a_dout(),
-	.b_addr(tape_addr), .b_din(8'd0), .b_we(1'b0), .b_dout(tape_q)
-);
+wire [31:0] sd_lba_core [2];
 
 tape tape (
-	.clk(clk_sys), .reset(reset), .rewind(tape_rewind), .size(tape_size),
+	.clk(clk_sys), .reset(reset),
 	.motor(motor), .baud1200(baud1200), .rx_full(rx_full), .speed(tape_speed),
-	.buf_addr(tape_addr), .buf_q(tape_q),
-	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active()
+	.img_mounted(img_mounted[2]), .img_size(img_size),
+	.sd_lba(sd_lba[2]), .sd_rd(sd_rd_t), .sd_ack(sd_ack[2]),
+	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_wr(sd_buff_wr),
+	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active(), .position()
 );
+assign sd_buff_din[2] = 8'd0;
+assign sd_lba[0] = sd_lba_core[0];
+assign sd_lba[1] = sd_lba_core[1];
 
 //////////////////////////////  CORE  ////////////////////////////////////////
 wire [127:0] keys;
@@ -125,8 +111,11 @@ keyboard keyboard (
 );
 
 wire [1:0] sd_rd2, sd_wr2;
-assign sd_rd = {14'd0, sd_rd2};
+wire [7:0] sd_buff_din_core [2];
+assign sd_rd = {13'd0, sd_rd_t, sd_rd2};
 assign sd_wr = {14'd0, sd_wr2};
+assign sd_buff_din[0] = sd_buff_din_core[0];
+assign sd_buff_din[1] = sd_buff_din_core[1];
 
 core core (
 	.clk(clk_sys), .reset(core_reset), .mark5(mark5), .s1(s1), .s1_amode(s1_amode), .interlace(interlace),
@@ -136,8 +125,8 @@ core core (
 	.beep(beep),
 	.fdc_en(fdc_en), .ram_hi(ram_hi), .border(border), .psg_en(psg_en), .joy(8'hff), .psg_snd(psg_snd),
 	.img_mounted(img_mounted[1:0]), .img_readonly(img_readonly), .img_size(img_size),
-	.sd_lba(sd_lba), .sd_rd(sd_rd2), .sd_wr(sd_wr2), .sd_ack(sd_ack[1:0]),
-	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),
+	.sd_lba(sd_lba_core), .sd_rd(sd_rd2), .sd_wr(sd_wr2), .sd_ack(sd_ack[1:0]),
+	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din_core),
 	.sd_buff_wr(sd_buff_wr),
 	.red(VGA_R), .green(VGA_G), .blue(VGA_B),
 	.hs(VGA_HS), .vs(VGA_VS), .hb(VGA_HB), .vb(VGA_VB), .field(), .ce_pix(CE_PIXEL)
