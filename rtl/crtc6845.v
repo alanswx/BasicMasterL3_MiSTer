@@ -15,6 +15,7 @@ module crtc6845 (
   input             reset,
   input             cclk_en,      // one tick per character clock
   input             interlace,    // honour R8 interlace (else even field only)
+  input             cur_half,     // S1 40-column text: cursor covers both CRTC chars
 
   // CPU port (RS = A0)
   input             cs,
@@ -152,7 +153,8 @@ always @(*) begin
   endcase
 end
 
-assign cursor = de & blink & (ma == cursor_addr) &
+assign cursor = de & blink &
+                (cur_half ? ma[13:1] == cursor_addr[13:1] : ma == cursor_addr) &
                 (rac >= R10[4:0]) & (rac <= R11);
 
 endmodule

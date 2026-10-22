@@ -17,6 +17,8 @@ module emu (
 
 	input       [2:0] tape_speed,
 	input             mark5,
+	input             s1,
+	input             s1_amode,
 	input             symbolic,
 	input             interlace,
 	input       [7:0] dipsw,
@@ -60,6 +62,7 @@ module emu (
 
 	// --- debug taps for sim_main.cpp -----------------------------------
 	output     [15:0] dbg_cpu_addr,
+	output     [19:0] dbg_pa,
 	output      [7:0] dbg_cpu_din,
 	output      [7:0] dbg_cpu_dout,
 	output            dbg_cpu_rw,
@@ -126,8 +129,8 @@ assign sd_rd = {14'd0, sd_rd2};
 assign sd_wr = {14'd0, sd_wr2};
 
 core core (
-	.clk(clk_sys), .reset(core_reset), .mark5(mark5), .interlace(interlace),
-	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[15:0]), .rom_data(ioctl_dout),
+	.clk(clk_sys), .reset(core_reset), .mark5(mark5), .s1(s1), .s1_amode(s1_amode), .interlace(interlace),
+	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[17:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(dipsw),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
 	.beep(beep),
@@ -146,6 +149,7 @@ assign AUDIO_R = AUDIO_L;
 
 //////////////////////////////  DEBUG TAPS  //////////////////////////////////
 assign dbg_cpu_addr    = core.cpu_addr;
+assign dbg_pa          = core.pa;
 assign dbg_cpu_din     = core.cpu_din;
 assign dbg_cpu_dout    = core.cpu_dout;
 assign dbg_cpu_rw      = core.cpu_rw;

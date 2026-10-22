@@ -216,7 +216,8 @@ localparam CONF_STR = {
 	"S1,D88,Mount Disk 1;",
 	"O[7],Floppy card,MP-1802,None;",
 	"-;",
-	"O[4],Model,Mark 5,Level 3;",
+	"O[12:11],Model,Mark 5,Level 3,MB-S1;",
+	"H2O[13],S1 SYSTEM switch,A (S1 BASIC),B (Level 3);",
 	"O[8],Expansion RAM ($8000+),Yes,No (stock 32K);",
 	"O[5],Keyboard,US symbols,Positional (JIS);",
 	"O[6],Interlace,Even field only,On;",
@@ -267,7 +268,7 @@ hps_io #(.CONF_STR(CONF_STR), .WIDE(0), .VDNUM(2)) hps_io
 
 	.buttons(buttons),
 	.status(status),
-	.status_menumask(16'd0),
+	.status_menumask({13'd0, status[12:11] != 2'd2, 2'b00}),
 
 	.ps2_key(ps2_key),
 	.joystick_0(joy),
@@ -356,8 +357,8 @@ keyboard keyboard (
 );
 
 core core (
-	.clk(clk_sys), .reset(reset), .mark5(~status[4]), .interlace(status[6]),
-	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[15:0]), .rom_data(ioctl_dout),
+	.clk(clk_sys), .reset(reset), .mark5(status[12:11] != 2'd1), .s1(status[12:11] == 2'd2), .s1_amode(~status[13]), .interlace(status[6]),
+	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[17:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(8'h03),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
 	.beep(beep),

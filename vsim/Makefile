@@ -47,6 +47,7 @@ V_SRC = \
 	$(RTL)/mc6809is.v \
 	$(RTL)/crtc6845.v \
 	$(RTL)/video.v \
+	$(RTL)/s1video.v \
 	$(RTL)/acia6850.v \
 	$(RTL)/keyboard.v \
 	$(RTL)/tape.v \

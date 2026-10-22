@@ -75,12 +75,14 @@ bool trace_key  = false;
 unsigned int key_hold_cycles = SIM_CLK_HZ * 50 / 1000;   // 50 ms
 int  tape_speed = 0;
 bool mark5 = true;
+bool s1 = false;
+bool s1_amode = true;
 bool symbolic = true;
 bool interlace = false;
 unsigned int dipsw = 0x03;
 int  stop_at_frame = -1;
 std::vector<int> screenshot_frames;
-std::string rom_image = "../roms/mister/bml3_boot0.rom";
+std::string rom_image = "../roms/mister/boot0.rom";
 std::string tape_image;
 std::string disk_image[2];
 bool fdc_en = false;
@@ -258,7 +260,7 @@ static std::string unescape(const std::string& in)
 # define ROOT top
 #endif
 #define MAIN_RAM  ROOT->emu__DOT__core__DOT__ram__DOT__mem
-#define COLOR_RAM ROOT->emu__DOT__core__DOT__cram__DOT__mem
+#define S1_TEXT   ROOT->emu__DOT__core__DOT__tram__DOT__mem
 
 static void save_mem_dump(const MemDump& d)
 {
@@ -293,7 +295,7 @@ static void dump_text(int frame)
 	for (int r = 0; r < 25; r++) {
 		char line[41];
 		for (int c = 0; c < 40; c++) {
-			uint8_t ch = MAIN_RAM[0x0400 + r * 40 + c];
+			uint8_t ch = (s1 && s1_amode) ? S1_TEXT[r * 40 + c] : MAIN_RAM[0x0400 + r * 40 + c];
 			line[c] = (ch >= 0x20 && ch < 0x7f) ? (char)ch : '.';
 		}
 		line[40] = 0;
@@ -361,9 +363,9 @@ static int verilate()
 			uint16_t a = top->dbg_cpu_addr;
 			uint8_t  d = top->dbg_cpu_rw ? top->dbg_cpu_din : top->dbg_cpu_dout;
 			if (trace_cpu)
-				printf("[cpu] PC=%04X A=%04X D=%02X %s\n", top->dbg_cpu_pc, a, d,
+				printf("[cpu] PC=%04X A=%04X PA=%05X D=%02X %s\n", top->dbg_cpu_pc, a, top->dbg_pa, d,
 				       top->dbg_cpu_rw ? "R" : "W");
-			if (trace_io && a >= 0xFF00 && a <= 0xFFEF)
+			if (trace_io && ((a >= 0xFF00 && a <= 0xFFEF) || (s1 && s1_amode && a >= 0xFE00 && a < 0xFF00)))
 				printf("[io ] f%05d PC=%04X %s $%04X %s $%02X\n", sim_frame(),
 				       top->dbg_cpu_pc, top->dbg_cpu_rw ? "RD" : "WR", a,
 				       top->dbg_cpu_rw ? "->" : "<-", d);
@@ -443,7 +445,7 @@ static void usage(const char* argv0)
 	"Usage: %s [options]\n"
 	"\n"
 	"  --headless                 run without a window (still renders for screenshots)\n"
-	"  --rom <file>               boot0.rom image (default ../roms/mister/bml3_boot0.rom)\n"
+	"  --rom <file>               boot0.rom image (default ../roms/mister/boot0.rom)\n"
 	"  --tape <file>              load an .l3 tape image over ioctl (index 1)\n"
 	"  --disk <file.d88>         mount a disk in drive 0 (fits the MP-1802 card)\n"
 	"  --disk1 <file.d88>        mount a disk in drive 1\n"
@@ -451,7 +453,8 @@ static void usage(const char* argv0)
 	"  --ram32k                  stock MB-6890: no RAM at $8000-$FFFF\n"
 	"  --fdc                      fit the MP-1802 card without a disk\n"
 	"  --tape-speed N             fast tape: byte rate x 2^N while the motor runs (default 0)\n"
-	"  --model l3|mk5             Mark 5 extras ($FFE8 banking, IG) on or off (default mk5)\n"
+	"  --model l3|mk5|s1          Level 3, Mark 5 (default) or MB-S1\n"
+	"  --s1mode a|b               MB-S1 SYSTEM switch: A = S1 BASIC (default), B = Level 3\n"
 	"  --interlace                generate both interlace fields (default: even only)\n"
 	"  --keyboard us|jis         symbol translation (us, default) or positional\n"
 	"  --dipsw HEX                $FFC9 DIP switches (default 03)\n"
@@ -516,11 +519,13 @@ int main(int argc, char** argv, char** env)
 		else if (a == "--dipsw")             dipsw = strtoul(next("--dipsw").c_str(), nullptr, 16);
 		else if (a == "--interlace")         interlace = true;
 		else if (a == "--keyboard")          symbolic = next("--keyboard") != "jis";
+		else if (a == "--s1mode")            s1_amode = next("--s1mode") != "b";
 		else if (a == "--model") {
 			std::string v = next("--model");
 			if      (v == "l3")  mark5 = false;
 			else if (v == "mk5") mark5 = true;
-			else { printf("--model wants l3 or mk5\n"); return 1; }
+			else if (v == "s1")  s1 = true;
+			else { printf("--model wants l3, mk5 or s1\n"); return 1; }
 		}
 		else if (a == "--screenshot-name")   screenshot_name = next("--screenshot-name");
 		else if (a == "--stop-at-frame")     stop_at_frame = atoi(next("--stop-at-frame").c_str());
@@ -599,6 +604,8 @@ int main(int argc, char** argv, char** env)
 	input.keyEventWait = key_hold_cycles;
 	top->tape_speed = tape_speed;
 	top->mark5 = mark5;
+	top->s1 = s1;
+	top->s1_amode = s1_amode;
 	top->symbolic = symbolic;
 	top->interlace = interlace;
 	top->fdc_en = fdc_en;
