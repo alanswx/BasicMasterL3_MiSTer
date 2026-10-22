@@ -177,6 +177,13 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   plays in vsim and on the MiSTer (build a30d92b). 6-voice PSG card (PIA + 2x jt49) answers register reads/writes.
 - `$FFD1` trace NMI, optional true interlace, optional border, optional
   expansion RAM (off = stock MB-6890, 22378 bytes free) are in.
+- **MB-S1** (model 3 in the OSD; ref/notes/mbs1-implementation-spec.md): S1 BASIC boots to
+  `Ready` in A mode, typing and 640x200 graphics (LINE/CIRCLE) work; B mode boots Level 3
+  BASIC. Builds and meets timing (block RAM 85%). Not yet tried on hardware.
+- BM Tetris (Mark 5 IG, 5 chained tape files) runs end to end at real tape speed.
+- `software/tools/l3conv.py` converts `.l3b`/`.l3c` to `.l3` (Lode Runner converts with
+  no bad blocks). Dezeni Land CT2 is 72 KB: the 64 KB on-chip tape buffer is too small
+  (move tapes to SDRAM).
 - Open items, in order: BM Tetris end to end;
   9-voice PSG card (VIA 6522 + 3 PSGs) if software needs it; MP-1805 (MC6843)
   floppy; the MB-S1; and last, cassette SAVE (awkward on MiSTer: needs a

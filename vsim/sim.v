@@ -99,7 +99,7 @@ wire [15:0] tape_addr;
 wire  [7:0] tape_q;
 wire        tape_strobe;
 wire  [7:0] tape_byte;
-wire        motor, baud1200;
+wire        motor, baud1200, rx_full;
 
 dpram #(16, 8) tape_buffer (
 	.clk(clk_sys),
@@ -109,7 +109,7 @@ dpram #(16, 8) tape_buffer (
 
 tape tape (
 	.clk(clk_sys), .reset(reset), .rewind(tape_rewind), .size(tape_size),
-	.motor(motor), .baud1200(baud1200), .speed(tape_speed),
+	.motor(motor), .baud1200(baud1200), .rx_full(rx_full), .speed(tape_speed),
 	.buf_addr(tape_addr), .buf_q(tape_q),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active()
 );
@@ -132,7 +132,7 @@ core core (
 	.clk(clk_sys), .reset(core_reset), .mark5(mark5), .s1(s1), .s1_amode(s1_amode), .interlace(interlace),
 	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[17:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(dipsw),
-	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
+	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200), .rx_full(rx_full),
 	.beep(beep),
 	.fdc_en(fdc_en), .ram_hi(ram_hi), .border(border), .psg_en(psg_en), .joy(8'hff), .psg_snd(psg_snd),
 	.img_mounted(img_mounted[1:0]), .img_readonly(img_readonly), .img_size(img_size),

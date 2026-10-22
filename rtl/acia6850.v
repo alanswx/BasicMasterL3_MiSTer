@@ -20,6 +20,7 @@ module acia6850 (
   output reg [7:0] tx_data,
 
   output     [7:0] cr_out,
+  output           rx_full,      // RDRF: a received byte is waiting
   output           irq
 );
 
@@ -28,6 +29,7 @@ reg [7:0] rdr;
 reg       rdrf, ovrn, tdre, mreset;
 
 assign cr_out = cr;
+assign rx_full = rdrf;
 
 wire [7:0] status = {irq, 1'b0, ovrn, 1'b0, 2'b00, tdre, rdrf};
 

@@ -42,6 +42,7 @@ module core (
   input       [7:0] rx_data,
   output            motor,
   output            baud1200,
+  output            rx_full,
 
   output            beep,
   output     [10:0] psg_snd,
@@ -397,7 +398,7 @@ acia6850 acia (
   .clk(clk), .reset(reset),
   .cs(acia_cs), .rs(a[0]), .we(wr), .re(rd), .din(cpu_dout), .dout(acia_dout),
   .rx_strobe(rx_strobe), .rx_data(rx_data),
-  .tx_strobe(), .tx_data(), .cr_out(),
+  .tx_strobe(), .tx_data(), .cr_out(), .rx_full(rx_full),
   .irq(acia_irq)
 );
 

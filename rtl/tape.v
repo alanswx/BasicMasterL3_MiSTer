@@ -2,7 +2,9 @@
 // and stop bits already stripped; EmuB cmt.cpp feeds it one byte per 11 bit
 // times). While the motor relay ($FFD2 bit 7) is on, hand the ACIA one byte
 // every 11 bit periods. The byte period is shifted right by `speed` for fast
-// loading (0 = real time).
+// loading (0 = real time). When loading fast, a byte is also held until the
+// CPU has taken the previous one (ACIA RDRF clear): the ROM's BASIC loader
+// cannot keep up with 4x otherwise and the ACIA overruns.
 module tape (
   input             clk,
   input             reset,
@@ -11,6 +13,7 @@ module tape (
   input             motor,
   input             baud1200,
   input       [2:0] speed,        // 0 = real time, n = 2^n times faster
+  input             rx_full,      // ACIA still holds the previous byte
 
   output reg [15:0] buf_addr,
   input       [7:0] buf_q,
@@ -39,7 +42,7 @@ always @(posedge clk) begin
   end else begin
     buf_addr <= pos[15:0];
     if (active) begin
-      if (timer >= period) begin
+      if (timer >= period && (speed == 3'd0 || ~rx_full)) begin
         timer <= 20'd0;
         fetch <= 1'b1;
       end else begin
