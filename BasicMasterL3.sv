@@ -179,7 +179,6 @@ assign {SD_SCK, SD_MOSI, SD_CS} = 'Z;
 assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 assign {DDRAM_CLK, DDRAM_BURSTCNT, DDRAM_ADDR, DDRAM_DIN, DDRAM_BE, DDRAM_RD, DDRAM_WE} = '0;
 
-assign VGA_F1 = 0;
 assign VGA_SCALER = 0;
 assign HDMI_FREEZE = 0;
 
@@ -212,8 +211,13 @@ localparam CONF_STR = {
 	"F1,L3 ,Load Tape;",
 	"O[3:1],Fast tape,Off,2x,4x,8x,16x;",
 	"-;",
+	"S0,D88,Mount Disk 0;",
+	"S1,D88,Mount Disk 1;",
+	"O[7],Floppy card,MP-1802,None;",
+	"-;",
 	"O[4],Model,Mark 5,Level 3;",
 	"O[5],Keyboard,US symbols,Positional (JIS);",
+	"O[6],Interlace,Even field only,On;",
 	"O[117:115],Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	"-;",
@@ -228,13 +232,25 @@ wire   [1:0] buttons;
 wire [127:0] status;
 wire  [10:0] ps2_key;
 
+// Floppy block devices, one per drive (byte-wide: WIDE must stay 0, see
+// FM-7_MiSTer.sv).
+wire  [1:0] img_mounted;
+wire        img_readonly;
+wire [63:0] img_size;
+wire [31:0] sd_lba [2];
+wire  [1:0] sd_rd, sd_wr, sd_ack;
+wire  [8:0] sd_buff_addr;
+wire  [7:0] sd_buff_dout;
+wire  [7:0] sd_buff_din [2];
+wire        sd_buff_wr;
+
 wire [24:0] ioctl_addr;
 wire  [7:0] ioctl_dout;
 wire  [7:0] ioctl_index;
 wire        ioctl_wr;
 wire        ioctl_download;
 
-hps_io #(.CONF_STR(CONF_STR)) hps_io
+hps_io #(.CONF_STR(CONF_STR), .WIDE(0), .VDNUM(2)) hps_io
 (
 	.clk_sys(clk_sys),
 	.HPS_BUS(HPS_BUS),
@@ -248,6 +264,19 @@ hps_io #(.CONF_STR(CONF_STR)) hps_io
 	.status_menumask(16'd0),
 
 	.ps2_key(ps2_key),
+
+	.img_mounted(img_mounted),
+	.img_readonly(img_readonly),
+	.img_size(img_size),
+	.sd_lba(sd_lba),
+	.sd_blk_cnt('{6'd0, 6'd0}),
+	.sd_rd(sd_rd),
+	.sd_wr(sd_wr),
+	.sd_ack(sd_ack),
+	.sd_buff_addr(sd_buff_addr),
+	.sd_buff_dout(sd_buff_dout),
+	.sd_buff_din(sd_buff_din),
+	.sd_buff_wr(sd_buff_wr),
 
 	.ioctl_download(ioctl_download),
 	.ioctl_wr(ioctl_wr),
@@ -320,13 +349,18 @@ keyboard keyboard (
 );
 
 core core (
-	.clk(clk_sys), .reset(reset), .mark5(~status[4]),
+	.clk(clk_sys), .reset(reset), .mark5(~status[4]), .interlace(status[6]),
 	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[15:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(8'h03),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
 	.beep(beep),
+	.fdc_en(~status[7]),
+	.img_mounted(img_mounted), .img_readonly(img_readonly), .img_size(img_size),
+	.sd_lba(sd_lba), .sd_rd(sd_rd), .sd_wr(sd_wr), .sd_ack(sd_ack),
+	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),
+	.sd_buff_wr(sd_buff_wr),
 	.red(red), .green(green), .blue(blue),
-	.hs(hs), .vs(vs), .hb(hb), .vb(vb), .ce_pix(ce_pix)
+	.hs(hs), .vs(vs), .hb(hb), .vb(vb), .field(VGA_F1), .ce_pix(ce_pix)
 );
 
 assign CLK_VIDEO = clk_sys;

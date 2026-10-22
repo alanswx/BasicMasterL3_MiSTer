@@ -2,14 +2,19 @@
 //
 // Counting follows EmuB-6892's hd46505.cpp, including interlace sync & video
 // mode (R8[1:0] = 3), where the raster address steps by 2 and a row is
-// (R9+2)/2 lines per field. Only the even field is generated: the frame is
-// always progressive, which keeps the MiSTer scaler happy and loses nothing
-// for the ROM's normal text modes (the interlace character set line-doubles
-// the ASCII glyphs). The odd field is a TODO.
+// (R9+2)/2 lines per field.
+//
+// With `interlace` off only the even field is generated, as a progressive
+// 262-line frame; that loses nothing for ASCII (the interlace character set
+// line-doubles it) but halves the 16-line interlace glyphs. With it on, an
+// interlaced CRTC (R8[0] = 1) alternates fields: the odd field starts at
+// raster 1 in video mode and its VSYNC comes half a line later, giving
+// 262.5-line fields; `field` tells MiSTer which one is which.
 module crtc6845 (
   input             clk,
   input             reset,
   input             cclk_en,      // one tick per character clock
+  input             interlace,    // honour R8 interlace (else even field only)
 
   // CPU port (RS = A0)
   input             cs,
@@ -26,7 +31,8 @@ module crtc6845 (
   output            hsync,
   output            vsync,
   output            cursor,
-  output            vmode         // interlace sync & video mode
+  output            vmode,        // interlace sync & video mode
+  output            field         // 1 = odd field
 );
 
 reg [7:0] r[0:17];
@@ -74,7 +80,10 @@ reg  [4:0] adj;
 reg        in_adj;
 reg [13:0] row_start;
 reg  [4:0] vs_cnt;
-reg  [5:0] field;
+reg  [5:0] fcnt;
+reg        odd;
+reg        vs_half;
+wire       ilace = interlace & imode[0];
 
 wire [5:0] max_ra = {1'b0, R9} + (vmode ? 6'd2 : 6'd1);
 wire [5:0] ra_next = {1'b0, rac} + (vmode ? 6'd2 : 6'd1);
@@ -84,7 +93,7 @@ wire [4:0] vsw = R3[7:4] == 4'd0 ? 5'd16 : {1'b0, R3[7:4]};
 always @(posedge clk) begin
   if (reset) begin
     h <= 8'd0; row <= 7'd0; rac <= 5'd0; adj <= 5'd0; in_adj <= 1'b0;
-    row_start <= 14'd0; vs_cnt <= 5'd0; field <= 6'd0;
+    row_start <= 14'd0; vs_cnt <= 5'd0; fcnt <= 6'd0; odd <= 1'b0; vs_half <= 1'b0;
   end else if (cclk_en) begin
     if (h == R0) begin
       h <= 8'd0;
@@ -92,18 +101,20 @@ always @(posedge clk) begin
 
       if (in_adj) begin
         if ({1'b0, adj} + 6'd1 >= {1'b0, R5}) begin
-          row <= 7'd0; rac <= 5'd0; in_adj <= 1'b0; row_start <= start_addr;
-          field <= field + 6'd1;
+          row <= 7'd0; rac <= {4'd0, vmode & ilace & ~odd}; in_adj <= 1'b0;
+          row_start <= start_addr;
+          fcnt <= fcnt + 6'd1; odd <= ilace & ~odd;
         end else adj <= adj + 5'd1;
       end else if (ra_next >= max_ra) begin
-        rac <= 5'd0;
+        rac <= {4'd0, vmode & odd};
         row_start <= row_start + {6'd0, R1};
         if (row == R4) begin
           if (R5 != 5'd0) begin
             in_adj <= 1'b1; adj <= 5'd0;
           end else begin
             row <= 7'd0; row_start <= start_addr;
-            field <= field + 6'd1;
+            rac <= {4'd0, vmode & ilace & ~odd};
+            fcnt <= fcnt + 6'd1; odd <= ilace & ~odd;
           end
         end else begin
           row <= row + 7'd1;
@@ -115,6 +126,7 @@ always @(posedge clk) begin
     end else begin
       h <= h + 8'd1;
     end
+    if (h == {1'b0, R0[7:1]}) vs_half <= vs_cnt != 5'd0;
   end
 end
 
@@ -127,15 +139,16 @@ assign de = h_de & v_de;
 assign hde = h_de;
 assign vde = v_de;
 assign hsync = (hsw != 4'd0) && (h >= R2) && (h < R2 + {4'd0, hsw});
-assign vsync = vs_cnt != 5'd0;
+assign vsync = odd ? vs_half : (vs_cnt != 5'd0);
+assign field = odd;
 
 reg blink;
 always @(*) begin
   case (R10[6:5])
     2'b00: blink = 1'b1;
     2'b01: blink = 1'b0;
-    2'b10: blink = field[3];
-    2'b11: blink = field[4];
+    2'b10: blink = fcnt[3];
+    2'b11: blink = fcnt[4];
   endcase
 end
 

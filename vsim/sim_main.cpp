@@ -39,6 +39,7 @@
 #include "sim_video.h"
 #include "sim_input.h"
 #include "sim_clock.h"
+#include "sim_blkdevice.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "sim/stb_image_write.h"
 
@@ -60,6 +61,7 @@ SimBus       bus(console);
 SimInput     input(1, console);
 SimVideo     video(VGA_WIDTH, VGA_HEIGHT, 0);
 SimClock     clk_sys_clock(1);
+SimBlockDevice blk(console);
 
 Vemu* top = nullptr;
 
@@ -74,11 +76,14 @@ unsigned int key_hold_cycles = SIM_CLK_HZ * 50 / 1000;   // 50 ms
 int  tape_speed = 0;
 bool mark5 = true;
 bool symbolic = true;
+bool interlace = false;
 unsigned int dipsw = 0x03;
 int  stop_at_frame = -1;
 std::vector<int> screenshot_frames;
 std::string rom_image = "../roms/mister/bml3_boot0.rom";
 std::string tape_image;
+std::string disk_image[2];
+bool fdc_en = false;
 std::string screenshot_prefix = "screenshot_frame";
 std::string screenshot_name;
 bool rom_loaded = false;
@@ -281,7 +286,8 @@ static void apply_poke(const MemPoke& q)
 // BASIC printed that does not depend on the font.
 static void dump_text(int frame)
 {
-	printf("---- text screen at frame %d ----\n", frame);
+	printf("---- text screen at frame %d ---- (kb code=%02X mode=%02X cnt=%02X, CPU PC=%04X CC=%02X)\n", frame,
+	       top->dbg_kb_code, top->dbg_kb_mode, top->dbg_kb_cnt, top->dbg_cpu_pc, top->dbg_cc);
 	for (int r = 0; r < 25; r++) {
 		char line[41];
 		for (int c = 0; c < 40; c++) {
@@ -331,9 +337,10 @@ static int verilate()
 		if (clk_sys_clock.clk) {
 			input.BeforeEval();
 			bus.BeforeEval();
+			blk.BeforeEval(main_time);
 		}
 		top->eval();
-		if (clk_sys_clock.clk) bus.AfterEval();
+		if (clk_sys_clock.clk) { bus.AfterEval(); blk.AfterEval(); }
 	} else {
 		top->eval();
 	}
@@ -436,8 +443,12 @@ static void usage(const char* argv0)
 	"  --headless                 run without a window (still renders for screenshots)\n"
 	"  --rom <file>               boot0.rom image (default ../roms/mister/bml3_boot0.rom)\n"
 	"  --tape <file>              load an .l3 tape image over ioctl (index 1)\n"
+	"  --disk <file.d88>         mount a disk in drive 0 (fits the MP-1802 card)\n"
+	"  --disk1 <file.d88>        mount a disk in drive 1\n"
+	"  --fdc                      fit the MP-1802 card without a disk\n"
 	"  --tape-speed N             fast tape: byte rate x 2^N while the motor runs (default 0)\n"
 	"  --model l3|mk5             Mark 5 extras ($FFE8 banking, IG) on or off (default mk5)\n"
+	"  --interlace                generate both interlace fields (default: even only)\n"
 	"  --keyboard us|jis         symbol translation (us, default) or positional\n"
 	"  --dipsw HEX                $FFC9 DIP switches (default 03)\n"
 	"  --screenshot N[,N,...]     write screenshot_frame_NNNN.png at these frames\n"
@@ -493,7 +504,11 @@ int main(int argc, char** argv, char** env)
 		else if (a == "--tape-speed")        tape_speed = atoi(next("--tape-speed").c_str());
 		else if (a == "--rom")               rom_image = next("--rom");
 		else if (a == "--tape")              tape_image = next("--tape");
+		else if (a == "--disk")              { disk_image[0] = next("--disk"); fdc_en = true; }
+		else if (a == "--disk1")             { disk_image[1] = next("--disk1"); fdc_en = true; }
+		else if (a == "--fdc")               fdc_en = true;
 		else if (a == "--dipsw")             dipsw = strtoul(next("--dipsw").c_str(), nullptr, 16);
+		else if (a == "--interlace")         interlace = true;
 		else if (a == "--keyboard")          symbolic = next("--keyboard") != "jis";
 		else if (a == "--model") {
 			std::string v = next("--model");
@@ -579,6 +594,27 @@ int main(int argc, char** argv, char** env)
 	top->tape_speed = tape_speed;
 	top->mark5 = mark5;
 	top->symbolic = symbolic;
+	top->interlace = interlace;
+	top->fdc_en = fdc_en;
+
+	blk.sd_lba[0]      = &top->sd_lba[0];
+	blk.sd_lba[1]      = &top->sd_lba[1];
+	blk.sd_buff_din[0] = &top->sd_buff_din[0];
+	blk.sd_buff_din[1] = &top->sd_buff_din[1];
+	blk.sd_rd          = &top->sd_rd;
+	blk.sd_wr          = &top->sd_wr;
+	blk.sd_ack         = &top->sd_ack;
+	blk.sd_buff_addr   = &top->sd_buff_addr;
+	blk.sd_buff_dout   = &top->sd_buff_dout;
+	blk.sd_buff_wr     = &top->sd_buff_wr;
+	blk.img_mounted    = &top->img_mounted;
+	blk.img_readonly   = &top->img_readonly;
+	blk.img_size       = &top->img_size;
+	for (int d = 0; d < 2; d++)
+		if (!disk_image[d].empty()) {
+			printf("Mounting disk on drive %d: %s\n", d, disk_image[d].c_str());
+			blk.MountDisk(disk_image[d], d);
+		}
 	top->dipsw = dipsw;
 
 	{

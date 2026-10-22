@@ -18,6 +18,7 @@ module emu (
 	input       [2:0] tape_speed,
 	input             mark5,
 	input             symbolic,
+	input             interlace,
 	input       [7:0] dipsw,
 
 	// HPS file transfer: index 0 = boot0.rom, 1 = tape (.l3)
@@ -27,6 +28,20 @@ module emu (
 	input       [7:0] ioctl_dout,
 	input       [7:0] ioctl_index,
 	output            ioctl_wait,
+
+	// floppy block devices (SimBlockDevice): per-drive bit vectors as it expects
+	input             fdc_en,
+	input      [15:0] img_mounted,
+	input             img_readonly,
+	input      [63:0] img_size,
+	output     [31:0] sd_lba [2],
+	output     [15:0] sd_rd,
+	output     [15:0] sd_wr,
+	input      [15:0] sd_ack,
+	input       [8:0] sd_buff_addr,
+	input       [7:0] sd_buff_dout,
+	output      [7:0] sd_buff_din [2],
+	input             sd_buff_wr,
 
 	output      [7:0] VGA_R,
 	output      [7:0] VGA_G,
@@ -51,7 +66,10 @@ module emu (
 	output     [16:0] dbg_tape_pos,
 	output            dbg_tape_strobe,
 	output      [7:0] dbg_tape_byte,
-	output      [7:0] dbg_kb_code
+	output      [7:0] dbg_kb_code,
+	output      [7:0] dbg_kb_mode,
+	output      [7:0] dbg_kb_cnt,
+	output      [7:0] dbg_cc
 );
 
 assign ioctl_wait = 1'b0;
@@ -100,14 +118,23 @@ keyboard keyboard (
 	.keys(keys), .break_key(break_key)
 );
 
+wire [1:0] sd_rd2, sd_wr2;
+assign sd_rd = {14'd0, sd_rd2};
+assign sd_wr = {14'd0, sd_wr2};
+
 core core (
-	.clk(clk_sys), .reset(core_reset), .mark5(mark5),
+	.clk(clk_sys), .reset(core_reset), .mark5(mark5), .interlace(interlace),
 	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[15:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(dipsw),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200),
 	.beep(beep),
+	.fdc_en(fdc_en),
+	.img_mounted(img_mounted[1:0]), .img_readonly(img_readonly), .img_size(img_size),
+	.sd_lba(sd_lba), .sd_rd(sd_rd2), .sd_wr(sd_wr2), .sd_ack(sd_ack[1:0]),
+	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),
+	.sd_buff_wr(sd_buff_wr),
 	.red(VGA_R), .green(VGA_G), .blue(VGA_B),
-	.hs(VGA_HS), .vs(VGA_VS), .hb(VGA_HB), .vb(VGA_VB), .ce_pix(CE_PIXEL)
+	.hs(VGA_HS), .vs(VGA_VS), .hb(VGA_HB), .vb(VGA_VB), .field(), .ce_pix(CE_PIXEL)
 );
 
 assign AUDIO_L = {1'b0, beep, 14'd0};
@@ -125,5 +152,8 @@ assign dbg_tape_pos    = tape.pos;
 assign dbg_tape_strobe = tape_strobe;
 assign dbg_tape_byte   = tape_byte;
 assign dbg_kb_code     = core.kb_code;
+assign dbg_kb_mode     = core.kb_mode;
+assign dbg_kb_cnt      = core.kb_cnt;
+assign dbg_cc          = core.cpu.cc;
 
 endmodule

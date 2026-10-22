@@ -12,6 +12,8 @@ module core (
   input             clk,
   input             reset,
   input             mark5,        // Mark 5: $FFE8 bank register and IG
+  input             interlace,    // generate both interlace fields
+  input             fdc_en,       // MP-1802 floppy card fitted
 
   // boot ROM download (boot0.rom: BASIC at 0, font at $8000)
   input             rom_wr,
@@ -30,6 +32,19 @@ module core (
 
   output            beep,
 
+  // MP-1802 disk images (hps_io block devices 0 and 1)
+  input       [1:0] img_mounted,
+  input             img_readonly,
+  input      [63:0] img_size,
+  output     [31:0] sd_lba [2],
+  output      [1:0] sd_rd,
+  output      [1:0] sd_wr,
+  input       [1:0] sd_ack,
+  input       [8:0] sd_buff_addr,
+  input       [7:0] sd_buff_dout,
+  output      [7:0] sd_buff_din [2],
+  input             sd_buff_wr,
+
   output      [7:0] red,
   output      [7:0] green,
   output      [7:0] blue,
@@ -37,6 +52,7 @@ module core (
   output            vs,
   output            hb,
   output            vb,
+  output            field,        // odd interlace field (VGA_F1)
   output            ce_pix
 );
 
@@ -142,6 +158,17 @@ dpram #(15, 8) rom (
   .b_addr(15'd0), .b_din(8'd0), .b_we(1'b0), .b_dout()
 );
 
+// MP-1802 boot ROM, 2 KB (boot0.rom $6000-$67FF), seen at $F800-$FEFF
+// in place of BASIC while the card is fitted [MP1802Tech p.41-44].
+wire [7:0] fdcrom_q;
+dpram #(11, 8) fdcrom (
+  .clk(clk),
+  .a_addr(rom_wr ? rom_addr[10:0] : a[10:0]), .a_din(rom_data),
+  .a_we(rom_wr && rom_addr[15:11] == 5'b01100), .a_dout(fdcrom_q),
+  .b_addr(11'd0), .b_din(8'd0), .b_we(1'b0), .b_dout()
+);
+wire fdcrom_sel = fdc_en && a[15:11] == 5'b11111 && a[10:8] != 3'b111;
+
 // Character generator, 4 KB (boot0.rom $8000-$8FFF)
 dpram #(12, 8) font (
   .clk(clk),
@@ -178,10 +205,10 @@ wire        crtc_hde, crtc_vde, crtc_hs, crtc_vs, crtc_cur, crtc_vmode;
 wire        crtc_cs = sysio && a[5:0] == 6'h06 || sysio && a[5:0] == 6'h07;
 
 crtc6845 crtc (
-  .clk(clk), .reset(reset), .cclk_en(cclk_en),
+  .clk(clk), .reset(reset), .cclk_en(cclk_en), .interlace(interlace),
   .cs(crtc_cs), .we(wr), .rs(a[0]), .din(cpu_dout), .dout(crtc_dout),
   .ma(crtc_ma), .ra(crtc_ra), .de(), .hde(crtc_hde), .vde(crtc_vde),
-  .hsync(crtc_hs), .vsync(crtc_vs), .cursor(crtc_cur), .vmode(crtc_vmode)
+  .hsync(crtc_hs), .vsync(crtc_vs), .cursor(crtc_cur), .vmode(crtc_vmode), .field(field)
 );
 
 // ---------------------------------------------------------------------------
@@ -227,6 +254,22 @@ acia6850 acia (
 );
 
 // ---------------------------------------------------------------------------
+// MP-1802 floppy card at $FF00-$FF07
+wire [7:0] fdc_dout;
+wire       fdc_nmi;
+wire       fdc_cs = fdc_en && a[15:3] == 13'b1111111100000;
+
+mp1802 fdc (
+  .clk(clk), .reset(reset), .ce(cnt == 5'd16),
+  .cs(fdc_cs), .a(a[2:0]), .we(wr), .re(rd), .din(cpu_dout), .dout(fdc_dout),
+  .nmi(fdc_nmi),
+  .img_mounted(img_mounted), .img_readonly(img_readonly), .img_size(img_size),
+  .sd_lba(sd_lba), .sd_rd(sd_rd), .sd_wr(sd_wr), .sd_ack(sd_ack),
+  .sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din),
+  .sd_buff_wr(sd_buff_wr)
+);
+
+// ---------------------------------------------------------------------------
 // Keyboard scanner: a 7-bit code counter stepped by CRTC HSYNC, two steps per
 // code (EmuB keyboard.cpp update_keyboard). It stops on a pressed key until
 // $FFE0 is read. After the last key is released it reports $FF once.
@@ -239,6 +282,13 @@ reg        kb_nmi_flag;          // $FFC8 bit 7
 reg        kb_nmi;
 reg        hs_old, vs_old, brk_old;
 reg        timer_flag;
+
+// $FFD1 trace counter (EmuB memory.cpp): a write arms it, the next CPU read
+// starts a 16-cycle count, then NMI is held until the following read. Used
+// by the monitor's single-step.
+reg  [1:0] trace_state;          // 0 idle, 1 armed, 2 counting, 3 NMI out
+reg  [4:0] trace_cnt;
+reg        trace_nmi;
 
 wire [6:0] kb_scan = kb_cnt[7:1] & (kb_mode[3] ? 7'h07 : 7'h7f);
 
@@ -260,7 +310,19 @@ always @(posedge clk) begin
     kb_mode <= 8'h00; kb_cnt <= 8'h00; kb_code <= 8'h00; kb_pressed <= 2'd0;
     kb_irq <= 1'b0; kb_nmi_flag <= 1'b0; kb_nmi <= 1'b0;
     timer_flag <= 1'b0;
+    trace_state <= 2'd0; trace_nmi <= 1'b0;
   end else begin
+    // ---- trace counter
+    case (trace_state)
+      2'd1: if (rd) begin trace_state <= 2'd2; trace_cnt <= 5'd16; end
+      2'd2: if (fallE) begin
+              if (trace_cnt == 5'd1) begin trace_nmi <= 1'b1; trace_state <= 2'd3; end
+              trace_cnt <= trace_cnt - 5'd1;
+            end
+      2'd3: if (rd) begin trace_nmi <= 1'b0; trace_state <= 2'd0; end
+      default: ;
+    endcase
+
     // ---- CPU writes
     if (wr) begin
       if (vram_a) ; // colour RAM written by the cram port
@@ -270,6 +332,7 @@ always @(posedge clk) begin
         6'h02: if (pia_crb[2]) pia_orb <= cpu_dout; else pia_ddrb <= cpu_dout;
         6'h03: pia_crb <= {pia_crb[7:6], cpu_dout[5:0]};
         6'h10: mode_sel <= cpu_dout;
+        6'h11: trace_state <= 2'd1;
         6'h12: remote <= cpu_dout[7];
         6'h13: music <= cpu_dout[7];
         6'h14: begin
@@ -347,13 +410,14 @@ end
 // Interrupts
 assign cpu_irq  = kb_irq | acia_irq;
 assign cpu_firq = timer_flag;
-assign cpu_nmi  = kb_nmi;
+assign cpu_nmi  = kb_nmi | trace_nmi | fdc_nmi;
 
 // ---------------------------------------------------------------------------
 // Read mux
 reg [7:0] io_dout;
 always @(*) begin
   io_dout = 8'hff;
+  if (fdc_cs) io_dout = fdc_dout;
   if (sysio) case (a[5:0])
     6'h00: io_dout = pia_cra[2] ? pia_pa : pia_ddra;
     6'h01: io_dout = pia_cra;
@@ -375,7 +439,7 @@ end
 
 always @(*) begin
   if (io)           cpu_din = io_dout;
-  else if (rom_sel) cpu_din = rom_q;
+  else if (rom_sel) cpu_din = fdcrom_sel ? fdcrom_q : rom_q;
   else              cpu_din = ram_q;
 end
 

@@ -49,7 +49,10 @@ V_SRC = \
 	$(RTL)/video.v \
 	$(RTL)/acia6850.v \
 	$(RTL)/keyboard.v \
-	$(RTL)/tape.v
+	$(RTL)/tape.v \
+	$(RTL)/mp1802.v \
+	$(RTL)/wd1793.sv \
+	$(RTL)/wd_dpram.v
 
 C_SRC = \
 	sim_main.cpp \

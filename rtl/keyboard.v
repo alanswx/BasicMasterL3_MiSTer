@@ -20,9 +20,10 @@
 // polling, and only notices a release through the scanner's $FF report up to
 // three scans later. So host events (including forced SHIFT changes) go
 // through a small queue and are applied one at a time, each given time to be
-// seen: 35 ms after SHIFT goes down, 45 ms after a key goes down, 50 ms after
-// a key goes up and 70 ms after SHIFT goes up. An event arriving with the
-// queue idle applies at once; the queue holds about 40 typed characters.
+// seen: 35 ms after SHIFT goes down, 45 ms after a key goes down and 70 ms
+// after anything goes up (the same key again needs the $FF report first).
+// An event arriving with the queue idle applies at once; the queue holds
+// about 40 typed characters.
 module keyboard (
   input             clk,
   input             reset,
@@ -172,7 +173,7 @@ wire [9:0] sym = host_shift ? sym_s : sym_u;
 
 localparam [21:0] T_SDN = 22'd1128960;    // 35 ms
 localparam [21:0] T_KDN = 22'd1451520;    // 45 ms
-localparam [21:0] T_KUP = 22'd1612800;    // 50 ms
+localparam [21:0] T_KUP = 22'd2257920;    // 70 ms
 localparam [21:0] T_SUP = 22'd2257920;    // 70 ms
 
 // queue entry: {is_shift, level, code[6:0]}
