@@ -18,3 +18,15 @@ incremental_db/
 *.rbf
 build_id.v
 .DS_Store
+releases/
+*.zip
+vsim/screenshot_*.png
+# Quartus scratch
+*.qws
+*.sld
+greybox_tmp/
+PLLJ_PLLSPE_INFO.txt
+*.bak
+# local tool state
+.claude/
+__pycache__/
