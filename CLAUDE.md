@@ -7,12 +7,15 @@ Guidance for Claude Code when working in this repository.
 A MiSTer FPGA core for the **Hitachi Basic Master Level 3** (MB-6890 / MB-6891 Mark II /
 MB-6892 Mark 5): MC6809 at 1.008 MHz, HD46505 CRTC, 40/80-column text with a colour RAM,
 320/640×200 graphics, Mark 5 IG (programmable characters), cassette through an ACIA.
-The MB-S1 is the planned second model. **TODO.md** is the plan; `ref/notes/` holds the
-research.
+The **MB-S1** is the third model in the same core (OSD "Model"; the S1 SYSTEM switch picks
+S1 mode or Level 3 mode). **TODO.md** is the status and handoff; `ref/notes/` holds the
+research (`mbs1-implementation-spec.md` for the S1). Repo:
+<https://github.com/alanswx/BasicMasterL3_MiSTer> (public).
 
 Level 3 BASIC boots to `Ready` in vsim and on a MiSTer; the keyboard works, `.l3` tapes
 load byte-exact, the MP-1802 floppy boots D88 disks (vsim), Mark 5 IG works, and there is a
-6-voice PSG card.
+6-voice PSG card. The MB-S1 boots S1 BASIC and runs several games in vsim, but has not
+been run on hardware yet.
 
 Target is real hardware: clock enables, not gated clocks; no unsynthesisable constructs.
 
@@ -22,7 +25,8 @@ Target is real hardware: clock enables, not gated clocks; no unsynthesisable con
 BasicMasterL3.sv      MiSTer top (hps_io, PLL, tape buffer, video_mixer)
 rtl/core.v            6809, memory map/banking, system I/O, keyboard scanner, timer, PIA
 rtl/crtc6845.v        HD46505 (EmuB counting, incl. interlace sync & video mode)
-rtl/video.v           VRAM/colour RAM -> font / graphic / IG -> pixels
+rtl/video.v           VRAM/colour RAM -> font / graphic / IG -> pixels (Level 3)
+rtl/s1video.v         MB-S1 S1-mode display: text + 7-bit colour RAM over 3 planes, palette
 rtl/acia6850.v        ACIA, byte level
 rtl/tape.v            .l3 player: one byte per 11 bit times into the ACIA, streamed from
                       block device 2 a sector at a time
@@ -35,7 +39,8 @@ rtl/dpram.v           behavioural dual-port RAM (Quartus infers M10K)
 vsim/                 Verilator harness (derived from the Basic Master Jr core)
 ref/notes/            hardware notes, emulator comparison, translated EmuB docs
 roms/                 system ROMs (not in git; see roms/README.md)
-software/             test software (README.md, tools/l3info.py); archives not in git
+software/             test software index (README.md), tools/ (l3conv.py, make_tester_zip.sh),
+                      tester/README.txt; the software itself is not in git
 ```
 
 Not in git (see `.gitignore`): `roms/`, `ref/{emulators,hardware,web,docs}`, the software
@@ -63,7 +68,8 @@ make
 * Frames are **1/60 s of simulated time** from power-on (not video frames), so they work
   before the CRTC is programmed. BASIC reaches `Ready` by about frame 82.
 * Speed is about 19 frames/s.
-* `--rom` defaults to `../roms/mister/bml3_boot0.rom` (BASIC at `$0000`, font at `$8000`),
+* `--rom` defaults to `../roms/mister/boot0.rom` (160K: L3 BASIC `$0000`, MP-1802 `$6000`,
+  font `$8000`, S1 BASIC/ROMs from `$10000`; see the comment at the top of `rtl/core.v`),
   loaded over ioctl index 0 just like MiSTer's `boot0.rom`.
 * `--text N` prints `$0400` as 40×25 ASCII. In hi-res modes that is raster plane 0.
 * `--tape file.l3` mounts block device 2 (`software/tools/l3conv.py` makes .l3 from
@@ -100,6 +106,15 @@ Build on `misterubuntu`: copy a `git archive` of HEAD there, then
 `~/intelFPGA_lite/quartus/bin/quartus_sh --flow compile BasicMasterL3`.
 Test on a MiSTer with `/Applications/MiSTerKVMS.app/Contents/MacOS/misterkvms-cli`
 (`load-core`, `screenshot`, `type`, `key`). `boot0.rom` goes in `games/BasicMasterL3/`.
+
+* Keep finished RBFs as `releases/BasicMasterL3_<hash>.rbf` (git-ignored).
+* `load-core` in misterkvms-cli fails (ssh key). Instead, `scp` the RBF to the MiSTer and
+  write `load_core <path>` to `/dev/MiSTer_cmd` over ssh.
+* The test MiSTer is shared. Ask the user before loading anything on it.
+* Tester zip: `software/tools/make_tester_zip.sh releases/<rbf> software/tester/README.txt`
+  writes `releases/BasicMasterL3_tester_<date>.zip`. It contains ROMs and commercial
+  software: give it to named testers only, and never attach it to a public release.
+  Update `software/tester/README.txt` (load commands, what works) with each zip.
 
 ## Conventions
 

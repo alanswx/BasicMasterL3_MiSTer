@@ -1,7 +1,34 @@
 # Basic Master Level 3 / MB-S1 MiSTer core: handoff TODO
 
-Written 2026-10-21. Nothing has been built yet. This folder has a plan and some
-software, no RTL. Read this whole file before you start.
+Started 2026-10-21; last updated 2026-10-24. The core works: Level 3 / Mark 5 run on a
+MiSTer, and the MB-S1 runs in vsim. **Start with "Handoff (2026-10-24)" below**, then
+`CLAUDE.md` (layout, sim, build). The rest of this file is the original plan, kept for its
+research and lessons; its checkboxes are kept up to date.
+
+## Handoff (2026-10-24)
+
+- **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
+  `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
+  was checked: it contains no ROM or software files.
+- **Latest RBF:** f3f5c82 (`releases/BasicMasterL3_f3f5c82.rbf`). Timing met, 39% ALMs,
+  73% RAM blocks. It is the first build with the MB-S1, SD tape streaming and the PSG
+  card. **Not yet tested on hardware.** The last build tested on hardware is a30d92b
+  (L3 boot, keyboard, tape, MP-1802 Tetris).
+- **Testers:** `releases/BasicMasterL3_tester_20261024.zip` (f3f5c82 + boot0.rom + 66
+  tapes + 9 disks + README) went to two private testers. To rebuild it, run
+  `software/tools/make_tester_zip.sh`; the tester README is `software/tester/README.txt`.
+  The zip holds ROMs and commercial software, so never publish it.
+- **Hardware:** Mister 192 is shared with the user. Ask before loading anything on it.
+- **Next, in order:**
+  1. Hardware-test f3f5c82: MB-S1 boot and games, SD tape at 1x and fast speeds, PSG
+     card and S1 PSG audio. Collect tester reports.
+  2. Dezeni Land: fix the `.l3c` raw-stream decode in `l3conv.py` (compare with EmuB-S1
+     `cmt.cpp` or a WAV decode).
+  3. Mazy (S1): the right-hand score digits are clipped. Compare with EmuB-S1.
+  4. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
+     keyboard's extra keys.
+  5. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
+  6. Cassette SAVE, last.
 
 ## Goal
 
@@ -165,7 +192,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 `s1dic.rom` dictionary is not dumped). The user has authorised downloading ROM dumps
 (2026-10-21); they go in `roms/` (see `roms/README.md`), never in the RBF.
 
-## Status (2026-10-21)
+## Status (2026-10-24)
 
 - Research step 0 is done: `ref/SOURCES-*.md`, `ref/notes/`, `roms/README.md`,
   `software/README.md`. EmuB-6892 is the reference and builds on macOS.
@@ -190,10 +217,8 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   the whole raw stream (sync $E6 x499, ACIA /1) but never leaves "Loading": suspect the
   l3conv.py decode of the raw part of the .l3c -- compare with EmuB-S1 / a WAV decode. Mazy S1's right-hand score digits look clipped:
   compare with EmuB-S1.
-- Open items, in order: BM Tetris end to end;
-  9-voice PSG card (VIA 6522 + 3 PSGs) if software needs it; MP-1805 (MC6843)
-  floppy; the MB-S1; and last, cassette SAVE (awkward on MiSTer: needs a
-  writable image or an audio-out path).
+- Open items: see "Next" in the handoff above. Cassette SAVE comes last because it is
+  awkward on MiSTer: it needs a writable image or an audio-out path.
 
 ---
 
@@ -239,7 +264,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   title: machine, format, load command and expected entry point.
 
 ### 1. Pick the reference emulator and make it scriptable
-- [ ] Build EmuB-6892 (and EmuB-S1) on macOS or Linux. If that is impractical,
+- [x] Build EmuB-6892 (and EmuB-S1) on macOS (done: `ref/notes/emulators.md`) or Linux. If that is impractical,
   write a `bml3` VM inside CSP from its existing devices (mc6809, hd46505, mc6820,
   mc6850, mb8877, beep, datarec, disk), using the fm7 VM as the structural model.
 - [ ] Add a headless CLI that matches the Jr's `bmjr_cli.mm` flags (`--tape`,
@@ -250,12 +275,12 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   where it fails).
 
 ### 2. Research notes before RTL
-- [ ] Write `ref/notes/hardware-reference.md`: the I/O map, memory/ROM banking
+- [~] (Covered by `ref/notes/hardware-from-manuals.md` and `schematic-notes.md`.) Write `ref/notes/hardware-reference.md`: the I/O map, memory/ROM banking
   (`$FFD0` mode select, the RAM-under-ROM views, `$FFE8`), CRTC usage, the attribute
   format, the keyboard scan (MAME: keyboard timer driven from hsync, BREAK → NMI),
   timer/FIRQ sources, the ACIA tape path, beeper and IG. Tag every fact with its
   source: [MAME], [EMUB], [CSP], [SVC] (service manual), [ROM] (disassembly).
-- [ ] Write `ref/notes/mame-vs-emub-verdicts.md` for every point where MAME and
+- [~] (Partly in `ref/notes/emulator-comparison-initial.md`.) Write `ref/notes/mame-vs-emub-verdicts.md` for every point where MAME and
   EmuB disagree, and decide each one from the service manual or a ROM disassembly.
 - [ ] Disassemble the boot and BASIC ROM entry points (reset vector, keyboard
   routine, tape load routine), once the user has supplied ROMs.
@@ -289,9 +314,9 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   1200 baud (`$FFD7`), with the motor on `$FFD2`. Reuse the Jr's on-chip tape buffer
   and fast-tape idea, but check how the L3 ROM times bits (ACIA, not software delay
   loops, so fast tape may be easier than on the Jr).
-- [ ] A converter for `.l3b` / `.l3c` → `.l3` (Python, following WavTool/EmuB), plus a
+- [x] A converter for `.l3b` / `.l3c` → `.l3` (Python, following WavTool/EmuB), plus a
   checker in the style of `bmtape_info.py`.
-- [ ] Test with inufuto Mazy and Ascend (L3 builds), MELHEN and Skating.
+- [x] Test with inufuto Mazy and Ascend (L3 builds), MELHEN and Skating.
 
 ### 6. Floppy
 - [~] MP-1802 (5" 2D, MB8866) done; MP-1805 (3") needs an MC6843, not `wd1793.sv`, plus D88 mounting.
@@ -299,26 +324,26 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   Tetris and HI-Writer disks and the `bml3_flop` titles.
 
 ### 7. Mark 5 and options
-- [ ] IG mode (`$FFE9`/`$FFEA`, the `$A000-$A7FF` IG view). Test with MAME's `igdemo`
+- [x] IG mode (`$FFE9`/`$FFEA`, the `$A000-$A7FF` IG view). Test with MAME's `igdemo`
   cassette.
-- [ ] PSG cards (6 and 9 voices), the YM2203 card, kanji ROM, RTC and extra RAM, as
+- [~] PSG cards (6 voices done; 9 voices not), the YM2203 card, kanji ROM, RTC and extra RAM, as
   the software requires them.
 
 ### 8. MB-S1
-- [ ] Choose: a model in the same core (preferred) or a separate core.
-- [ ] MMU (4 KB pages × 16 registers into a 1 MB space; see `mbs1_mmu.cpp` and
+- [x] Choose: a model in the same core (preferred) or a separate core. **Same core.**
+- [x] MMU (4 KB pages × 16 registers into a 1 MB space; see `mbs1_mmu.cpp` and
   EmuB-S1), the 2 MHz / 1 MHz switch, and B-mode (L3) versus S1 mode.
-- [ ] S1 video: VRAM, extra planes, palette (MAME ext-I/O `$EFE20-$EFE2F`: BMSK colour, active plane, display page, screen mode, BRG colour, palette at `$EFE28-2F`) and
+- [~] S1 video (done except 640x400 and 64 colours; on-chip BRAM was enough): VRAM, extra planes, palette (MAME ext-I/O `$EFE20-$EFE2F`: BMSK colour, active plane, display page, screen mode, BRG colour, palette at `$EFE28-2F`) and
   the 40/80-column text in S1 mode. RAM is beyond on-chip BRAM once expanded, so plan
   on SDRAM.
-- [ ] Test with Jelda, Lode Runner and Dezeni Land. Only EmuB-S1 can show the
+- [~] Test with Jelda, Lode Runner and Dezeni Land (Jelda and Lode Runner OK in vsim; Dezeni Land open). Only EmuB-S1 can show the
   correct behaviour.
 
 ### 9. Hardware and testers
 - [x] Build RBFs on `misterubuntu` (`ssh misterubuntu`, Quartus at
   `~/intelFPGA_lite/quartus/bin/quartus_sh --flow compile <proj>`). Copy the
   committed tree there with `git archive`.
-- [ ] Make a tester zip like `~/dev2/BasicMasterJr_tester_20261021`: the RBF, the
+- [x] Make a tester zip like `~/dev2/BasicMasterJr_tester_20261021`: the RBF, the
   ROM requirements with hashes, `games/<core>/`, and a README with the load commands
   and what to test.
 
