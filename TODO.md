@@ -10,7 +10,13 @@ research and lessons; its checkboxes are kept up to date.
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
-- **Latest RBF:** f3f5c82 (`releases/BasicMasterL3_f3f5c82.rbf`). Timing met, 39% ALMs,
+- **Latest RBF:** 35ab176 (2026-10-26): Floppy card "Auto" (fitted only with a disk in
+  drive 0, because an S1 in A mode with the card fitted waits forever at "Insert Program
+  Diskette", ROM `$5471`), reset on Model/SYSTEM change, J last in the OSD. Tester zip
+  `releases/BasicMasterL3_tester_20261026.zip`. Tester report on f3f5c82: S1 stuck at
+  the diskette prompt, tapes would not load (probably the same cause), "reset bug"
+  (details pending).
+- **Previous RBF:** f3f5c82 (`releases/BasicMasterL3_f3f5c82.rbf`). Timing met, 39% ALMs,
   73% RAM blocks. It is the first build with the MB-S1, SD tape streaming and the PSG
   card. **Not yet tested on hardware.** The last build tested on hardware is a30d92b
   (L3 boot, keyboard, tape, MP-1802 Tetris).
