@@ -10,7 +10,16 @@ research and lessons; its checkboxes are kept up to date.
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
-- **Latest RBF:** 35ab176 (2026-10-26): Floppy card "Auto" (fitted only with a disk in
+- **Latest RBF:** f3c0c75 (2026-10-26), tested on Mister 126: reset fixed (the CRTC
+  model cleared its registers on reset, so after any L3 reset the warm start left no
+  HSYNC and the keyboard scanner stopped: the tester's "reset bug"); every reset now
+  clears main RAM so BASIC cold-starts. Model switches L3 <-> S1 A/B, OSD Reset, S1
+  BASIC and typing all verified on hardware. Tester zip
+  `releases/BasicMasterL3_tester_<date>.zip`. Next: OSD and tape changes to follow
+  `~/dev2/osd-standard.md` and `~/dev2/tape-standard.md` (Apply and reset with Changes
+  pending, pages P1-P3, Load ROM, SC disks, h2 blank row, short labels, v,1; Tape
+  speed 16x/Normal, Rewind tape, mount info message, tape status overlay).
+- **Before that:** 35ab176 (2026-10-26): Floppy card "Auto" (fitted only with a disk in
   drive 0, because an S1 in A mode with the card fitted waits forever at "Insert Program
   Diskette", ROM `$5471`), reset on Model/SYSTEM change, J last in the OSD. Tester zip
   `releases/BasicMasterL3_tester_20261026.zip`. Tester report on f3f5c82: S1 stuck at
