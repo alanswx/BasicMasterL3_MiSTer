@@ -18,9 +18,14 @@ OSD
 ---
   Mount Tape (.l3)       Cassette image. The motor relay controls playback.
   Fast tape              Off / 2x / 4x / 8x ... Off or 2-4x is safest.
-  Model                  Mark 5 / Level 3 / MB-S1  (reset after changing)
+  Model                  Mark 5 / Level 3 / MB-S1  (changing it resets the machine)
   S1 SYSTEM switch       (MB-S1 only) A = S1 mode, B = Level 3 compatible
-  Floppy card            Fits the MP-1802 5" card; mount .d88 in drive 0/1, reset
+  Floppy card            Auto (default): the MP-1802 card is fitted at reset only if
+                         drive 0 has a disk mounted. MP-1802: always fitted. None.
+                         Mount the .d88, then reset.
+                         Note: an MB-S1 in S1 mode with the card fitted and no system
+                         disk shows "Insert Program Diskette" and waits forever. The
+                         real machine does the same. Auto avoids it.
   Keyboard               US symbols (type what is on your keyboard) / Positional (JIS)
   Expansion RAM, PSG card, Interlace, Border, Scandoubler, Aspect
 
@@ -54,7 +59,7 @@ LOADING
   Tape - Tests: 12lines/50lines reprogram the CRTC for 12 or 50 text rows; 25lines
   restores. Type NEWON7 first, then LOAD, RUN.
 
-  Disks (Disk - MP-1802): turn on Floppy card, mount tetris.d88 in drive 0, reset.
+  Disks (Disk - MP-1802): mount tetris.d88 in drive 0, then reset (Floppy card = Auto).
   It boots LEVEL-3 DISK BASIC. Then:   RUN"TETRIS"
   tetris.d88 runs on hardware. The other disks are untested.
 

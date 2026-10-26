@@ -214,7 +214,7 @@ localparam CONF_STR = {
 	"-;",
 	"S0,D88,Mount Disk 0;",
 	"S1,D88,Mount Disk 1;",
-	"O[7],Floppy card,MP-1802,None;",
+	"O[15:14],Floppy card,Auto (disk 0 mounted),MP-1802,None;",
 	"-;",
 	"O[12:11],Model,Mark 5,Level 3,MB-S1;",
 	"H2O[13],S1 SYSTEM switch,A (S1 BASIC),B (Level 3);",
@@ -228,8 +228,8 @@ localparam CONF_STR = {
 	"-;",
 	"T[0],Reset;",
 	"R[0],Reset and close OSD;",
-	"J,Fire 1,Fire 2;",
-	"V,v",`BUILD_DATE
+	"V,v",`BUILD_DATE,";",
+	"J,Fire 1,Fire 2"
 };
 
 wire forced_scandoubler;
@@ -309,7 +309,27 @@ pll pll
 );
 
 wire rom_download  = ioctl_download && ioctl_index == 8'd0;
-wire reset = RESET | status[0] | buttons[1] | rom_download;
+// Changing the model or the S1 SYSTEM switch resets the machine (the core
+// latches both at reset).
+wire  [2:0] model_cfg = {status[13], status[12:11]};
+reg   [2:0] model_cfg_d;
+reg   [7:0] model_rst;
+always @(posedge clk_sys) begin
+	model_cfg_d <= model_cfg;
+	if (model_cfg != model_cfg_d) model_rst <= 8'hff;
+	else if (model_rst) model_rst <= model_rst - 1'd1;
+end
+
+wire reset = RESET | status[0] | buttons[1] | rom_download | (model_rst != 0);
+
+// Floppy card, fitted at reset. Auto fits it only when drive 0 holds an image:
+// an S1 in A mode with the card fitted waits for a system disk forever
+// ("Insert Program Diskette"; S1 ROM $5471, no BREAK check).
+reg disk0_in, fdc_fit;
+always @(posedge clk_sys) begin
+	if (img_mounted[0]) disk0_in <= |img_size;
+	if (reset) fdc_fit <= status[15:14] == 2'd1 || (status[15:14] == 2'd0 && disk0_in);
+end
 wire        tape_strobe;
 wire  [7:0] tape_byte;
 wire        tape_active;
@@ -355,7 +375,7 @@ core core (
 	.keys(keys), .break_key(break_key), .dipsw(8'h03),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200), .rx_full(rx_full),
 	.beep(beep),
-	.fdc_en(~status[7]), .ram_hi(~status[8]), .border(~status[9]), .psg_en(~status[10]),
+	.fdc_en(fdc_fit), .ram_hi(~status[8]), .border(~status[9]), .psg_en(~status[10]),
 	.joy(~{2'b00, joy[5], joy[4], joy[0], joy[1], joy[2], joy[3]}), .psg_snd(psg_snd),
 	.img_mounted(img_mounted[1:0]), .img_readonly(img_readonly), .img_size(img_size),
 	.sd_lba(sd_lba_fdc), .sd_rd(sd_rd_fdc), .sd_wr(sd_wr_fdc), .sd_ack(sd_ack[1:0]),
