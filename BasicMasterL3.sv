@@ -228,7 +228,7 @@ localparam CONF_STR = {
 	"R[0],Apply and reset;",
 
 	"P1O[12:11],Model,Mark 5,Level 3,MB-S1;",
-	"H2P1O[13],S1 SYSTEM switch,A (S1 BASIC),B (Level 3);",
+	"H2P1O[13],S1 SYSTEM,A (S1 BASIC),B (Level 3);",
 	"h2P1-;",
 	"P1O[15:14],Floppy card,Auto,MP-1802,None;",
 	"P1O[10],PSG card,On,Off;",

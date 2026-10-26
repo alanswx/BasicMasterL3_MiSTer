@@ -29,7 +29,7 @@ OSD
     Memory                 64K (expansion RAM) / 32K (stock MB-6890)
   Machine
     Model                  Mark 5 / Level 3 / MB-S1
-    S1 SYSTEM switch       (MB-S1 only) A = S1 mode, B = Level 3 compatible
+    S1 SYSTEM              (MB-S1 only) A = S1 mode, B = Level 3 compatible
     Floppy card            Auto (default): the MP-1802 card is fitted at reset only if
                            disk 0 has an image. MP-1802: always fitted. None.
                            Note: an MB-S1 in S1 mode with the card fitted and no system
