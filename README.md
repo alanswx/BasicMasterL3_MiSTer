@@ -23,10 +23,15 @@ code layout, the simulator and the build.
 - Copy the RBF to `_Computer/`.
 - Put `boot0.rom` in `games/BasicMasterL3/`. It is built from MAME's `bml3`, `mbs1` and
   `bml3mp1802` ROM sets, laid out as `rtl/core.v` describes. ROMs are not distributed here.
-- Mount a `.l3` tape image with "Mount Tape", then type `LOADM"",,R` (machine code) or
+- The OSD follows the MiSTer computer-core OSD and tape standards: settings take effect
+  at "Apply and reset"; Machine, Video and Input are submenus.
+- Mount a `.l3` tape image as "Tape", then type `LOADM"",,R` (machine code) or
   `LOAD` and `RUN` (BASIC). `software/tools/l3conv.py` converts `.l3b`/`.l3c` images to
   `.l3`.
-- For disks, turn on "Floppy card", mount a `.d88` and reset.
+  "Tape speed" (Machine) is 16x by default; "Tape overlay" (Video) shows the tape time and
+  a progress bar while the motor runs.
+- For disks, mount a `.d88` as "Pri. disk 0" and Apply and reset ("Floppy card" Auto fits
+  the MP-1802 when disk 0 has an image).
 
 ## Thanks
 

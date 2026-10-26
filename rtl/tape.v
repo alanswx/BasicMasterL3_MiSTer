@@ -11,6 +11,7 @@
 module tape (
   input             clk,
   input             reset,
+  input             rewind,       // back to the start of the image
   input             motor,
   input             baud1200,
   input       [2:0] speed,        // 0 = real time, n = 2^n times faster
@@ -29,7 +30,8 @@ module tape (
   output reg        rx_strobe,
   output reg  [7:0] rx_data,
   output            active,
-  output     [31:0] position
+  output     [31:0] position,
+  output     [31:0] length
 );
 
 // 32.256 MHz * 11 / 600 = 591360 clocks per byte; half that at 1200 baud.
@@ -43,6 +45,7 @@ reg        valid;             // buffer holds `loaded`
 reg        busy;
 
 assign position = pos;
+assign length = size;
 assign active = motor && pos < size;
 
 wire [22:0] want = pos[31:9];
@@ -62,6 +65,8 @@ always @(posedge clk) begin
     size <= img_size[31:0];
     pos <= 32'd0; timer <= 20'd0;
     valid <= 1'b0; busy <= 1'b0; sd_rd <= 1'b0;
+  end else if (rewind) begin
+    pos <= 32'd0; timer <= 20'd0;
   end else if (reset) begin
     timer <= 20'd0;
   end else begin

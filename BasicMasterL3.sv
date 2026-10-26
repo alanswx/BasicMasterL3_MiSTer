@@ -196,7 +196,7 @@ assign BUTTONS = 0;
 
 //////////////////////////////////////////////////////////////////
 
-wire [1:0] ar = status[122:121];
+wire [1:0] ar = cfg[122:121];
 
 assign VIDEO_ARX = (!ar) ? 12'd4 : (ar - 1'd1);
 assign VIDEO_ARY = (!ar) ? 12'd3 : 12'd0;
@@ -206,28 +206,46 @@ assign VIDEO_ARY = (!ar) ? 12'd3 : 12'd0;
 //   $8000-$8FFF character generator (font.rom)
 // See roms/README.md for how it is built.
 `include "build_id.v"
+// OSD layout follows ~/dev2/osd-standard.md: media and Memory on the top page,
+// P1 Machine, P2 Video, P3 Input. Settings take effect at the next reset (cfg
+// below); Keyboard, Tape speed, Tape overlay and Rewind tape act at once.
+// Hide flags must come before the page prefix ("H2P1...").
 localparam CONF_STR = {
 	"BasicMasterL3;;",
 	"-;",
-	"S2,L3 ,Mount Tape;",
-	"O[3:1],Fast tape,Off,2x,4x,8x,16x;",
+	"SC0,D88,Pri. disk 0;",
+	"SC1,D88,Disk 1;",
+	"S2,L3 ,Tape;",
+	"F0,ROM,Load ROM;",
 	"-;",
-	"S0,D88,Mount Disk 0;",
-	"S1,D88,Mount Disk 1;",
-	"O[15:14],Floppy card,Auto (disk 0 mounted),MP-1802,None;",
+	"O[8],Memory,64K,32K (stock);",
 	"-;",
-	"O[12:11],Model,Mark 5,Level 3,MB-S1;",
-	"H2O[13],S1 SYSTEM switch,A (S1 BASIC),B (Level 3);",
-	"O[8],Expansion RAM ($8000+),Yes,No (stock 32K);",
-	"O[5],Keyboard,US symbols,Positional (JIS);",
-	"O[6],Interlace,Even field only,On;",
-	"O[9],Border,On,Off;",
-	"O[10],PSG card (6 voices),On,Off;",
-	"O[117:115],Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
-	"O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	"P1,Machine;",
+	"P2,Video;",
+	"P3,Input;",
 	"-;",
-	"T[0],Reset;",
-	"R[0],Reset and close OSD;",
+	"h0-,Changes pending;",
+	"R[0],Apply and reset;",
+
+	"P1O[12:11],Model,Mark 5,Level 3,MB-S1;",
+	"H2P1O[13],S1 SYSTEM switch,A (S1 BASIC),B (Level 3);",
+	"h2P1-;",
+	"P1O[15:14],Floppy card,Auto,MP-1802,None;",
+	"P1O[10],PSG card,On,Off;",
+	"P1O[16],Tape speed,16x,Normal;",
+	"P1-;",
+	"P1T[18],Rewind tape;",
+
+	"P2O[6],Interlace,Even field,On;",
+	"P2O[9],Border,On,Off;",
+	"P2O[117:115],Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+	"P2O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	"P2O[17],Tape overlay,On,Off;",
+
+	"P3O[5],Keyboard,US symbols,JIS layout;",
+
+	"I,Tape ready (rewound);",
+	"v,1;",
 	"V,v",`BUILD_DATE,";",
 	"J,Fire 1,Fire 2"
 };
@@ -269,7 +287,9 @@ hps_io #(.CONF_STR(CONF_STR), .WIDE(0), .VDNUM(3)) hps_io
 
 	.buttons(buttons),
 	.status(status),
-	.status_menumask({13'd0, status[12:11] != 2'd2, 2'b00}),
+	.status_menumask({13'd0, status[12:11] != 2'd2, 1'b0, pending}),
+	.info_req(info_req),
+	.info(8'd1),
 
 	.ps2_key(ps2_key),
 	.joystick_0(joy),
@@ -309,18 +329,15 @@ pll pll
 );
 
 wire rom_download  = ioctl_download && ioctl_index == 8'd0;
-// Changing the model or the S1 SYSTEM switch resets the machine (the core
-// latches both at reset).
-wire  [2:0] model_cfg = {status[13], status[12:11]};
-reg   [2:0] model_cfg_d;
-reg   [7:0] model_rst;
-always @(posedge clk_sys) begin
-	model_cfg_d <= model_cfg;
-	if (model_cfg != model_cfg_d) model_rst <= 8'hff;
-	else if (model_rst) model_rst <= model_rst - 1'd1;
-end
+wire reset = RESET | status[0] | buttons[1] | rom_download;
 
-wire reset = RESET | status[0] | buttons[1] | rom_download | (model_rst != 0);
+// The settings the machine runs with, taken from the OSD at every reset (Apply
+// and reset, the board's reset, a core load). Keyboard (5), Tape speed (16),
+// Tape overlay (17) and Rewind tape (18) read status directly.
+reg [127:0] cfg;
+always @(posedge clk_sys) if (reset) cfg <= status;
+wire pending = {status[6], status[15:8], status[117:115], status[122:121]}
+            != {cfg[6],    cfg[15:8],    cfg[117:115],    cfg[122:121]};
 
 // Floppy card, fitted at reset. Auto fits it only when drive 0 holds an image:
 // an S1 in A mode with the card fitted waits for a system disk forever
@@ -330,22 +347,28 @@ always @(posedge clk_sys) begin
 	if (img_mounted[0]) disk0_in <= |img_size;
 	if (reset) fdc_fit <= status[15:14] == 2'd1 || (status[15:14] == 2'd0 && disk0_in);
 end
+
+// "Tape ready (rewound)" on every tape mount
+reg info_req;
+always @(posedge clk_sys) info_req <= img_mounted[2] && |img_size;
+
 wire        tape_strobe;
 wire  [7:0] tape_byte;
 wire        tape_active;
+wire [31:0] tape_pos, tape_len;
 wire        motor, baud1200, rx_full;
 wire [31:0] sd_lba_fdc [2];
 wire  [7:0] sd_buff_din_fdc [2];
 wire  [1:0] sd_rd_fdc, sd_wr_fdc;
 
 tape tape (
-	.clk(clk_sys), .reset(RESET),
+	.clk(clk_sys), .reset(RESET), .rewind(status[18]),
 	.motor(motor), .baud1200(baud1200), .rx_full(rx_full),
-	.speed(status[3:1] > 3'd4 ? 3'd4 : status[3:1]),
+	.speed(status[16] ? 3'd0 : 3'd4),
 	.img_mounted(img_mounted[2]), .img_size(img_size),
 	.sd_lba(sd_lba[2]), .sd_rd(sd_rd[2]), .sd_ack(sd_ack[2]),
 	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_wr(sd_buff_wr),
-	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active(tape_active), .position()
+	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active(tape_active), .position(tape_pos), .length(tape_len)
 );
 assign sd_wr[2] = 1'b0;
 assign sd_buff_din[2] = 8'd0;
@@ -370,12 +393,12 @@ keyboard keyboard (
 );
 
 core core (
-	.clk(clk_sys), .reset_in(reset), .mark5(status[12:11] != 2'd1), .s1(status[12:11] == 2'd2), .s1_amode(~status[13]), .interlace(status[6]),
+	.clk(clk_sys), .reset_in(reset), .mark5(cfg[12:11] != 2'd1), .s1(cfg[12:11] == 2'd2), .s1_amode(~cfg[13]), .interlace(cfg[6]),
 	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[17:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(8'h03),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200), .rx_full(rx_full),
 	.beep(beep),
-	.fdc_en(fdc_fit), .ram_hi(~status[8]), .border(~status[9]), .psg_en(~status[10]),
+	.fdc_en(fdc_fit), .ram_hi(~cfg[8]), .border(~cfg[9]), .psg_en(~cfg[10]),
 	.joy(~{2'b00, joy[5], joy[4], joy[0], joy[1], joy[2], joy[3]}), .psg_snd(psg_snd),
 	.img_mounted(img_mounted[1:0]), .img_readonly(img_readonly), .img_size(img_size),
 	.sd_lba(sd_lba_fdc), .sd_rd(sd_rd_fdc), .sd_wr(sd_wr_fdc), .sd_ack(sd_ack[1:0]),
@@ -385,9 +408,17 @@ core core (
 	.hs(hs), .vs(vs), .hb(hb), .vb(vb), .field(VGA_F1), .ce_pix(ce_pix)
 );
 
+wire [7:0] ov_r, ov_g, ov_b;
+tape_overlay tape_overlay (
+	.clk(clk_sys), .loaded(tape_len != 0), .playing(motor), .fast(~status[16]),
+	.baud1200(baud1200), .position(tape_pos), .size(tape_len),
+	.enable(~status[17]), .ce_pix(ce_pix), .hblank(hb), .vblank(vb),
+	.r_in(red), .g_in(green), .b_in(blue), .r_out(ov_r), .g_out(ov_g), .b_out(ov_b)
+);
+
 assign CLK_VIDEO = clk_sys;
 
-wire [2:0] video_fx = status[117:115];
+wire [2:0] video_fx = cfg[117:115];
 wire [2:0] scanline_fx = video_fx ? video_fx - 3'd1 : 3'd0;
 wire scandoubler = forced_scandoubler | (video_fx != 3'd0);
 assign VGA_SL = scanline_fx[1:0];
@@ -403,9 +434,9 @@ video_mixer #(
 	.scandoubler(scandoubler),
 	.hq2x(video_fx == 3'd1),
 	.gamma_bus(gamma_bus),
-	.R(red),
-	.G(green),
-	.B(blue),
+	.R(ov_r),
+	.G(ov_g),
+	.B(ov_b),
 	.HSync(hs),
 	.VSync(vs),
 	.HBlank(hb),

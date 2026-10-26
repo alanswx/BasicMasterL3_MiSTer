@@ -87,14 +87,15 @@ wire        tape_strobe;
 wire  [7:0] tape_byte;
 wire        motor, baud1200, rx_full;
 wire [31:0] sd_lba_core [2];
+wire [31:0] tape_pos, tape_len;
 
 tape tape (
-	.clk(clk_sys), .reset(reset),
+	.clk(clk_sys), .reset(reset), .rewind(1'b0),
 	.motor(motor), .baud1200(baud1200), .rx_full(rx_full), .speed(tape_speed),
 	.img_mounted(img_mounted[2]), .img_size(img_size),
 	.sd_lba(sd_lba[2]), .sd_rd(sd_rd_t), .sd_ack(sd_ack[2]),
 	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_wr(sd_buff_wr),
-	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active(), .position()
+	.rx_strobe(tape_strobe), .rx_data(tape_byte), .active(), .position(tape_pos), .length(tape_len)
 );
 assign sd_buff_din[2] = 8'd0;
 assign sd_lba[0] = sd_lba_core[0];
@@ -128,8 +129,16 @@ core core (
 	.sd_lba(sd_lba_core), .sd_rd(sd_rd2), .sd_wr(sd_wr2), .sd_ack(sd_ack[1:0]),
 	.sd_buff_addr(sd_buff_addr), .sd_buff_dout(sd_buff_dout), .sd_buff_din(sd_buff_din_core),
 	.sd_buff_wr(sd_buff_wr),
-	.red(VGA_R), .green(VGA_G), .blue(VGA_B),
+	.red(red), .green(green), .blue(blue),
 	.hs(VGA_HS), .vs(VGA_VS), .hb(VGA_HB), .vb(VGA_VB), .field(), .ce_pix(CE_PIXEL)
+);
+
+wire [7:0] red, green, blue;
+tape_overlay tape_overlay (
+	.clk(clk_sys), .loaded(tape_len != 0), .playing(motor), .fast(tape_speed != 0),
+	.baud1200(baud1200), .position(tape_pos), .size(tape_len),
+	.enable(1'b1), .ce_pix(CE_PIXEL), .hblank(VGA_HB), .vblank(VGA_VB),
+	.r_in(red), .g_in(green), .b_in(blue), .r_out(VGA_R), .g_out(VGA_G), .b_out(VGA_B)
 );
 
 wire [10:0] psg_snd;

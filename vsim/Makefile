@@ -51,6 +51,7 @@ V_SRC = \
 	$(RTL)/acia6850.v \
 	$(RTL)/keyboard.v \
 	$(RTL)/tape.v \
+	$(RTL)/tape_overlay.v \
 	$(RTL)/mp1802.v \
 	$(RTL)/wd1793.sv \
 	$(RTL)/wd_dpram.v \
