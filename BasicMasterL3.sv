@@ -370,7 +370,7 @@ keyboard keyboard (
 );
 
 core core (
-	.clk(clk_sys), .reset(reset), .mark5(status[12:11] != 2'd1), .s1(status[12:11] == 2'd2), .s1_amode(~status[13]), .interlace(status[6]),
+	.clk(clk_sys), .reset_in(reset), .mark5(status[12:11] != 2'd1), .s1(status[12:11] == 2'd2), .s1_amode(~status[13]), .interlace(status[6]),
 	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[17:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(8'h03),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200), .rx_full(rx_full),

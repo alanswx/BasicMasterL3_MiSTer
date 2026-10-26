@@ -101,6 +101,9 @@ std::vector<unsigned long long> watch_hits;
 struct KeyInjection { int frame; std::string keys; };
 std::vector<KeyInjection> key_injections;
 std::vector<int> text_dump_frames;
+// --switch: change the model at a frame and reset, as the OSD does
+struct ModelSwitch { int frame; bool mark5, s1, amode; };
+std::vector<ModelSwitch> model_switches;
 
 static int sim_frame() { return (int)(main_time / TICKS_PER_FRAME); }
 
@@ -417,6 +420,15 @@ static bool frame_actions(int frame)
 		if (it->frame == frame) { save_mem_dump(*it); it = mem_dumps.erase(it); }
 		else ++it;
 	}
+	for (auto it = model_switches.begin(); it != model_switches.end(); ) {
+		if (it->frame == frame) {
+			mark5 = it->mark5; s1 = it->s1; s1_amode = it->amode;
+			top->mark5 = mark5; top->s1 = s1; top->s1_amode = s1_amode;
+			top->reset = 1; reset_ticks = main_time;
+			printf("[switch] frame %d: mark5=%d s1=%d amode=%d, reset\n", frame, mark5, s1, s1_amode);
+			it = model_switches.erase(it);
+		} else ++it;
+	}
 	for (auto it = text_dump_frames.begin(); it != text_dump_frames.end(); ) {
 		if (*it == frame) { dump_text(frame); it = text_dump_frames.erase(it); }
 		else ++it;
@@ -454,6 +466,7 @@ static void usage(const char* argv0)
 	"  --fdc                      fit the MP-1802 card without a disk\n"
 	"  --tape-speed N             fast tape: byte rate x 2^N while the motor runs (default 0)\n"
 	"  --model l3|mk5|s1          Level 3, Mark 5 (default) or MB-S1\n"
+	"  --switch N:MODEL[:a|b]     at frame N switch to l3|mk5|s1 (S1 mode a/b) and reset\n"
 	"  --s1mode a|b               MB-S1 SYSTEM switch: A = S1 BASIC (default), B = Level 3\n"
 	"  --interlace                generate both interlace fields (default: even only)\n"
 	"  --keyboard us|jis         symbol translation (us, default) or positional\n"
@@ -519,6 +532,18 @@ int main(int argc, char** argv, char** env)
 		else if (a == "--dipsw")             dipsw = strtoul(next("--dipsw").c_str(), nullptr, 16);
 		else if (a == "--interlace")         interlace = true;
 		else if (a == "--keyboard")          symbolic = next("--keyboard") != "jis";
+		else if (a == "--switch") {
+			std::string v = next("--switch");
+			ModelSwitch m{atoi(v.c_str()), true, false, true};
+			size_t c = v.find(':');
+			std::string mod = c == std::string::npos ? "" : v.substr(c + 1);
+			if (mod.size() > 3 && mod.substr(mod.size() - 2) == ":b") { m.amode = false; mod.resize(mod.size() - 2); }
+			else if (mod.size() > 3 && mod.substr(mod.size() - 2) == ":a") mod.resize(mod.size() - 2);
+			if      (mod == "l3")  m.mark5 = false;
+			else if (mod == "s1")  m.s1 = true;
+			else if (mod != "mk5") { printf("--switch wants N:l3|mk5|s1[:a|b]\n"); return 1; }
+			model_switches.push_back(m);
+		}
 		else if (a == "--s1mode")            s1_amode = next("--s1mode") != "b";
 		else if (a == "--model") {
 			std::string v = next("--model");

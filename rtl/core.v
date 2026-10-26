@@ -16,7 +16,7 @@
 //   BASIC never enters it.
 module core (
   input             clk,
-  input             reset,
+  input             reset_in,
   input             mark5,        // Mark 5: $FFE8 bank register and IG
   input             s1,           // MB-S1
   input             s1_amode,     // S1 SYSTEM switch: 1 = A (S1 BASIC), 0 = B (Level 3)
@@ -70,6 +70,17 @@ module core (
   output            field,        // odd interlace field (VGA_F1)
   output            ce_pix
 );
+
+// ---------------------------------------------------------------------------
+// Every reset is a power-on: after reset_in the CPU stays in reset while the
+// main RAM is cleared (64K clocks, 2 ms), so BASIC cold-starts instead of
+// warm-starting ("Abort") on RAM left by another model.
+reg  [16:0] clr = 17'h10000;
+always @(posedge clk)
+  if (reset_in) clr <= 17'd0;
+  else if (~clr[16]) clr <= clr + 17'd1;
+wire clearing = ~clr[16];
+wire reset = reset_in | clearing;
 
 // ---------------------------------------------------------------------------
 // Mode, latched at reset (the S1's SYSTEM switch is read at reset)
@@ -221,7 +232,8 @@ wire [7:0] ram_d = gwin ? plane_wdata(cpu_dout, creg_r, bmsk[1]) : cpu_dout;
 
 dpram #(16, 8) ram (
   .clk(clk),
-  .a_addr(ram_a), .a_din(ram_d), .a_we(ram_we), .a_dout(ram_q),
+  .a_addr(clearing ? clr[15:0] : ram_a), .a_din(clearing ? 8'd0 : ram_d),
+  .a_we(clearing | ram_we), .a_dout(ram_q),
   // in A mode port B serves the S1 renderer's R plane
   .b_addr(amode ? {2'b00, s1_gaddr} : vram_addr), .b_din(8'd0), .b_we(1'b0), .b_dout(vram_q)
 );

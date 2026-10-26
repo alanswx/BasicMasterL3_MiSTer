@@ -53,11 +53,11 @@ wire [13:0] cursor_addr = {r[14][5:0], r[15]};
 assign vmode = imode == 2'b11;
 
 integer i;
+// RESET resets the counters only: the registers keep their values (HD46505
+// data sheet), and the Level 3 ROM's warm start relies on it.
+initial for (i = 0; i < 18; i = i + 1) r[i] = 8'd0;
 always @(posedge clk) begin
-  if (reset) begin
-    ar <= 5'd0;
-    for (i = 0; i < 18; i = i + 1) r[i] <= 8'd0;
-  end else if (cs & we) begin
+  if (cs & we) begin
     if (~rs) ar <= din[4:0];
     else if (ar < 5'd16) r[ar] <= din;
   end

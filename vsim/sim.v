@@ -118,7 +118,7 @@ assign sd_buff_din[0] = sd_buff_din_core[0];
 assign sd_buff_din[1] = sd_buff_din_core[1];
 
 core core (
-	.clk(clk_sys), .reset(core_reset), .mark5(mark5), .s1(s1), .s1_amode(s1_amode), .interlace(interlace),
+	.clk(clk_sys), .reset_in(core_reset), .mark5(mark5), .s1(s1), .s1_amode(s1_amode), .interlace(interlace),
 	.rom_wr(rom_download & ioctl_wr), .rom_addr(ioctl_addr[17:0]), .rom_data(ioctl_dout),
 	.keys(keys), .break_key(break_key), .dipsw(dipsw),
 	.rx_strobe(tape_strobe), .rx_data(tape_byte), .motor(motor), .baud1200(baud1200), .rx_full(rx_full),
