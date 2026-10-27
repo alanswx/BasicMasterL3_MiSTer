@@ -30,6 +30,7 @@ rtl/s1video.v         MB-S1 S1-mode display: text + 7-bit colour RAM over 3 plan
 rtl/acia6850.v        ACIA, byte level
 rtl/tape.v            .l3 player: one byte per 11 bit times into the ACIA, streamed from
                       block device 2 a sector at a time
+rtl/tape_overlay.v    tape status bar (tape standard): time, x16, progress bar
 rtl/keyboard.v        PS/2 -> Level 3 key codes, US-symbol translation, paced event queue
 rtl/mp1802.v          MP-1802 floppy card (MB8866 via wd1793.sv, $FF00-$FF07, boot ROM)
 rtl/wd1793.sv         FDC core from FM-7_MiSTer (D88/D77 sector-table scan); wd_dpram.v
@@ -115,6 +116,14 @@ Test on a MiSTer with `/Applications/MiSTerKVMS.app/Contents/MacOS/misterkvms-cl
   writes `releases/BasicMasterL3_tester_<date>.zip`. It contains ROMs and commercial
   software: give it to named testers only, and never attach it to a public release.
   Update `software/tester/README.txt` (load commands, what works) with each zip.
+
+## OSD
+
+The OSD follows `~/dev2/osd-standard.md` and `~/dev2/tape-standard.md`. Settings are
+latched into `cfg` at reset (use `cfg`, not `status`, for anything that changes the
+machine, and add new setting bits to `pending`). Keyboard (5), Tape speed (16), Tape
+overlay (17) and Rewind tape (T18) read `status` directly. Retired bits: 3:1, 7. Bump
+`v,N` when a value list changes. Hide flags go before the page prefix (`H2P1O...`).
 
 ## Conventions
 

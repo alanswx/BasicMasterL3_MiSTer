@@ -1,16 +1,17 @@
-Hitachi Basic Master Level 3 / Mark 5 / MB-S1 -- MiSTer core, tester build 2026-10-24
+Hitachi Basic Master Level 3 / Mark 5 / MB-S1 -- MiSTer core, tester build 2026-10-26
 ==================================================================================
 
 PRIVATE TESTER PACKAGE. It contains the system ROMs and commercial software.
 Please do not redistribute it.
 
-Core build: f3f5c82. This is the first hardware build with the MB-S1 model, SD-card
-tape streaming and the PSG card. Earlier builds were tested on a MiSTer (L3 boot,
-keyboard, tape, MP-1802 disk). This one has only been tested in simulation.
+Core build: fd3e6f3. Tested on a MiSTer: Level 3 / Mark 5 and MB-S1 boot, typing,
+reset and model changes, tape loading at 16x (Aerial on the MB-S1). New in this build:
+the OSD follows the MiSTer computer-core standard (see OSD below), Tape speed 16x by
+default, and a tape status bar.
 
 INSTALL
 -------
-  _Computer/BasicMasterL3_20261024.rbf  ->  /media/fat/_Computer/
+  _Computer/BasicMasterL3_20261026.rbf  ->  /media/fat/_Computer/
   games/BasicMasterL3/                  ->  /media/fat/games/BasicMasterL3/
                                             (boot0.rom must be in this folder)
 
