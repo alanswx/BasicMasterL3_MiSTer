@@ -22,18 +22,19 @@ SW=software
 cap() { n=$1; echo "$(echo ${n:0:1} | tr a-z A-Z)${n:1}"; }
 conv() { python3 -I $SW/tools/l3conv.py "$1" "$2" >/dev/null; }
 
+# File names carry the load command (testers used LOAD on LOADM tapes).
 # inufuto: plain L3 builds, Mark 5 builds, S1 builds
 for d in $SW/found/inufuto/*/; do
   n=$(cap "$(basename "$d")")
-  f=$(find "$d/l3" -name '*.l3' 2>/dev/null | head -1);    [ -n "$f" ] && cp "$f" "$T/$n.l3"
-  f=$(find "$d/l3mk5" -name '*.l3' 2>/dev/null | head -1); [ -n "$f" ] && cp "$f" "$M/$n (Mk5).l3"
-  f=$(find "$d/s1" -name '*.l3' 2>/dev/null | head -1);    [ -n "$f" ] && cp "$f" "$S1/$n (S1).l3"
+  f=$(find "$d/l3" -name '*.l3' 2>/dev/null | head -1);    [ -n "$f" ] && cp "$f" "$T/$n (LOADM).l3"
+  f=$(find "$d/l3mk5" -name '*.l3' 2>/dev/null | head -1); [ -n "$f" ] && cp "$f" "$M/$n (Mk5, LOADM).l3"
+  f=$(find "$d/s1" -name '*.l3' 2>/dev/null | head -1);    [ -n "$f" ] && cp "$f" "$S1/$n (S1, LOADM).l3"
 done
 
 E=$SW/extracted
-cp $E/Cannon-Ball_*/Cannonball.l3 "$T/Cannon Ball (Hudson).l3"
-cp "$E/Eric-and-the-Floaters_Hitachi-Basic-Master-Level-3_JA/Bomber Man.l3" "$T/Bomber Man (Hudson).l3"
-cp "$E/MELHEN_Hitachi-Basic-Master-Level-3_JA/MELHEN (Maison Ikkoku).l3" "$T/MELHEN.l3"
+cp $E/Cannon-Ball_*/Cannonball.l3 "$T/Cannon Ball (Hudson, LOAD, RUN).l3"
+cp "$E/Eric-and-the-Floaters_Hitachi-Basic-Master-Level-3_JA/Bomber Man.l3" "$T/Bomber Man (Hudson, LOAD, RUN).l3"
+cp "$E/MELHEN_Hitachi-Basic-Master-Level-3_JA/MELHEN (Maison Ikkoku).l3" "$T/MELHEN (LOAD, RUN).l3"
 cp $E/Skating_*/SKATING1.l3 "$M/Skating 1 (load first).l3"
 cp $E/Skating_*/SKATING2.l3 "$M/Skating 2.l3"
 cp $SW/found/s-sasaji/bmtetris/bmtetris_x/tetris_all.l3 "$M/BM Tetris.l3"
@@ -41,19 +42,19 @@ cp $SW/found/s-sasaji/bmblock_010/bmblock_010_x/BLOCK_ALL.l3 "$M/BM Block.l3"
 for f in 12lines 25lines 50lines; do cp $SW/found/s-sasaji/50lines/50lines_x/$f.l3 "$X/"; done
 
 # S1 commercial tapes (.l3b/.l3c -> .l3)
-conv "$E/Jelda_Hitachi-S1_JA/Jelda (Hitachi S1) [CT].l3b" "$S1/Jelda.l3"
-conv "$E/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Program).l3b" "$S1/Lode Runner 1 (Program).l3"
-conv "$E/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Data).l3b" "$S1/Lode Runner 2 (Data).l3"
+conv "$E/Jelda_Hitachi-S1_JA/Jelda (Hitachi S1) [CT].l3b" "$S1/Jelda (LOAD, RUN).l3"
+conv "$E/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Program).l3b" "$S1/Lode Runner 1 Program (LOAD, RUN).l3"
+conv "$E/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Data).l3b" "$S1/Lode Runner 2 Data.l3"
 for i in 1 2 3; do
   conv "$E/Dezeni-Land_Hitachi-S1_JA/Dezeni Land (Hitachi S1) [CT $i].l3c" "$S1/Dezeni Land $i (not working).l3"
 done
 LD="$SW/found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1"
-conv "$LD/Volguard (Hitachi S1) [CT].l3b" "$S1/Volguard (untested).l3"
+conv "$LD/Volguard (Hitachi S1) [CT].l3b" "$S1/Volguard (LOAD, RUN).l3"
 A=$SW/found/archive.org
-conv "$A/nutsandmilkhitachis1/Nuts & Milk (Hitachi S1) - ROM File_x/Nuts & Milk (Hitachi S1) [CT].l3b" "$S1/Nuts & Milk (untested).l3"
-conv "$A/mariobrosspecialhitachis1/Mario Bros. Special (Hitachi S1) - ROM File_x/Mario Bros. Special (Hitachi S1) [CT].l3b" "$S1/Mario Bros Special (untested).l3"
+conv "$A/nutsandmilkhitachis1/Nuts & Milk (Hitachi S1) - ROM File_x/Nuts & Milk (Hitachi S1) [CT].l3b" "$S1/Nuts & Milk (LOAD, RUN).l3"
+conv "$A/mariobrosspecialhitachis1/Mario Bros. Special (Hitachi S1) - ROM File_x/Mario Bros. Special (Hitachi S1) [CT].l3b" "$S1/Mario Bros Special (LOAD, RUN).l3"
 for i in 1 2 3; do
-  conv "$A/princesstomatointhesaladkingdomhitachis1/Princess Tomato in the Salad Kingdom (Hitachi S1) - ROM Files_x/Princess Tomato in the Salad Kingdom (Hitachi S1) [CT $i].l3c" "$S1/Princess Tomato $i (untested).l3"
+  conv "$A/princesstomatointhesaladkingdomhitachis1/Princess Tomato in the Salad Kingdom (Hitachi S1) - ROM Files_x/Princess Tomato in the Salad Kingdom (Hitachi S1) [CT $i].l3c" "$S1/Princess Tomato $i (not working).l3"
 done
 
 cp $E/mame_bml3_flop_*/*.d88 "$D/"

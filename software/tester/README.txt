@@ -51,13 +51,16 @@ OSD
 
 LOADING
 -------
-  BASIC reaches "Ready" a second or two after reset. Mount the tape first, then type:
+  BASIC reaches "Ready" a second or two after reset. Mount the tape first, then type
+  the command in the file name:
 
-  inufuto games (Tape - Level 3 / Mark 5 / MB-S1):   LOADM"",,R
-      Use the Mark 5 builds with Model = Mark 5 and the (S1) builds with Model = MB-S1
-      and SYSTEM switch A. The plain builds run on every model.
+  (LOADM)          LOADM"",,R          machine code: the inufuto games
+  (LOAD, RUN)      LOAD   then   RUN   BASIC programs and the commercial games
+  Using the wrong one gives "Bad file mode" (LOAD on a machine-code tape, or
+  LOADM on a BASIC tape).
 
-  Hudson (Cannon Ball, Bomber Man), MELHEN:   LOAD   then   RUN
+  Use the (Mk5) builds with Model = Mark 5 and the (S1) builds with Model = MB-S1
+  and SYSTEM switch A. The plain builds run on every model.
 
   BM Tetris / BM Block (Mark 5):   LOAD, RUN   (IG character setter)
                                    LOADM       (character data)
@@ -66,12 +69,16 @@ LOADING
 
   Skating (Mark 5):   Skating 1: LOAD, RUN.  Then Skating 2: LOAD, RUN.
 
-  MB-S1 commercial tapes (Model MB-S1, switch A):   LOAD   then   RUN
-      Jelda                      works in simulation (title and story screens)
-      Lode Runner (1 then 2)     reaches its COMMAND screen in simulation
-      Dezeni Land                KNOWN BROKEN: hangs on "Loading" (converter problem)
-      Volguard, Nuts & Milk, Mario Bros Special, Princess Tomato
-                                 converted but never run. Please report what happens.
+  MB-S1 commercial tapes (Model MB-S1, switch A), all LOAD then RUN. In simulation:
+      Jelda                      title and story screens
+      Lode Runner (1 then 2)     COMMAND screen
+      Nuts & Milk                title screen
+      Mario Bros Special         title screen
+      Princess Tomato 1          title screen
+      Dezeni Land 1              loads; asks to load data from tape (Y or N)
+      Volguard                   starts loading (a 32-minute tape: about 2 at 16x)
+  Nuts & Milk, Mario, Princess Tomato and Dezeni Land were broken in earlier zips (a
+  tape-conversion bug), so their tapes in this zip are new.
 
   Tape - Tests: 12lines/50lines reprogram the CRTC for 12 or 50 text rows; 25lines
   restores. Type NEWON7 first, then LOAD, RUN.
@@ -84,7 +91,8 @@ LOADING
 WHAT TO REPORT
 --------------
   - The MB-S1 model: boot banner, typing, LINE/CIRCLE, the S1 games
-  - Tape: loading at 16x and at Normal; the tape overlay
+  - Tape: loading at 16x and at Normal; the tape overlay. If a tape loads at Normal
+    but not at 16x, please say which tape, which Model, and what is on the screen.
   - The PSG card / S1 sound
   - Video: picture position and size on your display, with and without Border/Interlace
   - Anything that differs from a real machine or from EmuB

@@ -12,9 +12,20 @@ all it needs even for tapes that change speed (Lode Runner).
         2400 Hz = '10'   (a 1 bit is 4 cycles at 600 baud, 2 at 1200).
         Any other character (EmuB-S1 files contain G/H/L) is ignored.
 
+A frame is start, 8 data bits, then bits 9 and 10. BASIC writes 8N2 (both 1);
+custom loaders (Mario Bros Special's LOADER/M, ACIA control $58) use 8E1, where
+bit 9 is the parity bit and only bit 10 is a stop bit. A frame whose bit 9 is 0
+is accepted when bit 10 is 1 and bit 9 is the byte's even parity, so those
+bytes are no longer dropped as framing errors (and 8N2 data decodes as before).
+
 usage: l3conv.py in.l3b|in.l3c out.l3
 """
 import sys
+
+
+def even_par0(byte):
+    """True if a 0 parity bit is correct for this byte under even parity."""
+    return bin(byte).count('1') % 2 == 0
 
 
 def frames(bits, bit_len=1):
@@ -34,8 +45,9 @@ def frames(bits, bit_len=1):
                 ok = False
                 break
             byte |= bits[j] << b
-        stop = i + 9 * bit_len + bit_len // 2
-        if not ok or stop >= n or bits[stop] != 1:
+        s1 = i + 9 * bit_len + bit_len // 2
+        s2 = i + 10 * bit_len + bit_len // 2
+        if not ok or s2 >= n or not (bits[s1] == 1 or (bits[s2] == 1 and even_par0(byte))):
             i += 1                              # framing error: resync
             continue
         out.append(byte)
@@ -61,37 +73,57 @@ def l3c(text):
         t = 1 if run <= 1 else 0
         tone.extend([t] * run)
         i = j
-    # decode byte by byte, choosing 8 (600 baud) or 4 (1200 baud) samples per
-    # bit by which gives valid stop bits; prefer the rate of the last byte
+    # decode byte by byte at 8 (600 baud) or 4 (1200 baud) samples per bit.
+    # A 600-baud frame is also a valid 1200-baud frame whose bit 0 is always 0
+    # ($FF reads as $FE), so one frame can't tell the rates apart: pick the
+    # rate that decodes more of the next few frames cleanly. On a tie, 600-baud
+    # data read at 1200 shows doubled bits (bit 0 = 0, 1 = 2, 3 = 4, 5 = 6) in
+    # every frame; real 1200-baud data almost never does.
+    n = len(tone)
+
+    def frame(i, c):
+        if i + 10 * c + c // 2 >= n or tone[i + c // 2] != 0:
+            return None
+        byte = 0
+        for b in range(8):
+            byte |= tone[i + (b + 1) * c + c // 2] << b
+        s1, s2 = tone[i + 9 * c + c // 2], tone[i + 10 * c + c // 2]
+        if s2 == 1 and (s1 == 1 or even_par0(byte)):
+            return byte
+        return None
+
+    def next_start(i, c):
+        j, lim = i + 10 * c, min(n, i + 40 * c)
+        while j < lim and tone[j] != 0:
+            j += 1
+        return j if j < lim else None
+
+    def score(i, c, look=6):
+        k, doubled = 0, True
+        while k < look and i is not None:
+            byte = frame(i, c)
+            if byte is None:
+                break
+            b = [(byte >> x) & 1 for x in range(8)]
+            doubled &= b[0] == 0 and b[1] == b[2] and b[3] == b[4] and b[5] == b[6]
+            k += 1
+            i = next_start(i, c)
+        return k, doubled
+
     out = bytearray()
-    i, n = 0, len(tone)
-    bl = 8
+    i = 0
     while i < n:
         if tone[i] != 0:
             i += 1
             continue
-        got = None
-        for cand in ((bl, 12 - bl) if bl in (4, 8) else (8, 4)):
-            byte = 0
-            ok = True
-            for b in range(8):
-                j = i + (b + 1) * cand + cand // 2
-                if j >= n:
-                    ok = False
-                    break
-                byte |= tone[j] << b
-            s1 = i + 9 * cand + cand // 2
-            s2 = i + 10 * cand + cand // 2
-            if ok and s2 < n and tone[s1] == 1 and tone[s2] == 1 \
-               and tone[i + cand // 2] == 0:
-                got = (byte, cand)
-                break
-        if got is None:
+        (s8, _), (s4, doubled) = score(i, 8), score(i, 4)
+        c = 8 if s8 > s4 or (s8 == s4 and doubled) else 4
+        byte = frame(i, c)
+        if byte is None:
             i += 1
             continue
-        out.append(got[0])
-        bl = got[1]
-        i += 10 * bl
+        out.append(byte)
+        i += 10 * c
     return bytes(out)
 
 

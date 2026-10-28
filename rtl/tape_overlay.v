@@ -4,9 +4,8 @@
 // relay is on. It is mixed into the RGB after the machine and never changes it.
 //
 // An .l3 image is one byte per 11 bit times, so tape time follows from bytes:
-// elapsed = bytes played * 11 / baud, total = image size * 11 / baud. Both are
-// at the tape's own rate (fast loading shows "x16" instead), saturating at
-// 99:59. Everything runs on clk_sys (CLK_VIDEO = clk_sys), so the status needs
+// elapsed = bytes played * 11 / baud, total = image size * 11 / baud, both at
+// the current baud rate (fast loading shows "x16" instead), saturating at 99:59. Everything runs on clk_sys (CLK_VIDEO = clk_sys), so the status needs
 // no clock-domain handshake.
 module tape_overlay (
   input             clk,
@@ -45,33 +44,37 @@ function [15:0] bcd_tick;         // m1 m0 s1 s0 + 1 s
 endfunction
 
 // ---- status ---------------------------------------------------------------
+// Both times are divided out of byte counts at the current baud rate, so they
+// stay consistent when a program switches between 600 and 1200 baud.
 wire [10:0] baud = baud1200 ? 11'd1200 : 11'd600;
-reg  [15:0] elapsed = 0, total = 0;
-reg  [10:0] acc = 0;              // bit times into the current second
-reg  [31:0] last_pos = 0, last_size = 0, rem = 0, cell_n = 0;
-reg         last_baud = 0, computing = 0;
+reg  [15:0] elapsed = 0, total = 0, e_cnt = 0, t_cnt = 0;
+reg  [31:0] last_pos = 0, e_rem = 0, t_rem = 0, cell_n = 0;
+reg         e_busy = 0, t_busy = 0;
 reg   [6:0] fill = 0;
 wire [31:0] cell_len = size[31:6] == 0 ? 32'd1 : {6'd0, size[31:6]};
 
+function [31:0] x11;
+  input [31:0] n;
+  x11 = {n[28:0], 3'd0} + {n[30:0], 1'b0} + n;
+endfunction
+
 always @(posedge clk) begin
+  // m:ss = bytes * 11 / baud, by repeated subtraction, recomputed continuously
+  if (~e_busy) begin e_rem <= x11(position); e_cnt <= 0; e_busy <= 1'b1; end
+  else if (e_rem >= {21'd0, baud}) begin e_rem <= e_rem - {21'd0, baud}; e_cnt <= bcd_tick(e_cnt); end
+  else begin elapsed <= e_cnt; e_busy <= 1'b0; end
+  if (~t_busy) begin t_rem <= x11(size); t_cnt <= 0; t_busy <= 1'b1; end
+  else if (t_rem >= {21'd0, baud}) begin t_rem <= t_rem - {21'd0, baud}; t_cnt <= bcd_tick(t_cnt); end
+  else begin total <= t_cnt; t_busy <= 1'b0; end
+
   last_pos <= position;
   if (position == 0 || position < last_pos) begin
-    elapsed <= 0; acc <= 0; fill <= 0; cell_n <= 0;
+    fill <= 0; cell_n <= 0;
   end else if (position != last_pos) begin
-    if (acc + 11'd11 >= baud) begin acc <= acc + 11'd11 - baud; elapsed <= bcd_tick(elapsed); end
-    else acc <= acc + 11'd11;
     if (cell_n + 32'd1 >= cell_len) begin
       cell_n <= 0;
       if (fill != 7'd64) fill <= fill + 7'd1;
     end else cell_n <= cell_n + 32'd1;
-  end
-  // total: take one second of bit times off size*11 per clock
-  last_size <= size; last_baud <= baud1200;
-  if (size != last_size || baud1200 != last_baud) begin
-    rem <= {size[28:0], 3'd0} + {size[30:0], 1'b0} + size; total <= 0; computing <= 1'b1;
-  end else if (computing) begin
-    if (rem >= {21'd0, baud}) begin rem <= rem - {21'd0, baud}; total <= bcd_tick(total); end
-    else computing <= 1'b0;
   end
 end
 

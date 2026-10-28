@@ -43,8 +43,10 @@ research and lessons; its checkboxes are kept up to date.
 - **Next, in order:**
   1. Hardware-test f3f5c82: MB-S1 boot and games, SD tape at 1x and fast speeds, PSG
      card and S1 PSG audio. Collect tester reports.
-  2. Dezeni Land: fix the `.l3c` raw-stream decode in `l3conv.py` (compare with EmuB-S1
-     `cmt.cpp` or a WAV decode).
+  2. Tester report (2026-10-27): "on L3, tapes load only with turbo off". Not
+     reproduced in vsim (Ascend at 16x loads on Level 3, Mark 5 and S1 mode B); waiting
+     for the tester's model, tape and screen. Next idea if it is real: prefetch the next
+     tape sector (tape standard rule 10), since a slow SD read pauses playback.
   3. Mazy (S1): the right-hand score digits are clipped. Compare with EmuB-S1.
   4. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
      keyboard's extra keys.
@@ -234,9 +236,13 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   Tape"), so size is unlimited and 64 RAM blocks are free again.
 - S1 software in vsim: inufuto Mazy (S1 build) runs; Lode Runner loads across its 600/1200
   baud switch to the "COMMAND >" screen; Jelda (.l3b) loads at 16x and runs its title and
-  attract ("THE WARS OF JELDA"). Dezeni Land (.l3c) loads its Hudson LOADER/M, which reads
-  the whole raw stream (sync $E6 x499, ACIA /1) but never leaves "Loading": suspect the
-  l3conv.py decode of the raw part of the .l3c -- compare with EmuB-S1 / a WAV decode. Mazy S1's right-hand score digits look clipped:
+  attract ("THE WARS OF JELDA"). The Hudson tapes (Nuts & Milk, Mario Bros Special,
+  Princess Tomato, Dezeni Land) failed because of l3conv.py, fixed 2026-10-27: their
+  LOADER/M sets the ACIA to 8E1 (control $58), so bit 9 is parity and the old 2-stop-bit
+  check dropped every byte with parity 0; and in .l3c a 600-baud frame also decodes at
+  1200 (bit 0 = 0, $FF -> $FE), so the rate is now picked by decoding the next frames,
+  with a doubled-bit test on ties. All four reach their title / first prompt in vsim at
+  16x; the 8N2 tapes (Jelda, Lode Runner, Volguard) convert byte-identically. Mazy S1's right-hand score digits look clipped:
   compare with EmuB-S1.
 - Open items: see "Next" in the handoff above. Cassette SAVE comes last because it is
   awkward on MiSTer: it needs a writable image or an audio-out path.
@@ -357,7 +363,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 - [~] S1 video (done except 640x400 and 64 colours; on-chip BRAM was enough): VRAM, extra planes, palette (MAME ext-I/O `$EFE20-$EFE2F`: BMSK colour, active plane, display page, screen mode, BRG colour, palette at `$EFE28-2F`) and
   the 40/80-column text in S1 mode. RAM is beyond on-chip BRAM once expanded, so plan
   on SDRAM.
-- [~] Test with Jelda, Lode Runner and Dezeni Land (Jelda and Lode Runner OK in vsim; Dezeni Land open). Only EmuB-S1 can show the
+- [x] Test with Jelda, Lode Runner and Dezeni Land (all load in vsim; Dezeni Land after the 2026-10-27 l3conv fix). Only EmuB-S1 can show the
   correct behaviour.
 
 ### 9. Hardware and testers
