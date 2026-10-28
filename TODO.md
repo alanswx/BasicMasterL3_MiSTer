@@ -10,7 +10,11 @@ research and lessons; its checkboxes are kept up to date.
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
-- **Latest RBF:** fd3e6f3 (2026-10-26), tested on Mister 126: the OSD follows
+- **Latest RBF:** 5a70601 (2026-10-27), tested on Mister 14: Ascend (Level 3 model)
+  loads at 16x with the bar showing "1:57/ 2:43 x16"; Nuts & Milk (MB-S1, LOAD then
+  RUN, 8E1 loader) loads at 16x to its title screen. Also installed on Mister 12 for
+  hand testing (`_Computer/BasicMasterL3_20261027.rbf` plus the tester games tree).
+- **Before that:** fd3e6f3 (2026-10-26), tested on Mister 126: the OSD follows
   `~/dev2/osd-standard.md` (top page: Pri. disk 0, Disk 1, Tape, Load ROM, Memory; P1
   Machine, P2 Video, P3 Input; settings latched into `cfg` at reset, "Changes pending",
   Apply and reset; h2 blank keeps rows still; `v,1`) and `~/dev2/tape-standard.md`
@@ -44,7 +48,8 @@ research and lessons; its checkboxes are kept up to date.
   1. Hardware-test f3f5c82: MB-S1 boot and games, SD tape at 1x and fast speeds, PSG
      card and S1 PSG audio. Collect tester reports.
   2. Tester report (2026-10-27): "on L3, tapes load only with turbo off". Not
-     reproduced in vsim (Ascend at 16x loads on Level 3, Mark 5 and S1 mode B); waiting
+     reproduced in vsim (Ascend at 16x loads on Level 3, Mark 5 and S1 mode B) or on
+     hardware with 5a70601 (Ascend at 16x, Level 3 and Mark 5, Mister 14); waiting
      for the tester's model, tape and screen. Next idea if it is real: prefetch the next
      tape sector (tape standard rule 10), since a slow SD read pauses playback.
   3. Mazy (S1): the right-hand score digits are clipped. Compare with EmuB-S1.
