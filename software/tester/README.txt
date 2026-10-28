@@ -1,17 +1,18 @@
-Hitachi Basic Master Level 3 / Mark 5 / MB-S1 -- MiSTer core, tester build 2026-10-26
+Hitachi Basic Master Level 3 / Mark 5 / MB-S1 -- MiSTer core, tester build 2026-10-27
 ==================================================================================
 
 PRIVATE TESTER PACKAGE. It contains the system ROMs and commercial software.
 Please do not redistribute it.
 
-Core build: fd3e6f3. Tested on a MiSTer: Level 3 / Mark 5 and MB-S1 boot, typing,
-reset and model changes, tape loading at 16x (Aerial on the MB-S1). New in this build:
-the OSD follows the MiSTer computer-core standard (see OSD below), Tape speed 16x by
-default, and a tape status bar.
+Core build: 5a70601. New since the 2026-10-26 zip: the Hudson MB-S1 tapes (Nuts &
+Milk, Mario Bros Special, Princess Tomato, Dezeni Land) are re-converted and now load
+in simulation, and tape names carry the load command. The core changed only in the tape
+bar's clock; the OSD layout, 16x tape and the tape bar were tested on a MiSTer with
+build fd3e6f3.
 
 INSTALL
 -------
-  _Computer/BasicMasterL3_20261026.rbf  ->  /media/fat/_Computer/
+  _Computer/BasicMasterL3_20261027.rbf  ->  /media/fat/_Computer/
   games/BasicMasterL3/                  ->  /media/fat/games/BasicMasterL3/
                                             (boot0.rom must be in this folder)
 
