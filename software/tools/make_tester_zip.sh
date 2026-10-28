@@ -46,7 +46,7 @@ conv "$E/Jelda_Hitachi-S1_JA/Jelda (Hitachi S1) [CT].l3b" "$S1/Jelda (LOAD, RUN)
 conv "$E/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Program).l3b" "$S1/Lode Runner 1 Program (LOAD, RUN).l3"
 conv "$E/Lode-Runner_Hitachi-S1_JA/Lode Runner Hitachi S1 [CT] (Data).l3b" "$S1/Lode Runner 2 Data.l3"
 for i in 1 2 3; do
-  conv "$E/Dezeni-Land_Hitachi-S1_JA/Dezeni Land (Hitachi S1) [CT $i].l3c" "$S1/Dezeni Land $i (not working).l3"
+  conv "$E/Dezeni-Land_Hitachi-S1_JA/Dezeni Land (Hitachi S1) [CT $i].l3c" "$S1/Dezeni Land $i (LOAD, RUN).l3"
 done
 LD="$SW/found/local_downloads/rocks-preserved-games_Hitachi_S1/Hitachi S1_x/Hitachi S1"
 conv "$LD/Volguard (Hitachi S1) [CT].l3b" "$S1/Volguard (LOAD, RUN).l3"
@@ -54,7 +54,7 @@ A=$SW/found/archive.org
 conv "$A/nutsandmilkhitachis1/Nuts & Milk (Hitachi S1) - ROM File_x/Nuts & Milk (Hitachi S1) [CT].l3b" "$S1/Nuts & Milk (LOAD, RUN).l3"
 conv "$A/mariobrosspecialhitachis1/Mario Bros. Special (Hitachi S1) - ROM File_x/Mario Bros. Special (Hitachi S1) [CT].l3b" "$S1/Mario Bros Special (LOAD, RUN).l3"
 for i in 1 2 3; do
-  conv "$A/princesstomatointhesaladkingdomhitachis1/Princess Tomato in the Salad Kingdom (Hitachi S1) - ROM Files_x/Princess Tomato in the Salad Kingdom (Hitachi S1) [CT $i].l3c" "$S1/Princess Tomato $i (not working).l3"
+  conv "$A/princesstomatointhesaladkingdomhitachis1/Princess Tomato in the Salad Kingdom (Hitachi S1) - ROM Files_x/Princess Tomato in the Salad Kingdom (Hitachi S1) [CT $i].l3c" "$S1/Princess Tomato $i (LOAD, RUN).l3"
 done
 
 cp $E/mame_bml3_flop_*/*.d88 "$D/"
