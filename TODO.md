@@ -1,57 +1,55 @@
 # Basic Master Level 3 / MB-S1 MiSTer core: handoff TODO
 
-Started 2026-10-21; last updated 2026-10-26. The core works: Level 3 / Mark 5 run on a
-MiSTer, and the MB-S1 runs in vsim. **Start with "Handoff (2026-10-24)" below**, then
-`CLAUDE.md` (layout, sim, build). The rest of this file is the original plan, kept for its
-research and lessons; its checkboxes are kept up to date.
+Started 2026-10-21; last updated 2026-11-02. The core works on a MiSTer: Level 3 / Mark 5
+and the MB-S1 (S1 and Level 3 modes), tapes at 16x and Normal, the MP-1802 floppy card
+and both PSGs. **Start with "Handoff" below**, then `CLAUDE.md` (layout, sim, build). The
+rest of this file is the original plan, kept for its research and lessons; its checkboxes
+are kept up to date.
 
-## Handoff (2026-10-24)
+## Handoff (2026-11-02)
 
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
-- **Latest RBF:** 5a70601 (2026-10-27), tested on Mister 14: Ascend (Level 3 model)
-  loads at 16x with the bar showing "1:57/ 2:43 x16"; Nuts & Milk (MB-S1, LOAD then
-  RUN, 8E1 loader) loads at 16x to its title screen. Also installed on Mister 12 for
-  hand testing (`_Computer/BasicMasterL3_20261027.rbf` plus the tester games tree).
-- **Before that:** fd3e6f3 (2026-10-26), tested on Mister 126: the OSD follows
-  `~/dev2/osd-standard.md` (top page: Pri. disk 0, Disk 1, Tape, Load ROM, Memory; P1
-  Machine, P2 Video, P3 Input; settings latched into `cfg` at reset, "Changes pending",
-  Apply and reset; h2 blank keeps rows still; `v,1`) and `~/dev2/tape-standard.md`
-  (Tape speed 16x/Normal, Rewind tape, "Tape ready (rewound)", tape status bar in
-  `rtl/tape_overlay.v`). Not done from the standards: Swap Alt/Win (the keyboard maps
-  neither key), Tape audio (no waveform to play). Hardware check: Model change shows
-  Changes pending without resetting, Apply and reset boots S1 BASIC, tape mount message,
-  Aerial (S1) loads at 16x with the bar counting and vanishing when the motor stops.
-- **Before that:** f3c0c75 (2026-10-26), tested on Mister 126: reset fixed (the CRTC
-  model cleared its registers on reset, so after any L3 reset the warm start left no
-  HSYNC and the keyboard scanner stopped: the tester's "reset bug"); every reset now
-  clears main RAM so BASIC cold-starts. Model switches L3 <-> S1 A/B, OSD Reset, S1
-  BASIC and typing all verified on hardware. Tester zip
-  `releases/BasicMasterL3_tester_<date>.zip`.
-- **Earlier:** 35ab176 (2026-10-26): Floppy card "Auto" (fitted only with a disk in
-  drive 0, because an S1 in A mode with the card fitted waits forever at "Insert Program
-  Diskette", ROM `$5471`), reset on Model/SYSTEM change, J last in the OSD. Tester zip
-  `releases/BasicMasterL3_tester_20261026.zip`. Tester report on f3f5c82: S1 stuck at
-  the diskette prompt, tapes would not load (probably the same cause), "reset bug"
-  (details pending).
-- **Previous RBF:** f3f5c82 (`releases/BasicMasterL3_f3f5c82.rbf`). Timing met, 39% ALMs,
-  73% RAM blocks. It is the first build with the MB-S1, SD tape streaming and the PSG
-  card. **Not yet tested on hardware.** The last build tested on hardware is a30d92b
-  (L3 boot, keyboard, tape, MP-1802 Tetris).
-- **Testers:** `releases/BasicMasterL3_tester_20261024.zip` (f3f5c82 + boot0.rom + 66
-  tapes + 9 disks + README) went to two private testers. To rebuild it, run
-  `software/tools/make_tester_zip.sh`; the tester README is `software/tester/README.txt`.
-  The zip holds ROMs and commercial software, so never publish it.
-- **Hardware:** Mister 192 is shared with the user. Ask before loading anything on it.
+- **Latest RBF:** 5a70601 (`releases/BasicMasterL3_5a70601.rbf`), hardware-tested on
+  Mister 14 (2026-10-27) and Mister 126 (2026-11-02):
+  - Tape at 16x: Ascend (Level 3 and Mark 5) and Nuts & Milk (MB-S1, LOAD then RUN, the
+    Hudson 8E1 loader) load; the tape bar shows "x16".
+  - Tape at Normal: MELHEN loads in real time (bar "0:12/ 0:33", no x16) and runs with
+    beeper sound.
+  - PSG card: a BASIC test writing `$FF30-$FF33` gives 248 Hz from PSG 0 (period 254)
+    and 497 Hz from PSG 1 (period 127, PB2 = 1), as computed for 1.008 MHz.
+  - MB-S1 PSG: `POKE &HFFE5,reg / &HFFE4,data` in S1 BASIC gives 315 Hz (period 200).
+  - MP-1802 (Mark 5, Floppy card Auto, disk 0 then Apply and reset): tetris, subtreas
+    (slow, about 90 s to its title), insecth, hiwriter and jwp boot to their title or
+    prompt. hidata and ma5370 stop at plain BASIC `Ready` in both vsim and hardware
+    (data disks). **dbu and fcg6890 boot in vsim (DISK BASIC / graphics) but showed
+    plain BASIC `Ready` on hardware**; re-check them one at a time (the run may have
+    overlapped another session on Mister 126).
+  - OSD: Model, Changes pending, Apply and reset, Rewind tape, the mount message.
+  - The OSD settings are not kept across a `load_core` of the RBF or an MGL: set Model
+    in the OSD and use Apply and reset after loading.
+- **Tester zip:** `releases/BasicMasterL3_tester_20261027.zip` (5a70601, Hudson S1 tapes
+  re-converted, tape names carry the load command). Rebuild with
+  `software/tools/make_tester_zip.sh`; the README is `software/tester/README.txt`. The zip
+  holds ROMs and commercial software: give it only to the two named testers.
+- **Installed:** Mister 12 (`mister12`) has 5a70601 as `_Computer/BasicMasterL3_20261027.rbf`
+  plus the tester games tree, for the user to test by hand; the 20261024 install is in
+  `/media/fat/bml3_old/`.
+- **Hardware:** the lab MiSTers (126, 14, 12, 192) are shared. Check `/tmp/CORENAME` and
+  ask before loading anything; Mister 192 always needs the user's OK.
+- **Earlier builds:** fd3e6f3 (OSD and tape standards), f3c0c75 (reset fix: the CRTC
+  model cleared its registers on reset, so the warm start lost HSYNC and the keyboard
+  scanner stopped), 35ab176 (Floppy card Auto: an S1 in A mode with the card fitted waits
+  forever at "Insert Program Diskette", ROM `$5471`). Details are in `git log`.
+- **Not done from the OSD/tape standards:** Swap Alt/Win (the keyboard maps neither key)
+  and Tape audio (an .l3 holds bytes, not a waveform).
 - **Next, in order:**
-  1. Hardware-test f3f5c82: MB-S1 boot and games, SD tape at 1x and fast speeds, PSG
-     card and S1 PSG audio. Collect tester reports.
+  1. Re-check dbu.d88 and fcg6890.d88 on hardware (see above).
   2. Tester report (2026-10-27): "on L3, tapes load only with turbo off". Not
-     reproduced in vsim (Ascend at 16x loads on Level 3, Mark 5 and S1 mode B) or on
-     hardware with 5a70601 (Ascend at 16x, Level 3 and Mark 5, Mister 14); waiting
-     for the tester's model, tape and screen. Next idea if it is real: prefetch the next
-     tape sector (tape standard rule 10), since a slow SD read pauses playback.
+     reproduced in vsim or on hardware (Ascend at 16x on Level 3 and Mark 5); waiting
+     for the tester's model, tape and screen. If it is real: prefetch the next tape
+     sector (tape standard rule 10), since a slow SD read pauses playback.
   3. Mazy (S1): the right-hand score digits are clipped. Compare with EmuB-S1.
   4. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
      keyboard's extra keys.
@@ -220,7 +218,7 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
 `s1dic.rom` dictionary is not dumped). The user has authorised downloading ROM dumps
 (2026-10-21); they go in `roms/` (see `roms/README.md`), never in the RBF.
 
-## Status (2026-10-24)
+## Status (2026-11-02)
 
 - Research step 0 is done: `ref/SOURCES-*.md`, `ref/notes/`, `roms/README.md`,
   `software/README.md`. EmuB-6892 is the reference and builds on macOS.
@@ -229,12 +227,14 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   byte-exact: inufuto Mazy loads at real 600 baud and runs on the MiSTer too.
 - Mark 5 IG works in vsim (Mazy Mark 5 build); BM Tetris (IG) loads its IG setter.
 - MP-1802 floppy (two drives, D88 via wd1793.sv): the Tetris (1991) disk boots and
-  plays in vsim and on the MiSTer (build a30d92b). 6-voice PSG card (PIA + 2x jt49) answers register reads/writes.
+  plays in vsim and on the MiSTer (a30d92b, again on 5a70601). 6-voice PSG card (PIA + 2x
+  jt49): both PSGs play the computed tones on hardware (5a70601).
 - `$FFD1` trace NMI, optional true interlace, optional border, optional
   expansion RAM (off = stock MB-6890, 22378 bytes free) are in.
 - **MB-S1** (model 3 in the OSD; ref/notes/mbs1-implementation-spec.md): S1 BASIC boots to
   `Ready` in A mode, typing and 640x200 graphics (LINE/CIRCLE) work; B mode boots Level 3
-  BASIC. Build f3f5c82 meets timing: 39% logic, 73% RAM blocks. Not yet tried on hardware.
+  BASIC. Build f3f5c82 met timing at 39% logic, 73% RAM blocks. Runs on hardware since
+  fd3e6f3 (S1 BASIC, typing, S1 tapes at 16x, S1 PSG; see the handoff).
 - BM Tetris (Mark 5 IG, 5 chained tape files) runs end to end at real tape speed.
 - `software/tools/l3conv.py` converts `.l3b`/`.l3c` to `.l3` (Lode Runner converts with
   no bad blocks). Tapes are now streamed from the SD card as block device 2 (OSD "Mount
