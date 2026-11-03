@@ -11,8 +11,15 @@ are kept up to date.
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
-- **Latest RBF:** 5a70601 (`releases/BasicMasterL3_5a70601.rbf`), hardware-tested on
-  Mister 14 (2026-10-27) and Mister 126 (2026-11-02):
+- **Latest RBF:** c1d146e (`releases/BasicMasterL3_c1d146e.rbf`), on Mister 126
+  (2026-11-02): the tape player prefetches the next sector into a second buffer (tape
+  standard rule 10; byte-exact in vsim on Mazy and Nuts & Milk), and Cannon Ball (Hudson,
+  1200 baud, NEWON7 / LOAD / RUN) loads at 16x to its title. MB-S1 extra keys: Tab = TAB
+  (8-column stops in S1 BASIC), Delete = DEL and Insert = INS checked on hardware; F6 =
+  convert, F10 = COPY and right Alt = KANA are mapped but untested. Not yet on Mister 12
+  (it was off the network). The tester zip still has 5a70601.
+- **Previous RBF:** 5a70601, hardware-tested on Mister 14 (2026-10-27) and Mister 126
+  (2026-11-02):
   - Tape at 16x: Ascend (Level 3 and Mark 5) and Nuts & Milk (MB-S1, LOAD then RUN, the
     Hudson 8E1 loader) load; the tape bar shows "x16".
   - Tape at Normal: MELHEN loads in real time (bar "0:12/ 0:33", no x16) and runs with
@@ -47,8 +54,8 @@ are kept up to date.
 - **Next, in order:**
   1. Tester report (2026-10-27): "on L3, tapes load only with turbo off". Not
      reproduced in vsim or on hardware (Ascend at 16x on Level 3 and Mark 5); waiting
-     for the tester's model, tape and screen. If it is real: prefetch the next tape
-     sector (tape standard rule 10), since a slow SD read pauses playback.
+     for the tester's model, tape and screen. The tape now prefetches (c1d146e), which
+     was the likely cause; send the tester a new zip.
   2. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE.
   3. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
   4. Cassette SAVE, last.
