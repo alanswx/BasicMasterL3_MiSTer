@@ -49,11 +49,10 @@ are kept up to date.
      reproduced in vsim or on hardware (Ascend at 16x on Level 3 and Mark 5); waiting
      for the tester's model, tape and screen. If it is real: prefetch the next tape
      sector (tape standard rule 10), since a slow SD read pauses playback.
-  2. Mazy (S1): the right-hand score digits are clipped. Compare with EmuB-S1.
-  3. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
+  2. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
      keyboard's extra keys.
-  4. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
-  5. Cassette SAVE, last.
+  3. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
+  4. Cassette SAVE, last.
 
 ## Goal
 
@@ -246,8 +245,10 @@ Not in hand: **system ROMs**. MAME's sets are `bml3`/`bml3mk2`/`bml3mk5`
   check dropped every byte with parity 0; and in .l3c a 600-baud frame also decodes at
   1200 (bit 0 = 0, $FF -> $FE), so the rate is now picked by decoding the next frames,
   with a doubled-bit test on ties. All four reach their title / first prompt in vsim at
-  16x; the 8N2 tapes (Jelda, Lode Runner, Volguard) convert byte-identically. Mazy S1's right-hand score digits look clipped:
-  compare with EmuB-S1.
+  16x; the 8N2 tapes (Jelda, Lode Runner, Volguard) convert byte-identically. Mazy S1's short score is not clipping: the S1
+  build right-aligns its numbers to column 39 with leading zeros suppressed (title:
+  SCORE "00", STAGE "1", TIME "0"; in play TIME "60"), where the L3 build prints
+  "000000"/"01"/"000"; the 40-column picture has nothing past column 39.
 - Open items: see "Next" in the handoff above. Cassette SAVE comes last because it is
   awkward on MiSTer: it needs a writable image or an audio-out path.
 

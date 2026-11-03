@@ -103,6 +103,5 @@ WHAT TO REPORT
 KNOWN ISSUES
 ------------
   - Cassette SAVE is not implemented.
-  - MB-S1: no 640x400, 64-colour or user mode yet. Mazy (S1) score digits may be
-    clipped at the right edge.
+  - MB-S1: no 640x400, 64-colour or user mode yet.
   - No MP-1805 (3" floppy) and no kanji card.
