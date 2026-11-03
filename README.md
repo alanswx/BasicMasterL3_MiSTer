@@ -16,7 +16,7 @@ code layout, the simulator and the build.
 | MP-1802 5" floppy card (D88) | Works in simulation and on a MiSTer |
 | 6-voice PSG card | Works in simulation and on a MiSTer |
 | MB-S1 (S1 mode and Level 3 mode, mapper, S1 display, built-in PSG, extra keys) | S1 BASIC and several games run in simulation and on a MiSTer |
-| Cassette SAVE, MP-1805 3" floppy, 9-voice PSG, kanji ROM, S1 640x400 mode | Not done |
+| Cassette SAVE, MP-1805 3" floppy, 9-voice PSG, kanji ROM | Not done |
 
 ## Using it
 

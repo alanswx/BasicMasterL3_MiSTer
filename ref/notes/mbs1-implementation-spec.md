@@ -521,7 +521,7 @@ Notes:
   on top" (`cg0 | (cg1 & ~mask(cg0))`, displaysub.h:193-218). Analog uses the 2-bit tables
   (implemented; see 5.2a).
 * 640x400 needs interlace (CRTC video mode); even/odd lines come from `g_addr` and `+$800`
-  (display.cpp:1501-1538, displaysub.h:74). Later.
+  (display.cpp:1501-1538, displaysub.h:74). Implemented; see 5.2a.
 * `disp_page_changed` (display.cpp:388-397, 574) forces a plane to all-ones for the rest of a
   frame when a plane is switched on. It is an emulation of a latch-timing glitch. Skip it.
 
@@ -544,6 +544,9 @@ Notes:
 * 64-colour is implemented (s1video.v) after EmuB-S1; checked in vsim with a page-0 vertical /
   page-1 horizontal bar test (digital: page 0 on top; analog: the 8x8 grid, levels `$3F` /
   `$7F` / `$FF` as EmuB's `mm` table). EmuB itself calls the colours unverified.
+* 640x400 is implemented the same way: graphic address = MA + raster line (0-15) x `$800`
+  over R then G. Checked in vsim with Interlace on by interleaving two consecutive fields of
+  a 640x400 ellipse plotted through that mapping: a round 380-line ellipse.
 
 ### 5.3 B mode on the S1
 

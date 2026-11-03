@@ -56,9 +56,9 @@ are kept up to date.
      reproduced in vsim or on hardware (Ascend at 16x on Level 3 and Mark 5); waiting
      for the tester's model, tape and screen. The tape now prefetches (c1d146e), which
      was the likely cause; send the tester a new zip.
-  2. The rest of the S1: 640x400 (interlace; needs both fields and a 400-line sim
-     capture), user mode / FUSE. 64-colour (digital and analog) is done in vsim
-     (`POKE &HFE24,1`, analog `POKE &HFFE2,16`; see the spec, 5.2a); nothing found uses it.
+  2. The rest of the S1: user mode / FUSE. 64-colour (digital and analog) and 640x400
+     are done in vsim (`POKE &HFE24,1` / `2`, analog `POKE &HFFE2,16`; 640x400 needs the
+     Interlace option for all 400 lines; see the spec, 5.2a); nothing found uses them.
   3. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
   4. Cassette SAVE, last.
 

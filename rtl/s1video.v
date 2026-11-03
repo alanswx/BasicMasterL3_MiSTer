@@ -11,7 +11,11 @@
 // ($FFE2 bit 4) mixes the two palette entries into 4 levels per gun
 // (EmuB-S1 displaysub.h:147-218, display.cpp:109-139).
 //
-// Not yet: 640x400 (needs interlace).
+// 640x400 ($FE24 = x10) is one 32 KB plane, R then G: CRTC raster line n
+// (0-15, both interlace fields) of each row is at n * $800, so lines 0-7 come
+// from R (shown red) and 8-15 from G (green) (EmuB-S1 display.cpp:1316,
+// 1501-1520). It needs the Interlace option for all 400 lines; without it
+// only the even field (every other line) is shown.
 //
 // Phase (cnt[3:0]) as video.v's 80-column pipeline:
 //   1 addresses registered   3 bytes latched   5 pattern latched
@@ -64,6 +68,7 @@ wire       w80 = smode[2];
 wire       gw  = smode[1];
 wire [1:0] gm  = smode[1:0];
 wire       c64 = gm == 2'b01;
+wire       g400 = gm == 2'b10;
 
 // --- border window (as video.v: 64 px / 16 lines round the display) ---------
 reg [7:0] hc, hc_tot, hc_act;
@@ -91,13 +96,15 @@ end
 wire [13:0] g_off  = {11'd0, (is ? ra[3:1] : ra[2:0])} << (gw ? 11 : 10);
 wire [13:0] g_base = gw ? ma : {1'b0, ma[13:1]};
 wire [13:0] g_page = (gw || gm == 2'b01) ? 14'd0 : {dpage[1], 13'd0};
+wire [14:0] a400   = {1'b0, ma} + {ra[3:0], 11'd0};   // [14]: 0 = R, 1 = G
 
 reg [4:0] ra1;
-reg       half1, hde1, vde1, hs1, vs1, cur1, hv1, vv1;
+reg       half1, hde1, vde1, hs1, vs1, cur1, hv1, vv1, gsel1;
 always @(posedge clk) begin
   if (ph == 4'd1) begin
     t_addr <= w80 ? ma[10:0] : {dpage[0], ma[10:1]};
-    g_addr <= g_base + g_off + g_page;
+    g_addr <= g400 ? a400[13:0] : g_base + g_off + g_page;
+    gsel1 <= a400[14];
     ra1 <= ra; half1 <= ma[0];
     hde1 <= h_de; vde1 <= v_de; hs1 <= hsync_in; vs1 <= vsync_in; cur1 <= cursor_in;
     hv1 <= border_en & h_vis; vv1 <= border_en & v_vis;
@@ -109,9 +116,10 @@ end
 reg [7:0] code2, gr2, gg2, gb2;
 reg [6:0] cr2;
 reg [4:0] ra2;
-reg       half2, hde2, vde2, hs2, vs2, cur2, hv2, vv2;
+reg       half2, hde2, vde2, hs2, vs2, cur2, hv2, vv2, gsel2;
 always @(posedge clk) begin
   if (ph == 4'd3) begin
+    gsel2 <= gsel1;
     code2 <= t_q; cr2 <= c_q;
     gr2 <= gr_q; gg2 <= gg_q; gb2 <= gb_q;
     ra2 <= ra1; half2 <= half1;
@@ -128,9 +136,10 @@ assign ig_addr = {code2, is ? ra2[3:1] : ra2[2:0]};
 // --- stage 3: pattern -------------------------------------------------------
 reg [7:0] pat, pb, prr, pg, gr3, gg3, gb3, hr3, hg3, hb3;
 reg [6:0] cr3;
-reg       half3, hde3, vde3, hs3, vs3, cur3, hv3, vv3;
+reg       half3, hde3, vde3, hs3, vs3, cur3, hv3, vv3, gsel3;
 always @(posedge clk) begin
   if (ph == 4'd5) begin
+    gsel3 <= gsel2;
     pat <= font_q; pb <= ig_b; prr <= ig_r; pg <= ig_g;
     gr3 <= gr2; gg3 <= gg2; gb3 <= gb2; cr3 <= cr2;
     hr3 <= gr_q; hg3 <= gg_q; hb3 <= gb_q;   // page 1, addressed at ph 3
@@ -156,7 +165,8 @@ wire [2:0] igc   = cur3 ? cr3[2:0] : igc1;
 wire       fbit  = pat[tb] ^ cur3 ^ cr3[3];
 wire [2:0] tcol  = ig_t ? igc : (fbit ? cr3[2:0] : 3'd0);
 wire       ton   = ig_t ? (igc != 3'd0) : fbit;
-wire [2:0] gcol0 = {gg3[gb_i], gr3[gb_i], gb3[gb_i]} & dpage[7:5];
+wire [2:0] gcol0 = (g400 ? (gsel3 ? {gg3[gb_i], 2'b00} : {1'b0, gr3[gb_i], 1'b0})
+                          : {gg3[gb_i], gr3[gb_i], gb3[gb_i]}) & dpage[7:5];
 wire [2:0] gcol1 = c64 ? {hg3[gb_i], hr3[gb_i], hb3[gb_i]} & dpage[7:5] : 3'd0;
 // digital: page 0 on top; analog: the pages stay separate (c0 / c1)
 wire [2:0] gcol  = (c64 & analog) ? gcol0 : (gcol0 != 3'd0) ? gcol0 : gcol1;
