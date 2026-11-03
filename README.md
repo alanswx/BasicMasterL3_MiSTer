@@ -14,8 +14,8 @@ code layout, the simulator and the build.
 | Level 3 / Mark 5: BASIC, keyboard, 40/80-column text, colour, graphics, Mark 5 IG | Works in simulation and on a MiSTer |
 | Cassette load (`.l3`, streamed from SD, real time or fast) | Works in simulation and on a MiSTer |
 | MP-1802 5" floppy card (D88) | Works in simulation and on a MiSTer |
-| 6-voice PSG card | Works in simulation |
-| MB-S1 (S1 mode and Level 3 mode, mapper, S1 display, built-in PSG) | S1 BASIC and several games run in simulation; not yet tried on a MiSTer |
+| 6-voice PSG card | Works in simulation and on a MiSTer |
+| MB-S1 (S1 mode and Level 3 mode, mapper, S1 display, built-in PSG, extra keys) | S1 BASIC and several games run in simulation and on a MiSTer |
 | Cassette SAVE, MP-1805 3" floppy, 9-voice PSG, kanji ROM, S1 640x400 and 64-colour modes | Not done |
 
 ## Using it
@@ -28,6 +28,10 @@ code layout, the simulator and the build.
 - Mount a `.l3` tape image as "Tape", then type `LOADM"",,R` (machine code) or
   `LOAD` and `RUN` (BASIC). `software/tools/l3conv.py` converts `.l3b`/`.l3c` images to
   `.l3`.
+- Keys with no PC equivalent (as EmuB): Tab = KANA, F7 or Caps Lock = CAPS, F8 = GRAPH,
+  F9 = BREAK, F1-F5 = PF1-PF5, Home = HOME/CLS, Backspace = INS/DEL, End = keypad `?`.
+  On the MB-S1, Tab = TAB, Insert = INS, Delete = DEL, F6 = convert (変換), F10 = COPY,
+  and right Alt = KANA.
   "Tape speed" (Machine) is 16x by default; "Tape overlay" (Video) shows the tape time and
   a progress bar while the motor runs.
 - For disks, mount a `.d88` as "Pri. disk 0" and Apply and reset ("Floppy card" Auto fits

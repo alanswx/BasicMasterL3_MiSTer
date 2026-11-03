@@ -161,6 +161,7 @@ static Ps2Map ascii_to_ps2(char c)
 	switch (c) {
 		case ' ':  m.code = 0x29; return m;
 		case '\n': case '\r': m.code = 0x5a; return m;
+		case '\t': m.code = 0x0d; return m;
 		case '\b': m.code = 0x66; return m;
 		case ',':  m.code = 0x41; return m;
 		case '.':  m.code = 0x49; return m;

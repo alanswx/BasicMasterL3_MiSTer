@@ -50,6 +50,10 @@ OSD
   The keyboard is paced (about 9 characters/s), so the ROM sees every key. Typing
   quickly while the machine is busy can still drop keys, as on the real machine.
 
+  Special keys: Tab = KANA, F7 or Caps Lock = CAPS, F8 = GRAPH, F9 = BREAK,
+  F1-F5 = PF1-PF5, Home = HOME/CLS, Backspace = INS/DEL. On the MB-S1: Tab = TAB,
+  Insert = INS, Delete = DEL, F6 = convert, F10 = COPY, right Alt = KANA.
+
 LOADING
 -------
   BASIC reaches "Ready" a second or two after reset. Mount the tape first, then type

@@ -107,7 +107,7 @@ wire         break_key;
 wire         beep;
 
 keyboard keyboard (
-	.clk(clk_sys), .reset(reset), .symbolic(symbolic), .ps2_key(ps2_key),
+	.clk(clk_sys), .reset(reset), .symbolic(symbolic), .s1(s1), .ps2_key(ps2_key),
 	.keys(keys), .break_key(break_key)
 );
 

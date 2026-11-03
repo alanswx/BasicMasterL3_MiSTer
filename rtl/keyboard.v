@@ -8,6 +8,9 @@
 //   F7/CapsLock = CAPS, Tab = KANA, F8 = GRAPH, F9 = BREAK, End = "num ?",
 //   Backspace = INS/DEL, Delete = keypad INS/DEL, Home = HOME/CLS,
 //   '=' = ^, '`' = @, ''' = :, '\' = yen, F1-F5 = PF1-PF5.
+// The MB-S1 keyboard adds keys (EmuB-S1 keyboard_bind.h): Tab = TAB, Insert =
+// INS, Delete = DEL, F6 = 変換 (convert), F10 = COPY (EmuB uses F12, the OSD
+// key here), and KANA moves from Tab to right Alt.
 //
 // With `symbolic` set, punctuation follows the US legends instead: a US key
 // combination that means a symbol presses the Level 3 key that makes that
@@ -28,6 +31,7 @@ module keyboard (
   input             clk,
   input             reset,
   input             symbolic,
+  input             s1,           // MB-S1 keyboard
   input      [10:0] ps2_key,
   output reg [127:0] keys,
   output reg        break_key
@@ -136,6 +140,23 @@ always @(*) begin
       8'h01: code = 8'h80;   // F9 -> BREAK
       default: ;
     endcase
+  end
+  if (s1) begin
+    if (ext) begin
+      case (sc)
+        8'h70: code = 8'h65;   // Insert -> INS
+        8'h71: code = 8'h6F;   // Delete -> DEL
+        8'h11: code = 8'h0A;   // right Alt -> KANA
+        default: ;
+      endcase
+    end else begin
+      case (sc)
+        8'h0D: code = 8'h6C;   // Tab -> TAB
+        8'h0B: code = 8'h67;   // F6 -> convert
+        8'h09: code = 8'h68;   // F10 -> COPY
+        default: ;
+      endcase
+    end
   end
 end
 

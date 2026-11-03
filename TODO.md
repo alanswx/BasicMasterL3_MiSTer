@@ -49,8 +49,7 @@ are kept up to date.
      reproduced in vsim or on hardware (Ascend at 16x on Level 3 and Mark 5); waiting
      for the tester's model, tape and screen. If it is real: prefetch the next tape
      sector (tape standard rule 10), since a slow SD read pauses playback.
-  2. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
-     keyboard's extra keys.
+  2. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE.
   3. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
   4. Cassette SAVE, last.
 

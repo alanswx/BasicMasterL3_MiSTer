@@ -388,7 +388,7 @@ wire         hs, vs, hb, vb, ce_pix;
 wire   [7:0] red, green, blue;
 
 keyboard keyboard (
-	.clk(clk_sys), .reset(reset), .symbolic(~status[5]), .ps2_key(ps2_key),
+	.clk(clk_sys), .reset(reset), .symbolic(~status[5]), .s1(cfg[12:11] == 2'd2), .ps2_key(ps2_key),
 	.keys(keys), .break_key(break_key)
 );
 
