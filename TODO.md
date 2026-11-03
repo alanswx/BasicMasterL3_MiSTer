@@ -11,7 +11,11 @@ are kept up to date.
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
-- **Latest RBF:** c1d146e (`releases/BasicMasterL3_c1d146e.rbf`), on Mister 126
+- **Latest RBF:** 7a2cbe3 (`releases/BasicMasterL3_7a2cbe3.rbf`), on Mister 126
+  (2026-11-03): MB-S1 64-colour (digital: page 0 over page 1; analog after `POKE
+  &HFFE2,16`: the 8x8 grid) and 640x400 (Interlace On: a round 400-line ellipse) look as in
+  vsim. Not in a tester zip yet.
+- **c1d146e** (`releases/BasicMasterL3_c1d146e.rbf`), on Mister 126
   (2026-11-02): the tape player prefetches the next sector into a second buffer (tape
   standard rule 10; byte-exact in vsim on Mazy and Nuts & Milk), and Cannon Ball (Hudson,
   1200 baud, NEWON7 / LOAD / RUN) loads at 16x to its title. MB-S1 extra keys: Tab = TAB
@@ -56,8 +60,9 @@ are kept up to date.
      reproduced in vsim or on hardware (Ascend at 16x on Level 3 and Mark 5); waiting
      for the tester's model, tape and screen. The tape now prefetches (c1d146e), which
      was the likely cause; send the tester a new zip.
-  2. The rest of the S1: user mode / FUSE. 64-colour (digital and analog) and 640x400
-     are done in vsim (`POKE &HFE24,1` / `2`, analog `POKE &HFFE2,16`; 640x400 needs the
+  2. The rest of the S1: user mode / FUSE (only OS-9-style software; S1 BASIC never
+     enters it, nothing found uses it). 64-colour (digital and analog) and 640x400
+     are done in vsim and on hardware (`POKE &HFE24,1` / `2`, analog `POKE &HFFE2,16`; 640x400 needs the
      Interlace option for all 400 lines; see the spec, 5.2a); nothing found uses them.
   3. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
   4. Cassette SAVE, last.
