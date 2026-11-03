@@ -6,8 +6,10 @@
 // CPU has taken the previous one (ACIA RDRF clear): the ROM's BASIC loader
 // cannot keep up with 4x otherwise and the ACIA overruns.
 //
-// The image is not buffered on chip: it is a MiSTer block device, read one
-// 512-byte sector at a time as playback reaches it, so any size works.
+// The image is not buffered on chip: it is a MiSTer block device, read a
+// 512-byte sector at a time, so any size works. Two sector buffers (by sector
+// parity): while playback reads one, the next sector is fetched into the
+// other, so an SD read never pauses the tape (tape standard rule 10).
 module tape (
   input             clk,
   input             reset,
@@ -40,8 +42,8 @@ wire [19:0] period = (baud1200 ? 20'd295680 : 20'd591360) >> speed;
 reg [19:0] timer;
 reg [31:0] pos, size;
 reg        fetch;
-reg [22:0] loaded;            // sector held in the buffer
-reg        valid;             // buffer holds `loaded`
+reg [22:0] loaded[0:1];       // sector held in each buffer
+reg  [1:0] valid;             // buffer holds `loaded`
 reg        busy;
 
 assign position = pos;
@@ -49,13 +51,16 @@ assign length = size;
 assign active = motor && pos < size;
 
 wire [22:0] want = pos[31:9];
-wire        have = valid && loaded == want;
+wire [22:0] next = want + 23'd1;
+wire        have = valid[want[0]] && loaded[want[0]] == want;
+wire        have_next = valid[next[0]] && loaded[next[0]] == next;
+wire        more = {next, 9'd0} < size;
 
 wire [7:0] buf_q;
-dpram #(9, 8) sector (
+dpram #(10, 8) sector (
   .clk(clk),
-  .a_addr(sd_buff_addr), .a_din(sd_buff_dout), .a_we(sd_ack & sd_buff_wr), .a_dout(),
-  .b_addr(pos[8:0]), .b_din(8'd0), .b_we(1'b0), .b_dout(buf_q)
+  .a_addr({sd_lba[0], sd_buff_addr}), .a_din(sd_buff_dout), .a_we(sd_ack & sd_buff_wr), .a_dout(),
+  .b_addr(pos[9:0]), .b_din(8'd0), .b_we(1'b0), .b_dout(buf_q)
 );
 
 always @(posedge clk) begin
@@ -64,24 +69,30 @@ always @(posedge clk) begin
   if (img_mounted) begin
     size <= img_size[31:0];
     pos <= 32'd0; timer <= 20'd0;
-    valid <= 1'b0; busy <= 1'b0; sd_rd <= 1'b0;
+    valid <= 2'b00; busy <= 1'b0; sd_rd <= 1'b0;
   end else if (rewind) begin
     pos <= 32'd0; timer <= 20'd0;
   end else if (reset) begin
     timer <= 20'd0;
   end else begin
-    // sector fetch: request the sector playback is in, if it is not loaded
+    // sector fetch: the sector playback is in if it is not loaded, else the
+    // one after it into the other buffer
     if (~busy && ~have && pos < size) begin
       sd_lba <= {9'd0, want};
       sd_rd <= 1'b1;
       busy <= 1'b1;
-      valid <= 1'b0;
+      valid[want[0]] <= 1'b0;
+    end else if (~busy && ~have_next && more) begin
+      sd_lba <= {9'd0, next};
+      sd_rd <= 1'b1;
+      busy <= 1'b1;
+      valid[next[0]] <= 1'b0;
     end
     if (busy && sd_ack) sd_rd <= 1'b0;
     if (busy && ~sd_rd && ~sd_ack) begin
       busy <= 1'b0;
-      valid <= 1'b1;
-      loaded <= sd_lba[22:0];
+      valid[sd_lba[0]] <= 1'b1;
+      loaded[sd_lba[0]] <= sd_lba[22:0];
     end
 
     if (active && have) begin
