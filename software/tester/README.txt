@@ -1,18 +1,19 @@
-Hitachi Basic Master Level 3 / Mark 5 / MB-S1 -- MiSTer core, tester build 2026-10-27
+Hitachi Basic Master Level 3 / Mark 5 / MB-S1 -- MiSTer core, tester build 2026-11-02
 ==================================================================================
 
 PRIVATE TESTER PACKAGE. It contains the system ROMs and commercial software.
 Please do not redistribute it.
 
-Core build: 5a70601. New since the 2026-10-26 zip: the Hudson MB-S1 tapes (Nuts &
-Milk, Mario Bros Special, Princess Tomato, Dezeni Land) are re-converted and now load
-in simulation, and tape names carry the load command. The core changed only in the tape
-bar's clock; the OSD layout, 16x tape and the tape bar were tested on a MiSTer with
-build fd3e6f3.
+Core build: c1d146e. New since the 2026-10-27 zip: the tape player reads the next
+512-byte block from the SD card ahead of time, so loading never pauses at a block
+boundary (if tapes failed for you with 16x on, please try again); and the MB-S1 has its
+extra keys (Tab, Insert, Delete, F6, F10; see below). Tested on a MiSTer: 16x tape
+(Ascend, Cannon Ball, Nuts & Milk), Normal tape (MELHEN), the MP-1802 disks, both PSGs,
+the S1's Tab / Insert / Delete.
 
 INSTALL
 -------
-  _Computer/BasicMasterL3_20261027.rbf  ->  /media/fat/_Computer/
+  _Computer/BasicMasterL3_20261102.rbf  ->  /media/fat/_Computer/
   games/BasicMasterL3/                  ->  /media/fat/games/BasicMasterL3/
                                             (boot0.rom must be in this folder)
 

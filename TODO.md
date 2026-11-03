@@ -17,7 +17,7 @@ are kept up to date.
   1200 baud, NEWON7 / LOAD / RUN) loads at 16x to its title. MB-S1 extra keys: Tab = TAB
   (8-column stops in S1 BASIC), Delete = DEL and Insert = INS checked on hardware; F6 =
   convert, F10 = COPY and right Alt = KANA are mapped but untested. Not yet on Mister 12
-  (it was off the network). The tester zip still has 5a70601.
+  (it was off the network). In tester zip 20261102.
 - **Previous RBF:** 5a70601, hardware-tested on Mister 14 (2026-10-27) and Mister 126
   (2026-11-02):
   - Tape at 16x: Ascend (Level 3 and Mark 5) and Nuts & Milk (MB-S1, LOAD then RUN, the
@@ -36,7 +36,7 @@ are kept up to date.
   - OSD: Model, Changes pending, Apply and reset, Rewind tape, the mount message.
   - The OSD settings are not kept across a `load_core` of the RBF or an MGL: set Model
     in the OSD and use Apply and reset after loading.
-- **Tester zip:** `releases/BasicMasterL3_tester_20261027.zip` (5a70601, Hudson S1 tapes
+- **Tester zip:** `releases/BasicMasterL3_tester_20261102.zip` (c1d146e; the 20261027 zip had 5a70601, Hudson S1 tapes
   re-converted, tape names carry the load command). Rebuild with
   `software/tools/make_tester_zip.sh`; the README is `software/tester/README.txt`. The zip
   holds ROMs and commercial software: give it only to the two named testers.
