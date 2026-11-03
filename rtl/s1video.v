@@ -6,7 +6,12 @@
 // 16.128 MHz). 40-column text and 320-dot graphics are made by spanning one
 // character / byte over two CRTC characters ($FE24 chooses, not the CRTC).
 //
-// Not yet: 640x400 (needs interlace), 64-colour mode.
+// 64-colour mode ($FE24 = x01) reads a second 320x200 page at +$2000 in the
+// same character time. Digital RGB shows page 0 over page 1; analog RGB
+// ($FFE2 bit 4) mixes the two palette entries into 4 levels per gun
+// (EmuB-S1 displaysub.h:147-218, display.cpp:109-139).
+//
+// Not yet: 640x400 (needs interlace).
 //
 // Phase (cnt[3:0]) as video.v's 80-column pipeline:
 //   1 addresses registered   3 bytes latched   5 pattern latched
@@ -21,6 +26,7 @@ module s1video (
   input       [3:0] bd,           // $FFD0[3:0] border {I,G,R,B}
   input             border_en,
   input             is,           // $FFD6 bit 3
+  input             analog,       // $FFE2 bit 4: analog RGB (64-colour mode)
 
   input      [13:0] ma,
   input       [4:0] ra,
@@ -57,6 +63,7 @@ wire [3:0] ph = cnt[3:0];
 wire       w80 = smode[2];
 wire       gw  = smode[1];
 wire [1:0] gm  = smode[1:0];
+wire       c64 = gm == 2'b01;
 
 // --- border window (as video.v: 64 px / 16 lines round the display) ---------
 reg [7:0] hc, hc_tot, hc_act;
@@ -94,7 +101,8 @@ always @(posedge clk) begin
     ra1 <= ra; half1 <= ma[0];
     hde1 <= h_de; vde1 <= v_de; hs1 <= hsync_in; vs1 <= vsync_in; cur1 <= cursor_in;
     hv1 <= border_en & h_vis; vv1 <= border_en & v_vis;
-  end
+  end else if (ph == 4'd3)
+    g_addr <= g_addr + 14'h2000;              // 64-colour page 1, read at ph 5
 end
 
 // --- stage 2: bytes ---------------------------------------------------------
@@ -118,13 +126,14 @@ assign font_addr = is ? ({code2, 4'd0} | {8'd0, code2[7] ? fr : {fr[3:1], 1'b0}}
 assign ig_addr = {code2, is ? ra2[3:1] : ra2[2:0]};
 
 // --- stage 3: pattern -------------------------------------------------------
-reg [7:0] pat, pb, prr, pg, gr3, gg3, gb3;
+reg [7:0] pat, pb, prr, pg, gr3, gg3, gb3, hr3, hg3, hb3;
 reg [6:0] cr3;
 reg       half3, hde3, vde3, hs3, vs3, cur3, hv3, vv3;
 always @(posedge clk) begin
   if (ph == 4'd5) begin
     pat <= font_q; pb <= ig_b; prr <= ig_r; pg <= ig_g;
     gr3 <= gr2; gg3 <= gg2; gb3 <= gb2; cr3 <= cr2;
+    hr3 <= gr_q; hg3 <= gg_q; hb3 <= gb_q;   // page 1, addressed at ph 3
     half3 <= half2;
     hde3 <= hde2; vde3 <= vde2; hs3 <= hs2; vs3 <= vs2; cur3 <= cur2;
     hv3 <= hv2; vv3 <= vv2;
@@ -147,21 +156,37 @@ wire [2:0] igc   = cur3 ? cr3[2:0] : igc1;
 wire       fbit  = pat[tb] ^ cur3 ^ cr3[3];
 wire [2:0] tcol  = ig_t ? igc : (fbit ? cr3[2:0] : 3'd0);
 wire       ton   = ig_t ? (igc != 3'd0) : fbit;
-wire [2:0] gcol  = {gg3[gb_i], gr3[gb_i], gb3[gb_i]} & dpage[7:5];
+wire [2:0] gcol0 = {gg3[gb_i], gr3[gb_i], gb3[gb_i]} & dpage[7:5];
+wire [2:0] gcol1 = c64 ? {hg3[gb_i], hr3[gb_i], hb3[gb_i]} & dpage[7:5] : 3'd0;
+// digital: page 0 on top; analog: the pages stay separate (c0 / c1)
+wire [2:0] gcol  = (c64 & analog) ? gcol0 : (gcol0 != 3'd0) ? gcol0 : gcol1;
+wire       gon   = (gcol0 | gcol1) != 3'd0;
 wire [1:0] sel   = {cr3[6], cr3[4]};
 
-reg [2:0] c;
+// text over graphic: both pages see the text where it is shown
+reg [2:0] c, c1;
 always @(*) begin
-  if (sel == 2'b00 || dpage[7:5] == 3'd0) c = tcol;
-  else if (sel == 2'b01)                 c = gcol;
-  else if (sel == 2'b10)                 c = ton ? tcol : gcol;
-  else                                   c = (gcol != 3'd0) ? gcol : tcol;
+  if (sel == 2'b00 || dpage[7:5] == 3'd0) begin c = tcol; c1 = tcol; end
+  else if (sel == 2'b01)                 begin c = gcol; c1 = gcol1; end
+  else if (sel == 2'b10)                 begin c = ton ? tcol : gcol; c1 = ton ? tcol : gcol1; end
+  else                                   begin c = gon ? gcol : tcol; c1 = gon ? gcol1 : tcol; end
 end
 
-wire [3:0] pe = palette[{c, 2'b00} +: 4];
+wire [3:0] pe  = palette[{c, 2'b00} +: 4];
+wire [3:0] pe1 = palette[{c1, 2'b00} +: 4];
 
 function [7:0] lvl(input on, input i);
   lvl = on ? (i ? 8'hff : 8'haf) : 8'h00;
+endfunction
+
+// analog 64-colour level: {page 0 gun, page 1 gun, page 0 I, page 1 I}
+function [7:0] lvl64(input [3:0] k);
+  case (k)
+    4'h4, 4'h6: lvl64 = 8'h1f;  4'h5, 4'h7: lvl64 = 8'h3f;
+    4'h8, 4'h9: lvl64 = 8'h5f;  4'hA, 4'hB: lvl64 = 8'h7f;
+    4'hC: lvl64 = 8'h9f;  4'hD: lvl64 = 8'hbf;  4'hE: lvl64 = 8'hdf;  4'hF: lvl64 = 8'hff;
+    default: lvl64 = 8'h00;
+  endcase
 endfunction
 
 always @(posedge clk) begin
@@ -169,7 +194,11 @@ always @(posedge clk) begin
     hs <= hs3; vs <= vs3;
     hb <= border_en ? ~hv3 : ~hde3;
     vb <= border_en ? ~vv3 : ~vde3;
-    if (hde3 & vde3) begin
+    if (hde3 & vde3 & c64 & analog) begin
+      red   <= lvl64({pe[1], pe1[1], pe[3], pe1[3]});
+      green <= lvl64({pe[2], pe1[2], pe[3], pe1[3]});
+      blue  <= lvl64({pe[0], pe1[0], pe[3], pe1[3]});
+    end else if (hde3 & vde3) begin
       red <= lvl(pe[1], pe[3]); green <= lvl(pe[2], pe[3]); blue <= lvl(pe[0], pe[3]);
     end else if (hv3 & vv3) begin
       red <= lvl(bd[1], bd[3]); green <= lvl(bd[2], bd[3]); blue <= lvl(bd[0], bd[3]);

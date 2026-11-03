@@ -194,6 +194,7 @@ reg  [7:0] bmsk;                 // $FE20 BMSK-COLOR: [7] BMSC, [2:0] G R B
 reg  [3:0] aplane;               // $FE21 ACTIVE-PLANE: [3] DW, [2:0] G R B
 reg  [7:0] dpage;                // $FE23
 reg  [2:0] smode;                // $FE24
+reg        analog;               // $FFE2 bit 4 (TVSUPER analog RGB)
 reg  [7:0] creg_b, creg_r, creg_g; // $FE25-$FE27
 reg [31:0] palette;              // $FE28-$FE2F
 reg  [7:0] color_reg;
@@ -381,7 +382,7 @@ video video (
 s1video s1video (
   .clk(clk), .cnt(cnt),
   .smode(smode), .dpage(dpage), .palette(palette), .bd(mode_sel[3:0]),
-  .border_en(border), .is(interlace_sel),
+  .border_en(border), .is(interlace_sel), .analog(analog),
   .ma(crtc_ma), .ra(crtc_ra), .h_de(crtc_hde), .v_de(crtc_vde),
   .hsync_in(crtc_hs), .vsync_in(crtc_vs), .cursor_in(crtc_cur),
   .t_addr(s1_taddr), .t_q(tv_q), .c_q(cv_q),
@@ -520,7 +521,7 @@ always @(posedge clk) begin
     kb_irq <= 1'b0; kb_nmi_flag <= 1'b0; kb_nmi <= 1'b0;
     timer_flag <= 1'b0; fast_flag <= 1'b0; fast_ph <= 1'b0;
     trace_state <= 2'd0; trace_nmi <= 1'b0;
-    bmsk <= 8'h00; aplane <= 4'h0; dpage <= 8'h00; smode <= 3'd0;
+    bmsk <= 8'h00; aplane <= 4'h0; dpage <= 8'h00; smode <= 3'd0; analog <= 1'b0;
     creg_b <= 8'h00; creg_r <= 8'h00; creg_g <= 8'h00; palette <= 32'h76543210;
     s1psg_reg <= 4'd0;
   end else begin
@@ -567,6 +568,7 @@ always @(posedge clk) begin
                  kb_irq <= cpu_dout[6] & kb_code[7];
                  if (kb_nmi_flag & ~cpu_dout[7]) kb_nmi <= 1'b0;
                end else if (a[2:0] == 3'd5) s1psg_reg <= cpu_dout[3:0];
+               else if (a[2:0] == 3'd2) analog <= cpu_dout[4];
         6'h28: if (mk5) bank2 <= cpu_dout;
         6'h29: if (mk5) ig_mode <= cpu_dout;
         6'h2a: if (mk5) ig_en <= {5'd0, cpu_dout[2:0]};

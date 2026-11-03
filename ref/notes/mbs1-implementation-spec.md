@@ -518,11 +518,32 @@ Notes:
   [S1OpMan p.117-118]. RTL: in A mode with `~w80`, compare `ma[13:1] == cursor[13:1]`. Ignore
   R8 cursor skew (EmuB cancels it: display.cpp:1339-1341).
 * 64-colour mode with digital RGB (`$FFE2` bit 4 = 0, the default) is "two 320x200 pages, page 0
-  on top" (`cg0 | (cg1 & ~mask(cg0))`, displaysub.h:193-218). Analog uses the 2-bit tables. Later.
+  on top" (`cg0 | (cg1 & ~mask(cg0))`, displaysub.h:193-218). Analog uses the 2-bit tables
+  (implemented; see 5.2a).
 * 640x400 needs interlace (CRTC video mode); even/odd lines come from `g_addr` and `+$800`
   (display.cpp:1501-1538, displaysub.h:74). Later.
 * `disp_page_changed` (display.cpp:388-397, 574) forces a plane to all-ones for the rest of a
   frame when a plane is switched on. It is an emulation of a latch-timing glitch. Skip it.
+
+### 5.2a Selecting 64-colour, 640x400 and analog RGB (2026-11-02)
+
+* S1 BASIC never selects 64-colour or 640x400. Its only `STB $FE24` (PC `$862A`) writes the
+  shadow `$E6C1`, which SCREEN (table `{00,04,03,07}` at `$53AE`, fineness 0..1) and WIDTH
+  (bit 2) set. Software has to `POKE &HFE24,1` (64-colour) or `2` (640x400). [S1 BASIC ROM;
+  BASIC manual p.218 lists only 320x200 / 640x200; op manual p.109: 64-colour needs the
+  MPC-VS01S card + C15-B01 TV, 640x400 flickers; p.116: 640x400 is interlace only]
+* `SCREEN ,,n`: even n = interlace (`$FFD6` = `$08`, R8 `$43`, R9 `$0E`, R10 `$2E`, R11 `$0F`),
+  odd n = non-interlace (`$00`, `$40`, `$07`, `$27`, `$07`). [vsim trace; op manual p.44]
+* `$FFE2` is set from CTRL+PF1-PF5 (ROM `$7DD7-$7E4E`, table `{00,02,01,05}` at `$7ECD`):
+  PF1 COMPUTER `$00`, PF2 VIDEO `$02`, PF3 V.SUPER.1 `$01` (+ R0 `$7D`, R2 `$5A`), PF4
+  V.SUPER.2 `$05` (same), PF5 toggles bit 4 ANALOG. In non-interlace each first writes CRTC R8
+  = `$41`. `POKE &HFFE2,16` selects analog. [S1 BASIC ROM; op manual p.49 lists PF1-PF3]
+* No software in `software/` or the tester zip writes `$FE24` = 1 or 2 or a real `$FFE2`
+  value: inufuto S1 builds use `$00`, Hudson / Volguard `$00`/`$07`, Jelda `$00`/`$04`, Lode
+  Runner `$04`/`$07`. [byte scan of all .l3/.d88]
+* 64-colour is implemented (s1video.v) after EmuB-S1; checked in vsim with a page-0 vertical /
+  page-1 horizontal bar test (digital: page 0 on top; analog: the 8x8 grid, levels `$3F` /
+  `$7F` / `$FF` as EmuB's `mm` table). EmuB itself calls the colours unverified.
 
 ### 5.3 B mode on the S1
 
