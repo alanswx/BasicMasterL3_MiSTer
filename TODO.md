@@ -22,10 +22,10 @@ are kept up to date.
   - MB-S1 PSG: `POKE &HFFE5,reg / &HFFE4,data` in S1 BASIC gives 315 Hz (period 200).
   - MP-1802 (Mark 5, Floppy card Auto, disk 0 then Apply and reset): tetris, subtreas
     (slow, about 90 s to its title), insecth, hiwriter and jwp boot to their title or
-    prompt. hidata and ma5370 stop at plain BASIC `Ready` in both vsim and hardware
-    (data disks). **dbu and fcg6890 boot in vsim (DISK BASIC / graphics) but showed
-    plain BASIC `Ready` on hardware**; re-check them one at a time (the run may have
-    overlapped another session on Mister 126).
+    prompt. dbu boots DISK BASIC and `FILES` lists the disk; fcg6890 boots to its
+    character-editor prompt (an earlier failure was a run that overlapped another
+    session on Mister 126). hidata and ma5370 stop at plain BASIC `Ready` in both vsim
+    and hardware (data disks).
   - OSD: Model, Changes pending, Apply and reset, Rewind tape, the mount message.
   - The OSD settings are not kept across a `load_core` of the RBF or an MGL: set Model
     in the OSD and use Apply and reset after loading.
@@ -45,16 +45,15 @@ are kept up to date.
 - **Not done from the OSD/tape standards:** Swap Alt/Win (the keyboard maps neither key)
   and Tape audio (an .l3 holds bytes, not a waveform).
 - **Next, in order:**
-  1. Re-check dbu.d88 and fcg6890.d88 on hardware (see above).
-  2. Tester report (2026-10-27): "on L3, tapes load only with turbo off". Not
+  1. Tester report (2026-10-27): "on L3, tapes load only with turbo off". Not
      reproduced in vsim or on hardware (Ascend at 16x on Level 3 and Mark 5); waiting
      for the tester's model, tape and screen. If it is real: prefetch the next tape
      sector (tape standard rule 10), since a slow SD read pauses playback.
-  3. Mazy (S1): the right-hand score digits are clipped. Compare with EmuB-S1.
-  4. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
+  2. Mazy (S1): the right-hand score digits are clipped. Compare with EmuB-S1.
+  3. The rest of the S1: 640x400 (interlace), 64-colour mode, user mode / FUSE, the
      keyboard's extra keys.
-  5. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
-  6. Cassette SAVE, last.
+  4. MP-1805 (MC6843) 3" floppy; a 9-voice PSG if any software needs it; kanji ROM.
+  5. Cassette SAVE, last.
 
 ## Goal
 
