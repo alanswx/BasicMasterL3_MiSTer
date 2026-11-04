@@ -1,6 +1,6 @@
 # Basic Master Level 3 / MB-S1 MiSTer core: handoff TODO
 
-Started 2026-10-21; last updated 2026-11-02. The core works on a MiSTer: Level 3 / Mark 5
+Started 2026-10-21; last updated 2026-11-03. The core works on a MiSTer: Level 3 / Mark 5
 and the MB-S1 (S1 and Level 3 modes), tapes at 16x and Normal, the MP-1802 floppy card
 and both PSGs. **Start with "Handoff" below**, then `CLAUDE.md` (layout, sim, build). The
 rest of this file is the original plan, kept for its research and lessons; its checkboxes
@@ -11,7 +11,12 @@ are kept up to date.
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
-- **Latest RBF:** 7a2cbe3 (`releases/BasicMasterL3_7a2cbe3.rbf`), on Mister 126
+- **Latest RBF:** 5f03f2b (`releases/BasicMasterL3_5f03f2b.rbf`), on Mister 126
+  (2026-11-03): `sys/` updated to an unmodified Template_MiSTer e901a9f (was the
+  2022-06-05 Template with local edits), ports from `sys/emu_ports.vh`, qsf/qpf/sdc/srf as
+  the Template's. Timing met, no critical warnings. On hardware: boots to Ready, typing,
+  Ascend at 16x with the tape bar, tetris.d88 boots and plays.
+- **7a2cbe3** (`releases/BasicMasterL3_7a2cbe3.rbf`), on Mister 126
   (2026-11-03): MB-S1 64-colour (digital: page 0 over page 1; analog after `POKE
   &HFFE2,16`: the 8x8 grid) and 640x400 (Interlace On: a round 400-line ellipse) look as in
   vsim. Not in a tester zip yet.
