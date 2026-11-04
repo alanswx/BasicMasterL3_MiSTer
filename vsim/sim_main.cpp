@@ -342,7 +342,11 @@ static int verilate()
 	top->clk_sys = clk_sys_clock.clk;
 
 	if (clk_sys_clock.clk != clk_sys_clock.old) {
-		if (clk_sys_clock.clk) {
+		// Inputs change on the falling edge, so they are settled before the
+		// next rising edge, like the registered outputs of hps_io. Changing
+		// them together with the rising edge works on Verilator 5 but not 4,
+		// which runs clocked logic before the combinational logic fed by them.
+		if (!clk_sys_clock.clk) {
 			input.BeforeEval();
 			bus.BeforeEval();
 			blk.BeforeEval(main_time);
