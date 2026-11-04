@@ -1,6 +1,6 @@
 # Basic Master Level 3 / MB-S1 MiSTer core: handoff TODO
 
-Started 2026-10-21; last updated 2026-11-03. The core works on a MiSTer: Level 3 / Mark 5
+Started 2026-10-21; last updated 2026-11-04. The core works on a MiSTer: Level 3 / Mark 5
 and the MB-S1 (S1 and Level 3 modes), tapes at 16x and Normal, the MP-1802 floppy card
 and both PSGs. **Start with "Handoff" below**, then `CLAUDE.md` (layout, sim, build). The
 rest of this file is the original plan, kept for its research and lessons; its checkboxes
@@ -11,6 +11,12 @@ are kept up to date.
 - **Repo:** <https://github.com/alanswx/BasicMasterL3_MiSTer> (public, GPL v2), branch
   `main`. ROMs, software and reference copies are local only (`.gitignore`). The history
   was checked: it contains no ROM or software files.
+- **MiSTer-devel repo:** <https://github.com/MiSTer-devel/BasicMasterL3_MiSTer> (private
+  for now) holds a clean copy with no history: the core files, `sys/`, a user README and
+  `tools/make_boot0.py` (builds `boot0.rom` from the MAME sets; output identical to
+  `roms/mister/boot0.rom`). No vsim, docs, ROMs or software. 2026-11-04: a fresh clone
+  built on misterubuntu (timing met) and ran on Mister 126 (Level 3 tape, MP-1802 disk,
+  MB-S1 BASIC with LINE/CIRCLE). Changes made here have to be copied there by hand.
 - **Latest RBF:** 5f03f2b (`releases/BasicMasterL3_5f03f2b.rbf`), on Mister 126
   (2026-11-03): `sys/` updated to an unmodified Template_MiSTer e901a9f (was the
   2022-06-05 Template with local edits), ports from `sys/emu_ports.vh`, qsf/qpf/sdc/srf as
