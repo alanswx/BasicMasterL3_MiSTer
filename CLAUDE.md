@@ -38,6 +38,7 @@ rtl/psg6.v            6-voice PSG card ($FF30-$FF33 PIA + 2x jt49 in rtl/jt49/)
 rtl/mc6809is.v        synchronous 6809 (Vectrex-development copy, rev 1.1 fixes)
 rtl/dpram.v           behavioural dual-port RAM (Quartus infers M10K)
 vsim/                 Verilator harness (derived from the Basic Master Jr core)
+tools/make_boot0.py   builds boot0.rom from the MAME bml3/mbs1/bml3mp1802 sets
 ref/notes/            hardware notes, emulator comparison, translated EmuB docs
 roms/                 system ROMs (not in git; see roms/README.md)
 software/             test software index (README.md), tools/ (l3conv.py, make_tester_zip.sh),
@@ -69,9 +70,10 @@ make
 * Frames are **1/60 s of simulated time** from power-on (not video frames), so they work
   before the CRTC is programmed. BASIC reaches `Ready` by about frame 82.
 * Speed is about 19 frames/s.
-* `--rom` defaults to `../roms/mister/boot0.rom` (160K: L3 BASIC `$0000`, MP-1802 `$6000`,
-  font `$8000`, S1 BASIC/ROMs from `$10000`; see the comment at the top of `rtl/core.v`),
-  loaded over ioctl index 0 just like MiSTer's `boot0.rom`.
+* `--rom` defaults to `vsim/boot0.rom` (160K: L3 BASIC `$0000`, MP-1802 `$6000`, font
+  `$8000`, S1 BASIC from `$10000`; see the comment at the top of `rtl/core.v`), loaded over
+  ioctl index 0 just like MiSTer's `boot0.rom`. It is git-ignored: locally a symlink to
+  `../roms/mister/boot0.rom`; `tools/make_boot0.py` builds it from the MAME sets.
 * `--text N` prints `$0400` as 40×25 ASCII. In hi-res modes that is raster plane 0.
 * `--tape file.l3` mounts block device 2 (`software/tools/l3conv.py` makes .l3 from
   .l3b/.l3c). `--model s1` (`--s1mode b`) runs the MB-S1.
@@ -116,6 +118,14 @@ Test on a MiSTer with `/Applications/MiSTerKVMS.app/Contents/MacOS/misterkvms-cl
   writes `releases/BasicMasterL3_tester_<date>.zip`. It contains ROMs and commercial
   software: give it to named testers only, and never attach it to a public release.
   Update `software/tester/README.txt` (load commands, what works) with each zip.
+
+## MiSTer-devel repo
+
+<https://github.com/MiSTer-devel/BasicMasterL3_MiSTer> is the official copy, without this
+repo's history: the top level and project files, `rtl/`, `sys/`, `vsim/`, `tools/`,
+`LICENSE` and its own user README. No `ref/`, `roms/`, `software/`, TODO.md or this file.
+Copy changes there by hand (`git archive HEAD <paths> | tar -x -C <clone>`). Its RTL
+comments point to this repo for `ref/notes`.
 
 ## OSD
 

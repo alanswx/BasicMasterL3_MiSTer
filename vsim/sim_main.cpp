@@ -82,7 +82,7 @@ bool interlace = false;
 unsigned int dipsw = 0x03;
 int  stop_at_frame = -1;
 std::vector<int> screenshot_frames;
-std::string rom_image = "../roms/mister/boot0.rom";
+std::string rom_image = "boot0.rom";
 std::string tape_image;
 std::string disk_image[2];
 bool fdc_en = false;
@@ -458,7 +458,7 @@ static void usage(const char* argv0)
 	"Usage: %s [options]\n"
 	"\n"
 	"  --headless                 run without a window (still renders for screenshots)\n"
-	"  --rom <file>               boot0.rom image (default ../roms/mister/boot0.rom)\n"
+	"  --rom <file>               boot0.rom image (default boot0.rom)\n"
 	"  --tape <file>              mount an .l3 tape image (block device 2)\n"
 	"  --disk <file.d88>         mount a disk in drive 0 (fits the MP-1802 card)\n"
 	"  --disk1 <file.d88>        mount a disk in drive 1\n"
@@ -667,7 +667,7 @@ int main(int argc, char** argv, char** env)
 
 	{
 		FILE* f = fopen(rom_image.c_str(), "rb");
-		if (!f) { printf("Cannot open boot ROM %s (see roms/README.md)\n", rom_image.c_str()); return 1; }
+		if (!f) { printf("Cannot open boot ROM %s (make it with ../tools/make_boot0.py)\n", rom_image.c_str()); return 1; }
 		fclose(f);
 	}
 	printf("Loading boot ROM: %s\n", rom_image.c_str());

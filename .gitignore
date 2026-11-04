@@ -30,3 +30,4 @@ PLLJ_PLLSPE_INFO.txt
 # local tool state
 .claude/
 __pycache__/
+vsim/boot0.rom
